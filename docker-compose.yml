@@ -29,6 +29,13 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-
+  adminer:
+    image: adminer:latest
+    container_name: saas-pos-adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
 volumes:
   mysql_data:
