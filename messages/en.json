@@ -1,0 +1,43 @@
+{
+  "brand": {
+    "name": "Hssabaty Point de vente"
+  },
+  "home": {
+    "headline": "Hssabaty Point de vente",
+    "subhead": "Modern POS solution by Hssabaty, built for companies.",
+    "login": "Log in",
+    "signup": "Sign up"
+  },
+  "auth": {
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Log in with your Apple or Google account",
+    "signupTitle": "Create an account",
+    "signupSubtitle": "Sign up with your Apple or Google account",
+    "withAppleLogin": "Log in with Apple",
+    "withGoogleLogin": "Log in with Google",
+    "withAppleSignup": "Sign up with Apple",
+    "withGoogleSignup": "Sign up with Google",
+    "orContinueWith": "Or continue with",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "loginButton": "Log in",
+    "loginPending": "Signing in…",
+    "signupButton": "Create account",
+    "signupPending": "Creating account…",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "goToSignup": "Sign up",
+    "goToLogin": "Sign in",
+    "termsPrefix": "By clicking Continue, you agree to our",
+    "terms": "Terms of Service",
+    "and": "and our",
+    "privacy": "Privacy Policy",
+    "errors": {
+      "loginFailed": "Login failed",
+      "signupFailed": "Sign up failed"
+    }
+  }
+}
+

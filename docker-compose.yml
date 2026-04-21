@@ -34,7 +34,7 @@ services:
     container_name: saas-pos-adminer
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8088:8080"
     depends_on:
       - mysql
 volumes:

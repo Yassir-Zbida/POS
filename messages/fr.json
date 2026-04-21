@@ -1,0 +1,43 @@
+{
+  "brand": {
+    "name": "Hssabaty Point de vente"
+  },
+  "home": {
+    "headline": "Hssabaty Point de vente",
+    "subhead": "Solution POS moderne par Hssabaty, pensée pour les entreprises.",
+    "login": "Se connecter",
+    "signup": "Créer un compte"
+  },
+  "auth": {
+    "loginTitle": "Ravi de vous revoir",
+    "loginSubtitle": "Connectez-vous avec votre compte Apple ou Google",
+    "signupTitle": "Créer un compte",
+    "signupSubtitle": "Inscrivez-vous avec votre compte Apple ou Google",
+    "withAppleLogin": "Se connecter avec Apple",
+    "withGoogleLogin": "Se connecter avec Google",
+    "withAppleSignup": "S'inscrire avec Apple",
+    "withGoogleSignup": "S'inscrire avec Google",
+    "orContinueWith": "Ou continuer avec",
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "loginButton": "Se connecter",
+    "loginPending": "Connexion…",
+    "signupButton": "Créer un compte",
+    "signupPending": "Création du compte…",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "goToSignup": "Créer un compte",
+    "goToLogin": "Se connecter",
+    "termsPrefix": "En cliquant sur Continuer, vous acceptez nos",
+    "terms": "Conditions d'utilisation",
+    "and": "et notre",
+    "privacy": "Politique de confidentialité",
+    "errors": {
+      "loginFailed": "Échec de la connexion",
+      "signupFailed": "Échec de l'inscription"
+    }
+  }
+}
+

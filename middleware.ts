@@ -1,10 +1,15 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
 
-export function middleware(_request: NextRequest) {
-  return NextResponse.next();
-}
+import { routing } from "@/i18n/navigation";
+
+export default createMiddleware(routing);
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/pos"],
+  matcher: [
+    // Match all pathnames except for:
+    // - API routes
+    // - Next.js internals
+    // - static files (e.g. favicon.svg)
+    "/((?!api|_next|.*\\..*).*)",
+  ],
 };

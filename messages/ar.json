@@ -1,0 +1,43 @@
+{
+  "brand": {
+    "name": "حساباتي نقطة البيع"
+  },
+  "home": {
+    "headline": "حساباتي نقطة البيع",
+    "subhead": "حل نقاط بيع حديث من حساباتي، مُصمم للشركات.",
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب"
+  },
+  "auth": {
+    "loginTitle": "مرحبًا بعودتك",
+    "loginSubtitle": "",
+    "signupTitle": "إنشاء حساب",
+    "signupSubtitle": "",
+    "withAppleLogin": "تسجيل الدخول عبر Apple",
+    "withGoogleLogin": "تسجيل الدخول عبر Google",
+    "withAppleSignup": "إنشاء حساب عبر Apple",
+    "withGoogleSignup": "إنشاء حساب عبر Google",
+    "orContinueWith": "أو المتابعة عبر",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "name@example.com",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "loginButton": "تسجيل الدخول",
+    "loginPending": "جارٍ تسجيل الدخول…",
+    "signupButton": "إنشاء حساب",
+    "signupPending": "جارٍ إنشاء الحساب…",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "goToSignup": "إنشاء حساب",
+    "goToLogin": "تسجيل الدخول",
+    "termsPrefix": "بالنقر على متابعة، فإنك توافق على",
+    "terms": "شروط الخدمة",
+    "and": "و",
+    "privacy": "سياسة الخصوصية",
+    "errors": {
+      "loginFailed": "فشل تسجيل الدخول",
+      "signupFailed": "فشل إنشاء الحساب"
+    }
+  }
+}
+
