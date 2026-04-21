@@ -14,12 +14,13 @@ Structure initiale d'un SaaS POS avec Next.js 15 (App Router), TypeScript, Tailw
 
 ## Structure
 
-- `app/`: routes App Router + API health
+- `app/`: routes App Router + API (`auth`, `admin`, `manager`, `health`)
 - `components/`: UI, layout, forms, dashboard, POS, shared
 - `features/`: modules métier (actions/services/schemas/hooks/types)
-- `lib/`: utilitaires partagés
+- `lib/`: utilitaires partagés (auth, rbac, audit, prisma)
 - `store/`: stores Zustand
 - `prisma/`: schema + seed
+- `docs/`: documentation API
 - `docker/`: Dockerfile Next.js + init SQL MySQL
 
 ## Commandes utiles
@@ -29,7 +30,7 @@ npm install
 npm run dev
 npm run lint
 npm run prisma:generate
-npm run prisma:migrate
+npm run prisma:migrate -- --name init
 npm run prisma:studio
 npm run prisma:seed
 ```
@@ -41,6 +42,7 @@ docker compose up --build
 ```
 
 Application: [http://localhost:3000](http://localhost:3000)
+Adminer: [http://localhost:8080](http://localhost:8080)
 MySQL: `localhost:3307`
 
 ## Prisma
@@ -62,3 +64,17 @@ npm run prisma:generate
 ```bash
 npm run prisma:migrate -- --name init
 ```
+
+> Si vous exécutez Prisma depuis le host, utilisez `localhost:3307` dans `DATABASE_URL`.
+> Si vous exécutez Prisma depuis le container app, utilisez `mysql:3306`.
+
+## API Documentation
+
+Documentation des endpoints: `docs/API.md`
+
+OpenAPI JSON: `GET /api/docs/openapi`
+Swagger UI: [http://localhost:3000/docs](http://localhost:3000/docs)
+
+Docs protection:
+- `development`: open access
+- other environments: ADMIN bearer token required
