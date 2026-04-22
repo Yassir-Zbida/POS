@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid email or password" }, { status: 400 });
   }
 
-  const { email, password } = parsed.data;
+  const { email, password, rememberMe } = parsed.data;
   let user = await prisma.user.findUnique({ where: { email } });
 
   if (!user && email === "admin@saas-pos.local") {
@@ -85,7 +85,8 @@ export async function POST(request: Request) {
   };
   const accessToken = await signAccessToken(payload);
   const refreshToken = await signRefreshToken(payload);
-  const expiresAt = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
+  const refreshTokenDays = rememberMe ? 100 : 7;
+  const expiresAt = new Date(Date.now() + refreshTokenDays * 24 * 60 * 60 * 1000);
 
   await prisma.refreshToken.create({
     data: { token: refreshToken, userId: user.id, expiresAt },
@@ -110,7 +111,7 @@ export async function POST(request: Request) {
     refreshToken,
     tokenType: "Bearer",
     accessTokenExpiresIn: "15m",
-    refreshTokenExpiresInDays: 100,
+    refreshTokenExpiresInDays: refreshTokenDays,
     user: { id: user.id, email: user.email, role: user.role, status: user.status },
   });
 }

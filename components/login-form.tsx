@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Eye, EyeOff } from "lucide-react"
+import { toast } from "sonner"
+import { useAuthStore } from "@/store/use-auth-store"
 
 export function LoginForm({
   className,
@@ -25,29 +28,52 @@ export function LoginForm({
   const t = useTranslations("auth")
   const subtitle = t("loginSubtitle")
   const [pending, setPending] = React.useState(false)
-  const [error, setError] = React.useState<string | null>(null)
+  const [showPassword, setShowPassword] = React.useState(false)
+  const setSession = useAuthStore((s) => s.setSession)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setError(null)
     const form = e.currentTarget
     const fd = new FormData(form)
     const email = String(fd.get("email") ?? "")
     const password = String(fd.get("password") ?? "")
+    const rememberMe = fd.get("rememberMe") === "on"
     setPending(true)
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, rememberMe }),
       })
-      const data = (await res.json().catch(() => ({}))) as { error?: string }
+      const data = (await res.json().catch(() => ({}))) as
+        | {
+            accessToken: string
+            refreshToken: string
+            user: { id: string; email: string; role: string; status: string }
+          }
+        | { error?: string }
       if (!res.ok) {
-        setError(
+        const msg =
           typeof data.error === "string" ? data.error : t("errors.loginFailed")
-        )
+        toast.error(msg)
         return
       }
+      if (
+        !("accessToken" in data) ||
+        !data.accessToken ||
+        !("refreshToken" in data) ||
+        !data.refreshToken ||
+        !("user" in data) ||
+        !data.user
+      ) {
+        toast.error(t("errors.loginFailed"))
+        return
+      }
+      setSession({
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        user: data.user,
+      })
       router.push("/dashboard")
     } finally {
       setPending(false)
@@ -64,11 +90,6 @@ export function LoginForm({
         <CardContent>
           <form onSubmit={onSubmit}>
             <div className="grid gap-6">
-              {error ? (
-                <p className="text-center text-sm text-destructive" role="alert">
-                  {error}
-                </p>
-              ) : null}
               <div className="grid gap-6">
                 <div className="grid gap-2">
                   <Label htmlFor="email">{t("email")}</Label>
@@ -76,7 +97,7 @@ export function LoginForm({
                     id="email"
                     name="email"
                     type="email"
-                    placeholder={t("emailPlaceholder")}
+                    placeholder={t("emailPlaceholderHint")}
                     autoComplete="email"
                     required
                   />
@@ -84,30 +105,51 @@ export function LoginForm({
                 <div className="grid gap-2">
                   <div className="flex items-center">
                     <Label htmlFor="password">{t("password")}</Label>
-                    <a
-                      href="#"
-                      className="ml-auto text-sm underline-offset-4 hover:underline"
+                    <Link
+                      href="/forgot-password"
+                      className="ms-auto text-sm underline-offset-4 hover:underline"
                     >
                       {t("forgotPassword")}
-                    </a>
+                    </Link>
                   </div>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder={t("passwordPlaceholderDots")}
+                      autoComplete="current-password"
+                      required
+                      className="pe-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      className="absolute inset-y-0 end-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="size-4" aria-hidden="true" />
+                      ) : (
+                        <Eye className="size-4" aria-hidden="true" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="rememberMe"
+                    name="rememberMe"
+                    type="checkbox"
+                    className="size-4 rounded-sm border border-input bg-background accent-primary"
                   />
+                  <Label htmlFor="rememberMe" className="text-sm font-normal text-muted-foreground">
+                    {t("rememberMe")}
+                  </Label>
                 </div>
                 <Button type="submit" className="w-full" disabled={pending}>
                   {pending ? t("loginPending") : t("loginButton")}
                 </Button>
-              </div>
-              <div className="text-center text-sm">
-                {t("noAccount")}{" "}
-                <Link href="/register" className="underline underline-offset-4">
-                  {t("goToSignup")}
-                </Link>
               </div>
             </div>
           </form>
