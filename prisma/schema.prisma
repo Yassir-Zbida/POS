@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -39,6 +40,7 @@ model User {
   ownerManager   User?          @relation("ManagerCashiers", fields: [ownerManagerId], references: [id])
   cashiers       User[]         @relation("ManagerCashiers")
   refreshTokens  RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
   auditActions   AuditLog[]     @relation("AuditActor")
   subscriptions  Subscription[] @relation("ManagerSubscription")
   createdAt      DateTime       @default(now())
@@ -64,6 +66,19 @@ model RefreshToken {
   expiresAt DateTime
   revokedAt DateTime?
   createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique @db.VarChar(128)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model AuditLog {

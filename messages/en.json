@@ -2,42 +2,70 @@
   "brand": {
     "name": "Hssabaty Point de vente"
   },
+  "meta": {
+    "description": "Hssabaty Point de vente is a POS solution by Hssabaty startup, building multiple solutions for companies.",
+    "titles": {
+      "login": "Log in",
+      "forgotPassword": "Reset password",
+      "dashboard": "Dashboard",
+      "dashboardSales": "Sales",
+      "dashboardReports": "Reports",
+      "dashboardSettings": "Settings",
+      "dashboardCustomers": "Customers",
+      "dashboardProducts": "Products",
+      "dashboardCategories": "Categories",
+      "dashboardInventory": "Inventory",
+      "dashboardCashRegister": "Cash register",
+      "pos": "POS",
+      "docs": "API docs"
+    }
+  },
   "home": {
     "headline": "Hssabaty Point de vente",
     "subhead": "Modern POS solution by Hssabaty, built for companies.",
-    "login": "Log in",
-    "signup": "Sign up"
+    "login": "Log in"
   },
   "auth": {
     "loginTitle": "Welcome back",
-    "loginSubtitle": "Log in with your Apple or Google account",
-    "signupTitle": "Create an account",
-    "signupSubtitle": "Sign up with your Apple or Google account",
-    "withAppleLogin": "Log in with Apple",
-    "withGoogleLogin": "Log in with Google",
-    "withAppleSignup": "Sign up with Apple",
-    "withGoogleSignup": "Sign up with Google",
-    "orContinueWith": "Or continue with",
+    "loginSubtitle": "Sign in with your email and password",
     "email": "Email",
     "emailPlaceholder": "name@example.com",
+    "emailPlaceholderHint": "Enter your email",
     "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordPlaceholderDots": "••••••••",
+    "rememberMe": "Remember me on this device",
     "forgotPassword": "Forgot your password?",
     "loginButton": "Log in",
     "loginPending": "Signing in…",
-    "signupButton": "Create account",
-    "signupPending": "Creating account…",
-    "noAccount": "Don't have an account?",
-    "haveAccount": "Already have an account?",
-    "goToSignup": "Sign up",
-    "goToLogin": "Sign in",
     "termsPrefix": "By clicking Continue, you agree to our",
     "terms": "Terms of Service",
     "and": "and our",
     "privacy": "Privacy Policy",
     "errors": {
-      "loginFailed": "Login failed",
-      "signupFailed": "Sign up failed"
+      "loginFailed": "Login failed"
+    }
+  },
+  "resetPassword": {
+    "title": "Reset password",
+    "subtitle": "Enter your email and we’ll send you a link to reset your password.",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "emailPlaceholderHint": "Enter your email",
+    "submit": "Send reset link",
+    "submitPending": "Sending…",
+    "success": "If an account exists for this email, you will receive instructions shortly.",
+    "newTitle": "Set a new password",
+    "newSubtitle": "Choose a strong password (at least 8 characters).",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "newSubmit": "Update password",
+    "newSubmitPending": "Updating…",
+    "resetSuccess": "Your password has been updated. Please sign in.",
+    "missingToken": "This reset link is invalid. Please request a new one.",
+    "backToLogin": "Back to sign in",
+    "errors": {
+      "generic": "Something went wrong. Please try again."
     }
   }
 }
-

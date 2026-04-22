@@ -1,43 +1,71 @@
 {
   "brand": {
-    "name": "حساباتي نقطة البيع"
+    "name": "نظام نقاط البيع"
+  },
+  "meta": {
+    "description": "حساباتي نقطة البيع هو حل نقاط بيع من حساباتي، مُصمم للشركات.",
+    "titles": {
+      "login": "تسجيل الدخول",
+      "forgotPassword": "إعادة تعيين كلمة المرور",
+      "dashboard": "لوحة التحكم",
+      "dashboardSales": "المبيعات",
+      "dashboardReports": "التقارير",
+      "dashboardSettings": "الإعدادات",
+      "dashboardCustomers": "العملاء",
+      "dashboardProducts": "المنتجات",
+      "dashboardCategories": "التصنيفات",
+      "dashboardInventory": "المخزون",
+      "dashboardCashRegister": "الصندوق",
+      "pos": "نقطة البيع",
+      "docs": "توثيق API"
+    }
   },
   "home": {
     "headline": "حساباتي نقطة البيع",
     "subhead": "حل نقاط بيع حديث من حساباتي، مُصمم للشركات.",
-    "login": "تسجيل الدخول",
-    "signup": "إنشاء حساب"
+    "login": "تسجيل الدخول"
   },
   "auth": {
     "loginTitle": "مرحبًا بعودتك",
-    "loginSubtitle": "",
-    "signupTitle": "إنشاء حساب",
-    "signupSubtitle": "",
-    "withAppleLogin": "تسجيل الدخول عبر Apple",
-    "withGoogleLogin": "تسجيل الدخول عبر Google",
-    "withAppleSignup": "إنشاء حساب عبر Apple",
-    "withGoogleSignup": "إنشاء حساب عبر Google",
-    "orContinueWith": "أو المتابعة عبر",
+    "loginSubtitle": "سجّل الدخول باستخدام بريدك الإلكتروني وكلمة المرور",
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "name@example.com",
+    "emailPlaceholderHint": "أدخل بريدك الإلكتروني",
     "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "passwordPlaceholderDots": "••••••••",
+    "rememberMe": "تذكرني على هذا الجهاز",
     "forgotPassword": "نسيت كلمة المرور؟",
     "loginButton": "تسجيل الدخول",
     "loginPending": "جارٍ تسجيل الدخول…",
-    "signupButton": "إنشاء حساب",
-    "signupPending": "جارٍ إنشاء الحساب…",
-    "noAccount": "ليس لديك حساب؟",
-    "haveAccount": "لديك حساب بالفعل؟",
-    "goToSignup": "إنشاء حساب",
-    "goToLogin": "تسجيل الدخول",
     "termsPrefix": "بالنقر على متابعة، فإنك توافق على",
     "terms": "شروط الخدمة",
     "and": "و",
     "privacy": "سياسة الخصوصية",
     "errors": {
-      "loginFailed": "فشل تسجيل الدخول",
-      "signupFailed": "فشل إنشاء الحساب"
+      "loginFailed": "فشل تسجيل الدخول"
+    }
+  },
+  "resetPassword": {
+    "title": "إعادة تعيين كلمة المرور",
+    "subtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "name@example.com",
+    "emailPlaceholderHint": "أدخل بريدك الإلكتروني",
+    "submit": "إرسال الرابط",
+    "submitPending": "جارٍ الإرسال…",
+    "success": "إن وُجد حساب لهذا البريد، ستصلك التعليمات قريبًا.",
+    "newTitle": "تعيين كلمة مرور جديدة",
+    "newSubtitle": "اختر كلمة مرور قوية (8 أحرف على الأقل).",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+    "newSubmit": "تحديث كلمة المرور",
+    "newSubmitPending": "جارٍ التحديث…",
+    "resetSuccess": "تم تحديث كلمة المرور. الرجاء تسجيل الدخول.",
+    "missingToken": "رابط إعادة التعيين غير صالح. الرجاء طلب رابط جديد.",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "errors": {
+      "generic": "حدث خطأ. حاول مرة أخرى."
     }
   }
 }
-

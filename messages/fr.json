@@ -2,42 +2,70 @@
   "brand": {
     "name": "Hssabaty Point de vente"
   },
+  "meta": {
+    "description": "Hssabaty Point de vente est une solution de point de vente par Hssabaty, conçue pour les entreprises.",
+    "titles": {
+      "login": "Se connecter",
+      "forgotPassword": "Réinitialiser le mot de passe",
+      "dashboard": "Tableau de bord",
+      "dashboardSales": "Ventes",
+      "dashboardReports": "Rapports",
+      "dashboardSettings": "Paramètres",
+      "dashboardCustomers": "Clients",
+      "dashboardProducts": "Produits",
+      "dashboardCategories": "Catégories",
+      "dashboardInventory": "Inventaire",
+      "dashboardCashRegister": "Caisse",
+      "pos": "POS",
+      "docs": "Docs API"
+    }
+  },
   "home": {
     "headline": "Hssabaty Point de vente",
     "subhead": "Solution POS moderne par Hssabaty, pensée pour les entreprises.",
-    "login": "Se connecter",
-    "signup": "Créer un compte"
+    "login": "Se connecter"
   },
   "auth": {
     "loginTitle": "Ravi de vous revoir",
-    "loginSubtitle": "Connectez-vous avec votre compte Apple ou Google",
-    "signupTitle": "Créer un compte",
-    "signupSubtitle": "Inscrivez-vous avec votre compte Apple ou Google",
-    "withAppleLogin": "Se connecter avec Apple",
-    "withGoogleLogin": "Se connecter avec Google",
-    "withAppleSignup": "S'inscrire avec Apple",
-    "withGoogleSignup": "S'inscrire avec Google",
-    "orContinueWith": "Ou continuer avec",
+    "loginSubtitle": "Connectez-vous avec votre e-mail et votre mot de passe",
     "email": "E-mail",
     "emailPlaceholder": "nom@exemple.com",
+    "emailPlaceholderHint": "Saisissez votre e-mail",
     "password": "Mot de passe",
+    "passwordPlaceholder": "Saisissez votre mot de passe",
+    "passwordPlaceholderDots": "••••••••",
+    "rememberMe": "Se souvenir de moi sur cet appareil",
     "forgotPassword": "Mot de passe oublié ?",
     "loginButton": "Se connecter",
     "loginPending": "Connexion…",
-    "signupButton": "Créer un compte",
-    "signupPending": "Création du compte…",
-    "noAccount": "Vous n'avez pas de compte ?",
-    "haveAccount": "Vous avez déjà un compte ?",
-    "goToSignup": "Créer un compte",
-    "goToLogin": "Se connecter",
     "termsPrefix": "En cliquant sur Continuer, vous acceptez nos",
     "terms": "Conditions d'utilisation",
     "and": "et notre",
     "privacy": "Politique de confidentialité",
     "errors": {
-      "loginFailed": "Échec de la connexion",
-      "signupFailed": "Échec de l'inscription"
+      "loginFailed": "Échec de la connexion"
+    }
+  },
+  "resetPassword": {
+    "title": "Réinitialiser le mot de passe",
+    "subtitle": "Saisissez votre e-mail et nous vous enverrons un lien.",
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "emailPlaceholderHint": "Saisissez votre e-mail",
+    "submit": "Envoyer le lien",
+    "submitPending": "Envoi…",
+    "success": "Si un compte existe pour cet e-mail, vous recevrez des instructions sous peu.",
+    "newTitle": "Définir un nouveau mot de passe",
+    "newSubtitle": "Choisissez un mot de passe fort (au moins 8 caractères).",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Saisissez votre nouveau mot de passe",
+    "newSubmit": "Mettre à jour le mot de passe",
+    "newSubmitPending": "Mise à jour…",
+    "resetSuccess": "Votre mot de passe a été mis à jour. Veuillez vous connecter.",
+    "missingToken": "Ce lien de réinitialisation est invalide. Veuillez en demander un nouveau.",
+    "backToLogin": "Retour à la connexion",
+    "errors": {
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
     }
   }
 }
-
