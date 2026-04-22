@@ -16,6 +16,9 @@ const devExtraOrigins =
 
 const nextConfig: NextConfig = {
   ...(devExtraOrigins?.length ? { allowedDevOrigins: devExtraOrigins } : {}),
+  // Prevent `next build` and `next dev` from fighting over the same `.next` directory
+  // when both are running at the same time.
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
   experimental: {
     // Workaround for occasional dev-only crashes:
     // "Could not find the module ...segment-explorer-node.js#SegmentViewNode in the React Client Manifest"

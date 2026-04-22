@@ -73,7 +73,7 @@ npm run prisma:migrate -- --name init
 Documentation des endpoints: `docs/API.md`
 
 OpenAPI JSON: `GET /api/docs/openapi`
-Swagger UI: [http://localhost:3000/docs](http://localhost:3000/docs)
+Swagger UI: [http://localhost:3000/fr/docs](http://localhost:3000/fr/docs) (ou `/en/docs`, `/ar/docs` selon la langue)
 
 Docs protection:
 - `development`: open access

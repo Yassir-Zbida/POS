@@ -7,11 +7,19 @@ import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { locales, type Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const LABELS: Record<Locale, string> = {
-  fr: "FR",
-  en: "EN",
-  ar: "AR",
+  fr: "Français",
+  en: "English",
+  ar: "العربية",
 };
 
 export function LanguageSwitcherFooter({ className }: { className?: string }) {
@@ -20,11 +28,17 @@ export function LanguageSwitcherFooter({ className }: { className?: string }) {
   const router = useRouter();
 
   const onChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const nextLocale = e.target.value as Locale;
+    (nextLocale: Locale) => {
       router.replace(pathname, { locale: nextLocale });
     },
     [pathname, router]
+  );
+
+  const onValueChange = React.useCallback(
+    (value: string) => {
+      onChange(value as Locale);
+    },
+    [onChange]
   );
 
   return (
@@ -34,27 +48,34 @@ export function LanguageSwitcherFooter({ className }: { className?: string }) {
         className
       )}
     >
-      <div className="relative inline-flex items-center">
-        <Globe className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <select
-          aria-label="Language"
-          className={cn(
-            "h-10 appearance-none rounded-full border border-border/70 bg-background/80 pl-10 pr-10 text-sm font-medium text-foreground shadow-sm backdrop-blur",
-            "transition-colors transition-shadow",
-            "hover:bg-background",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-offset-0"
-          )}
-          value={locale}
-          onChange={onChange}
-        >
-          {locales.map((l) => (
-            <option key={l} value={l}>
-              {LABELS[l]}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            className={cn(
+              "h-10 rounded-full border-border/70 bg-background/80 px-3 font-medium shadow-sm backdrop-blur",
+              "hover:bg-background"
+            )}
+          >
+            <Globe className="me-2 size-4 text-muted-foreground" aria-hidden="true" />
+            <span>{LABELS[locale]}</span>
+            <ChevronDown
+              className="ms-2 size-4 text-muted-foreground"
+              aria-hidden="true"
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="min-w-44">
+          <DropdownMenuRadioGroup value={locale} onValueChange={onValueChange}>
+            {locales.map((l) => (
+              <DropdownMenuRadioItem key={l} value={l}>
+                {LABELS[l]}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

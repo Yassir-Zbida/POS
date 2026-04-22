@@ -10,6 +10,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
+    /* #533afd */
     --primary: 248 98% 61%;
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
@@ -28,7 +29,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --radius: 0.875rem;
     --font-sans: var(--font-dm-sans);
   }
 
@@ -39,6 +40,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
+    /* #533afd */
     --primary: 248 98% 61%;
     --primary-foreground: 0 0% 100%;
     --secondary: 217.2 32.6% 17.5%;
@@ -63,6 +65,75 @@
 /* Switch to Arabic font in RTL documents */
 html[dir="rtl"] {
   --font-sans: var(--font-ibm-plex-arabic);
+}
+
+/* Ensure Sonner toasts inherit the app font (including Arabic). */
+[data-sonner-toaster],
+[data-sonner-toast],
+[data-sonner-toast] * {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Sonner toast layout ─────────────────────────────────────────────────
+   LTR (EN / FR):  [● icon]  [text]  ············  [✕ close]
+   RTL (AR):       [✕ close]  ············  [icon ●]  [text]
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* 1. Base: flex row, items vertically centered, small gap */
+[data-sonner-toast] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+/* 2. Pull the close button out of absolute positioning */
+[data-sonner-toast] button[data-close-button] {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  flex-shrink: 0 !important;
+}
+
+/* 3. Icon: never stretches */
+[data-sonner-toast] [data-icon] {
+  flex: 0 0 auto !important;
+}
+
+/* 4. Text content: fills remaining space */
+[data-sonner-toast] [data-content] {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+/* ── LTR (EN / FR): icon→text on LEFT, close on RIGHT ── */
+[data-sonner-toast] [data-icon]            { order: 1 !important; }
+[data-sonner-toast] [data-content]         { order: 2 !important; }
+[data-sonner-toast] button[data-close-button] {
+  order: 3 !important;
+  margin-left: auto !important;  /* push close to the far right */
+  margin-right: 0 !important;
+}
+
+/* ── RTL (AR): [✕ close]  ·····  [● icon][text] ── */
+/* Force physical LTR layout on the container so margins work left→right. */
+html[dir="rtl"] [data-sonner-toast] {
+  direction: ltr !important;
+}
+html[dir="rtl"] [data-sonner-toast] button[data-close-button] {
+  order: 1 !important;
+  margin-right: auto !important; /* spacer: push icon+text to the far right */
+  margin-left: 0 !important;
+}
+/* In RTL: text comes first (order 2), then icon on the far right (order 3) */
+html[dir="rtl"] [data-sonner-toast] [data-content] {
+  order: 2 !important;
+  flex: 0 0 auto !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+html[dir="rtl"] [data-sonner-toast] [data-icon] {
+  order: 3 !important;
+  flex: 0 0 auto !important;
 }
 
 @layer base {

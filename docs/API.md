@@ -97,7 +97,7 @@ Allowed values: `ACTIVE | BANNED | SUSPENDED`
 ## OpenAPI
 
 - JSON document endpoint: `GET /api/docs/openapi`
-- Swagger UI endpoint: `GET /docs`
+- Swagger UI route: `/[locale]/docs` (ex. `/fr/docs`, `/en/docs`)
 - Protection:
   - `development`: public for local work
   - non-development: requires `ADMIN` bearer token

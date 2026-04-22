@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { type Locale } from "@/i18n/routing";
+import ApiDocsClientPage from "./api-docs-client";
 
 export async function generateMetadata({
   params,
@@ -12,10 +13,9 @@ export async function generateMetadata({
   const locale = rawLocale as Locale;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "meta.titles" });
-  return { title: t("dashboardSettings") };
+  return { title: t("docs") };
 }
 
-export default function SettingsPage() {
-  return <h1 className="p-8 text-2xl font-semibold">Settings</h1>;
+export default function ApiDocsPage() {
+  return <ApiDocsClientPage />;
 }
-

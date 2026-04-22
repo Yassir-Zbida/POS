@@ -4,9 +4,11 @@ import { useMemo, useState } from "react";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
-export default function ApiDocsPage() {
+export default function ApiDocsClientPage() {
   const [token, setToken] = useState("");
-  const [isAdminVerified, setIsAdminVerified] = useState(process.env.NODE_ENV === "development");
+  const [isAdminVerified, setIsAdminVerified] = useState(
+    process.env.NODE_ENV === "development",
+  );
   const [error, setError] = useState("");
 
   const requestInterceptor = useMemo(
@@ -77,3 +79,4 @@ export default function ApiDocsPage() {
     </main>
   );
 }
+
