@@ -78,3 +78,27 @@ Swagger UI: [http://localhost:3000/fr/docs](http://localhost:3000/fr/docs) (ou `
 Docs protection:
 - `development`: open access
 - other environments: ADMIN bearer token required
+
+## Test Accounts (Seed)
+
+Run:
+
+```bash
+npm run prisma:seed
+```
+
+This seed creates/upserts 2 test users (for local testing of role-based dashboards):
+
+- **Manager / Business Owner**
+  - **Email**: `manager@pos.hssabaty.com`
+  - **Password**: `Test1234!`
+  - **Role**: `MANAGER`
+- **Staff**
+  - **Email**: `cashier@pos.hssabaty.com`
+  - **Password**: `Test1234!`
+  - **Role**: `CASHIER`
+  - Linked to the manager via `ownerManagerId`
+
+Notes:
+- If you execute Prisma from the host, ensure `DATABASE_URL` points to `localhost:3307`.
+- If you execute Prisma from the Docker `app` container, use `mysql:3306`.
