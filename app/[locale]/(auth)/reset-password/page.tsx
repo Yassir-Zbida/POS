@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -6,13 +5,9 @@ import { Link } from "@/i18n/navigation";
 import { LanguageSwitcherFooter } from "@/components/language-switcher-footer";
 import { AuthLiquidBackground } from "@/components/auth-liquid-background";
 import { ResetPasswordForm } from "@/components/reset-password-form";
+import { ModeToggle } from "@/components/mode-toggle";
+import { BrandLogo } from "@/components/brand-logo";
 import { type Locale } from "@/i18n/routing";
-
-const LOGO_BY_LOCALE: Record<Locale, string> = {
-  en: "/assets/brand/logo-en.svg",
-  fr: "/assets/brand/logo-fr.svg",
-  ar: "/assets/brand/logo-ar.svg",
-};
 
 export async function generateMetadata({
   params,
@@ -43,15 +38,14 @@ export default async function ResetPasswordPage({
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 pb-24 md:p-10">
       <AuthLiquidBackground />
+      <div
+        className={`absolute top-4 z-20 ${locale === "ar" ? "left-4" : "right-4"}`}
+      >
+        <ModeToggle />
+      </div>
       <div className="relative z-10 flex w-full max-w-sm flex-col gap-6">
         <Link href="/" className="flex items-center justify-center self-center">
-          <Image
-            src={LOGO_BY_LOCALE[locale] ?? LOGO_BY_LOCALE.fr}
-            alt="Hssabaty"
-            width={160}
-            height={40}
-            priority
-          />
+          <BrandLogo locale={locale} priority />
         </Link>
 
         {token ? (

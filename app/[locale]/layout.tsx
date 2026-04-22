@@ -7,6 +7,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 
 import { locales, type Locale } from "@/i18n/routing";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -71,10 +72,18 @@ export default async function LocaleLayout({
       lang={locale}
       dir={getDir(locale)}
       className={`${dmSans.variable} ${ibmPlexArabic.variable}`}
+      suppressHydrationWarning
     >
       <body>
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
-        <Toaster position={locale === "ar" ? "bottom-left" : "bottom-right"} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+          <Toaster position={locale === "ar" ? "bottom-left" : "bottom-right"} />
+        </ThemeProvider>
       </body>
     </html>
   );

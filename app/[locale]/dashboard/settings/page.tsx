@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { type Locale } from "@/i18n/routing";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export async function generateMetadata({
   params,
@@ -16,6 +17,13 @@ export async function generateMetadata({
 }
 
 export default function SettingsPage() {
-  return <h1 className="p-8 text-2xl font-semibold">Settings</h1>;
+  return (
+    <div className="p-8">
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold">Settings</h1>
+        <ThemeToggle />
+      </div>
+    </div>
+  );
 }
 
