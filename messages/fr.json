@@ -64,6 +64,22 @@
     "resetSuccess": "Votre mot de passe a été mis à jour. Veuillez vous connecter.",
     "missingToken": "Ce lien de réinitialisation est invalide. Veuillez en demander un nouveau.",
     "backToLogin": "Retour à la connexion",
+    "validationError": "Le mot de passe ne respecte pas toutes les exigences.",
+    "strength": {
+      "label": "Solidité",
+      "levels": {
+        "weak": "Faible",
+        "fair": "Moyenne",
+        "good": "Bonne",
+        "strong": "Forte"
+      },
+      "rules": {
+        "min8": "Au moins 8 caractères",
+        "upperLower": "Majuscule + minuscule",
+        "number": "Au moins 1 chiffre",
+        "special": "Au moins 1 symbole"
+      }
+    },
     "errors": {
       "generic": "Une erreur s'est produite. Veuillez réessayer."
     }

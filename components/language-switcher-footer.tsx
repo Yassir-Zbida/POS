@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Globe, ChevronDown } from "lucide-react";
 import { useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { locales, type Locale } from "@/i18n/routing";
@@ -25,13 +26,15 @@ const LABELS: Record<Locale, string> = {
 export function LanguageSwitcherFooter({ className }: { className?: string }) {
   const locale = useLocale() as Locale;
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const onChange = React.useCallback(
     (nextLocale: Locale) => {
-      router.replace(pathname, { locale: nextLocale });
+      const qs = searchParams.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { locale: nextLocale });
     },
-    [pathname, router]
+    [pathname, router, searchParams]
   );
 
   const onValueChange = React.useCallback(

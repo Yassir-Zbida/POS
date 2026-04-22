@@ -64,6 +64,22 @@
     "resetSuccess": "Your password has been updated. Please sign in.",
     "missingToken": "This reset link is invalid. Please request a new one.",
     "backToLogin": "Back to sign in",
+    "validationError": "Password does not meet all requirements.",
+    "strength": {
+      "label": "Strength",
+      "levels": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "rules": {
+        "min8": "At least 8 characters",
+        "upperLower": "Uppercase + lowercase letter",
+        "number": "At least 1 number",
+        "special": "At least 1 symbol"
+      }
+    },
     "errors": {
       "generic": "Something went wrong. Please try again."
     }

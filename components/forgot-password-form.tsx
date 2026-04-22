@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 
 export function ForgotPasswordForm({
   className,
@@ -74,7 +75,12 @@ export function ForgotPasswordForm({
                 />
               </div>
               <Button type="submit" className="w-full" disabled={pending}>
-                {pending ? t("submitPending") : t("submit")}
+                <span>{pending ? t("submitPending") : t("submit")}</span>
+                {locale === "ar" ? (
+                  <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                ) : (
+                  <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                )}
               </Button>
               <div className="text-center text-sm">
                 <Link href="/login" className="underline underline-offset-4">
