@@ -20,6 +20,8 @@ import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
 import { useAuthStore } from "@/store/use-auth-store"
 import { useLocale } from "next-intl"
+import { dashboardHomeForRole } from "@/lib/dashboard"
+import type { AuthRole } from "@/types/auth"
 
 export function LoginForm({
   className,
@@ -76,7 +78,7 @@ export function LoginForm({
         refreshToken: data.refreshToken,
         user: data.user,
       })
-      router.push("/dashboard")
+      router.push(dashboardHomeForRole(data.user.role as AuthRole))
     } finally {
       setPending(false)
     }

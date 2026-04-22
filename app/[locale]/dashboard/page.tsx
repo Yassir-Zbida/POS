@@ -1,27 +1,21 @@
-import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+"use client";
 
-import { type Locale } from "@/i18n/routing";
-import { LogoutButton } from "@/components/logout-button";
+import * as React from "react";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale: rawLocale } = await params;
-  const locale = rawLocale as Locale;
-  setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "meta.titles" });
-  return { title: t("dashboard") };
-}
+import { useRouter } from "@/i18n/navigation";
+import { useAuthStore } from "@/store/use-auth-store";
+import { dashboardHomeForRole } from "@/lib/dashboard";
 
 export default function DashboardPage() {
-  return (
-    <div className="flex items-center justify-between gap-4 p-8">
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
-      <LogoutButton />
-    </div>
-  );
+  const router = useRouter();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const user = useAuthStore((s) => s.user);
+
+  React.useEffect(() => {
+    if (!isAuthenticated || !user) return;
+    router.replace(dashboardHomeForRole(user.role));
+  }, [isAuthenticated, router, user]);
+
+  return null;
 }
 
