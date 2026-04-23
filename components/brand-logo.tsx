@@ -3,7 +3,9 @@
 import Image from "next/image";
 import * as React from "react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 
+import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 
 const LOGO_LIGHT_BY_LOCALE: Record<Locale, string> = {
@@ -23,12 +25,18 @@ export function BrandLogo({
   width = 160,
   height = 40,
   priority,
+  className,
+  imageClassName,
 }: {
   locale: Locale;
   width?: number;
   height?: number;
   priority?: boolean;
+  /** e.g. layout/flex; logo marks are always inline */
+  className?: string;
+  imageClassName?: string;
 }) {
+  const t = useTranslations("brand");
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
@@ -40,7 +48,16 @@ export function BrandLogo({
       : LOGO_LIGHT_BY_LOCALE[locale] ?? LOGO_LIGHT_BY_LOCALE.fr;
 
   return (
-    <Image src={src} alt="Hssabaty" width={width} height={height} priority={priority} />
+    <span className={cn("inline-flex items-center", className)}>
+      <Image
+        src={src}
+        alt={t("name")}
+        width={width}
+        height={height}
+        className={cn("h-auto w-auto max-w-full object-contain", imageClassName)}
+        priority={priority}
+      />
+    </span>
   );
 }
 

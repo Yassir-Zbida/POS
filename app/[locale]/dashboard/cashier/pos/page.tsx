@@ -122,7 +122,7 @@ export default function StaffPosPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t("searchPlaceholder")}
-                className="rounded-2xl border-border/50 bg-[hsl(var(--cashier-surface))] ps-10 shadow-sm"
+                className="rounded-2xl border-border/50 bg-card ps-10 shadow-sm"
               />
             </div>
             <Input
@@ -174,7 +174,7 @@ export default function StaffPosPage() {
           {filtered.map((p) => (
             <Card
               key={p.id}
-              className="overflow-hidden rounded-3xl border border-border/50 bg-[hsl(var(--cashier-surface))] shadow-sm"
+              className="overflow-hidden rounded-3xl border border-border/50 bg-card shadow-sm"
             >
               <CardHeader className="space-y-2 pb-2">
                 <div className="flex items-center justify-between gap-2">
@@ -205,7 +205,7 @@ export default function StaffPosPage() {
       </section>
 
       <aside className="mt-4 min-h-0 lg:mt-0 xl:mt-0 xl:sticky xl:top-0 xl:max-h-[calc(100dvh-3.5rem)]">
-        <Card className="flex max-h-full flex-col overflow-hidden rounded-3xl border border-border/50 bg-[hsl(var(--cashier-surface))] shadow-md">
+        <Card className="flex max-h-full flex-col overflow-hidden rounded-3xl border border-border/50 bg-card shadow-md">
           <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 border-b border-border/40 pb-3">
             <CardTitle className="text-base font-semibold">{t("detailTransaction")}</CardTitle>
             <Button
@@ -348,7 +348,7 @@ export default function StaffPosPage() {
 
       {checkoutOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-lg rounded-3xl border border-border/50 bg-[hsl(var(--cashier-surface))] p-4 shadow-2xl">
+          <div className="w-full max-w-lg rounded-3xl border border-border/50 bg-card p-4 shadow-2xl">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="text-sm font-semibold">{t("checkoutTitle")}</div>

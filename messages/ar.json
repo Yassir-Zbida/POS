@@ -90,6 +90,7 @@
       "tagline": "الموظفون"
     },
     "status": { "online": "متصل" },
+    "navGroup": { "label": "القائمة" },
     "nav": {
       "pos": "نقطة البيع",
       "products": "المنتجات والتصنيفات",

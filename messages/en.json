@@ -90,6 +90,7 @@
       "tagline": "Staff"
     },
     "status": { "online": "Online" },
+    "navGroup": { "label": "Menu" },
     "nav": {
       "pos": "Point of sale",
       "products": "Products & categories",

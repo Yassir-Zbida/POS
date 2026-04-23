@@ -10,8 +10,11 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { Bell, LogOut, Search, Settings2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { StaffLanguageSwitcher } from "@/components/staff/staff-language-switcher";
-import { StaffThemeToggle } from "@/components/staff/staff-theme-toggle";
 
 function titleKeyForPath(pathname: string) {
   if (pathname.includes("/pos")) return "pos" as const;
@@ -35,21 +38,34 @@ export function StaffTopbar({ className }: { className?: string }) {
   return (
     <header
       className={cn(
-        "flex min-h-14 flex-wrap items-center justify-between gap-3 border-b border-border/50 bg-[hsl(var(--cashier-canvas))] px-3 py-2 sm:px-4",
+        "flex min-h-14 flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-background px-3 py-2 sm:px-4",
         className,
       )}
     >
-      <div className="min-w-0">
-        <h1 className="truncate text-lg font-bold tracking-tight sm:text-xl">{t(`titles.${titleKey}`)}</h1>
-        {user?.email ? (
-          <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-        ) : null}
+      <div className="flex min-w-0 max-w-full flex-1 items-start gap-2 sm:max-w-[min(100%,32rem)]">
+        <SidebarTrigger className="mt-0.5 shrink-0" />
+        <Separator orientation="vertical" className="mt-1.5 h-6 hidden sm:block" />
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-lg font-bold tracking-tight sm:text-xl">{t(`titles.${titleKey}`)}</h1>
+          {user?.email ? (
+            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+          ) : null}
+        </div>
       </div>
 
       <div className="flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto sm:flex-nowrap sm:gap-2.5">
-        <div className="order-last hidden items-center gap-2 rounded-2xl border border-border/60 bg-[hsl(var(--cashier-surface))] px-3 py-1.5 text-sm text-muted-foreground shadow-sm md:order-none md:flex">
-          <Search className="size-4 shrink-0" aria-hidden="true" />
-          <span className="text-xs">{t("topbar.searchStub")}</span>
+        <div className="order-last relative hidden w-full min-w-0 max-w-sm md:order-none md:flex">
+          <Search
+            className="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <Input
+            readOnly
+            aria-readonly
+            className="h-9 rounded-2xl border-border/50 bg-muted/50 ps-9 text-xs shadow-sm"
+            placeholder={t("topbar.searchStub")}
+            tabIndex={-1}
+          />
         </div>
 
         <div className="flex items-center gap-1.5 sm:ms-auto">
@@ -64,7 +80,7 @@ export function StaffTopbar({ className }: { className?: string }) {
         <Suspense fallback={null}>
           <StaffLanguageSwitcher />
         </Suspense>
-        <StaffThemeToggle />
+        <ModeToggle />
 
         <Button variant="outline" size="sm" className="rounded-xl border-border/70" onClick={() => clearSession()}>
           <LogOut className="size-4" aria-hidden="true" />
