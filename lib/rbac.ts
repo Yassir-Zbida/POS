@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { getBearerToken, verifyToken } from "@/lib/auth";
+import { getBearerToken, verifyToken, type AppTokenPayload } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { databaseUnavailableResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 export const ROLES = {
   ADMIN: "ADMIN",
@@ -15,11 +16,17 @@ export const USER_STATUS = {
 } as const;
 
 export async function requireAuth(request: Request) {
-  try {
-    const token = getBearerToken(request.headers.get("authorization"));
-    if (!token) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  const token = getBearerToken(request.headers.get("authorization"));
+  if (!token) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
 
-    const payload = await verifyToken(token);
+  let payload: AppTokenPayload;
+  try {
+    payload = await verifyToken(token);
+  } catch {
+    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  }
+
+  try {
     const user = await prisma.user.findUnique({ where: { id: payload.sub } });
 
     if (!user) return { error: NextResponse.json({ error: "User not found" }, { status: 404 }) };
@@ -46,8 +53,10 @@ export async function requireAuth(request: Request) {
     }
 
     return { user };
-  } catch {
-    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  } catch (e) {
+    if (isDatabaseConnectionError(e)) return { error: databaseUnavailableResponse() };
+    console.error("[requireAuth]", e);
+    return { error: NextResponse.json({ error: "Internal server error" }, { status: 500 }) };
   }
 }
 

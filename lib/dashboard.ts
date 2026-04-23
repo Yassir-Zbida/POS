@@ -7,7 +7,7 @@ export function dashboardHomeForRole(role: AuthRole) {
     case AUTH_ROLES.MANAGER:
       return "/dashboard/manager" as const;
     case AUTH_ROLES.CASHIER:
-      return "/dashboard/cashier" as const;
+      return "/dashboard/cashier/pos" as const;
   }
 }
 
@@ -50,8 +50,15 @@ export const DASHBOARD_ROUTE_RULES: readonly RouteRule[] = [
     roles: [AUTH_ROLES.MANAGER],
   },
 
-  // Cashier pages
-  { prefix: "/dashboard/cash-register", roles: [AUTH_ROLES.CASHIER] },
+  // Cashier pages (staff)
+  { prefix: "/dashboard/cashier/pos", roles: [AUTH_ROLES.CASHIER] },
+  { prefix: "/dashboard/cashier/products", roles: [AUTH_ROLES.CASHIER] },
+  { prefix: "/dashboard/cashier/customers", roles: [AUTH_ROLES.CASHIER] },
+  { prefix: "/dashboard/cashier/sales", roles: [AUTH_ROLES.CASHIER] },
+  { prefix: "/dashboard/cashier/inventory", roles: [AUTH_ROLES.CASHIER] },
+  { prefix: "/dashboard/cashier/cash-register-sessions", roles: [AUTH_ROLES.CASHIER] },
+  { prefix: "/dashboard/cashier/reports", roles: [AUTH_ROLES.CASHIER] },
+  { prefix: "/dashboard/cashier/settings", roles: [AUTH_ROLES.CASHIER] },
 ];
 
 export function isAllowedDashboardPath(pathname: string, role: AuthRole) {

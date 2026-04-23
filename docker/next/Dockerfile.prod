@@ -1,0 +1,31 @@
+# Production image: build Next.js, then run migrations + `next start`.
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY prisma ./prisma/
+# `npm ci` can fail on strict peer resolution (e.g. swagger-ui-react vs React 19); `npm install` is more forgiving for images.
+RUN npm install
+
+COPY . .
+
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npx prisma generate && npm run build
+
+# --- runtime (includes full tree so `next start` + i18n + config resolve reliably) ---
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+COPY --from=builder /app /app
+
+COPY docker/next/entrypoint-prod.sh /entrypoint-prod.sh
+RUN chmod +x /entrypoint-prod.sh
+
+EXPOSE 3000
+
+ENTRYPOINT ["/entrypoint-prod.sh"]
+CMD ["npm", "run", "start"]

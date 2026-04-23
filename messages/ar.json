@@ -83,5 +83,85 @@
     "errors": {
       "generic": "حدث خطأ. حاول مرة أخرى."
     }
+  },
+  "staff": {
+    "brand": {
+      "name": "حساباتي POS",
+      "tagline": "الموظفون"
+    },
+    "status": { "online": "متصل" },
+    "nav": {
+      "pos": "نقطة البيع",
+      "products": "المنتجات والتصنيفات",
+      "customers": "العملاء",
+      "sales": "المبيعات",
+      "inventory": "المخزون",
+      "cashRegister": "الصندوق",
+      "reports": "التقارير",
+      "settings": "الإعدادات"
+    },
+    "titles": {
+      "pos": "إنشاء معاملة",
+      "products": "المنتجات والتصنيفات",
+      "customers": "العملاء",
+      "sales": "المبيعات",
+      "inventory": "المخزون",
+      "cashRegister": "جلسات الصندوق",
+      "reports": "التقارير ولوحة المؤشرات",
+      "settings": "الإعدادات",
+      "home": "لوحة الموظف"
+    },
+    "topbar": {
+      "search": "بحث",
+      "searchStub": "بحث (تجريبي)",
+      "logout": "تسجيل الخروج"
+    },
+    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "اللغة" },
+    "theme": { "light": "فاتح", "dark": "داكن", "label": "المظهر" },
+    "placeholders": { "static": "تجريبي — لا خادم بعد" },
+    "pos": {
+      "searchPlaceholder": "ابحث عن المنتجات",
+      "barcodePlaceholder": "الباركود / الماسح",
+      "stock": "{count} في المخزون",
+      "categoryBadge": "التصنيف",
+      "addToCart": "أضف إلى السلة",
+      "description": "وصف قصير للعرض.",
+      "cartEmpty": "السلة فارغة (تجريبي).",
+      "resetOrder": "إعادة تعيين",
+      "detailTransaction": "تفاصيل المعاملة",
+      "changePromo": "تغيير العرض",
+      "promoNewUser": "عرض مستخدم جديد (10٪)",
+      "apply": "تطبيق",
+      "remove": "إزالة",
+      "subTotal": "المجموع الفرعي",
+      "tax": "الضريبة (12٪)",
+      "discount": "الخصم",
+      "total": "الإجمالي",
+      "totalPayment": "إجمالي الدفع",
+      "changeMethod": "تغيير طريقة الدفع",
+      "paymentCredit": "بطاقة ائتمان",
+      "continue": "متابعة",
+      "checkoutTitle": "الدفع (تجريبي)",
+      "checkoutHint": "الدفع والإيصال — ربط الخادم لاحقاً",
+      "close": "إغلاق",
+      "receipt": "معاينة الإيصال",
+      "items": "العناصر",
+      "payPrint": "دفع وطباعة (تجريبي)",
+      "lineEach": "للوحدة",
+      "lineDetailA": "المقاس 42 · أخضر",
+      "lineDetailB": "المقاس 40 · أبيض",
+      "payCash": "نقدي",
+      "payWallet": "محفظة",
+      "categories": {
+        "all": "الكل",
+        "allWithCount": "الكل ({count})",
+        "shoes": "أحذية",
+        "shoesWithCount": "أحذية ({count})",
+        "clothing": "ملابس",
+        "clothingWithCount": "ملابس ({count})",
+        "others": "أخرى",
+        "othersWithCount": "أخرى ({count})"
+      }
+    }
   }
 }

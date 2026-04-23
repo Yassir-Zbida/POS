@@ -83,5 +83,87 @@
     "errors": {
       "generic": "Something went wrong. Please try again."
     }
+  },
+  "staff": {
+    "brand": {
+      "name": "Hssabaty POS",
+      "tagline": "Staff"
+    },
+    "status": { "online": "Online" },
+    "nav": {
+      "pos": "Point of sale",
+      "products": "Products & categories",
+      "customers": "Customers",
+      "sales": "Sales",
+      "inventory": "Inventory",
+      "cashRegister": "Cash register",
+      "reports": "Reports",
+      "settings": "Settings"
+    },
+    "titles": {
+      "pos": "Create transaction",
+      "products": "Products & categories",
+      "customers": "Customers",
+      "sales": "Sales",
+      "inventory": "Inventory",
+      "cashRegister": "Cash register sessions",
+      "reports": "Reports & dashboard",
+      "settings": "Settings",
+      "home": "Staff dashboard"
+    },
+    "topbar": {
+      "search": "Search",
+      "searchStub": "Search (demo)",
+      "logout": "Log out"
+    },
+    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "Language" },
+    "theme": { "light": "Light", "dark": "Dark", "label": "Theme" },
+    "placeholders": {
+      "static": "Demo — no server yet"
+    },
+    "pos": {
+      "searchPlaceholder": "Search products",
+      "barcodePlaceholder": "Barcode / scanner",
+      "stock": "{count} in stock",
+      "categoryBadge": "Category",
+      "addToCart": "Add to cart",
+      "description": "Short description for display.",
+      "cartEmpty": "Cart is empty (demo).",
+      "resetOrder": "Reset order",
+      "detailTransaction": "Detail transaction",
+      "changePromo": "Change promo",
+      "promoNewUser": "New user promo (10%)",
+      "apply": "Apply",
+      "remove": "Remove",
+      "subTotal": "Sub-total",
+      "tax": "Tax (12%)",
+      "discount": "Discount",
+      "total": "Total",
+      "totalPayment": "Total payment",
+      "changeMethod": "Change method",
+      "paymentCredit": "Credit card",
+      "continue": "Continue",
+      "checkoutTitle": "Checkout (demo)",
+      "checkoutHint": "Payment and receipt — connect backend later",
+      "close": "Close",
+      "receipt": "Receipt preview",
+      "items": "Items",
+      "payPrint": "Pay & print (demo)",
+      "lineEach": "ea.",
+      "lineDetailA": "Size 42 · green",
+      "lineDetailB": "Size 40 · white",
+      "payCash": "Cash",
+      "payWallet": "Wallet",
+      "categories": {
+        "all": "All",
+        "allWithCount": "All product ({count})",
+        "shoes": "Shoes",
+        "shoesWithCount": "Shoes ({count})",
+        "clothing": "Clothing",
+        "clothingWithCount": "Clothing ({count})",
+        "others": "Other",
+        "othersWithCount": "Other ({count})"
+      }
+    }
   }
 }

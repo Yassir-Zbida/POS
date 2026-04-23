@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcherFooter } from "@/components/language-switcher-footer";
 import { LoginForm } from "@/components/login-form";
+import { RedirectIfAuthenticated } from "@/components/redirect-if-authenticated";
 import { AuthLiquidBackground } from "@/components/auth-liquid-background";
 import { ModeToggle } from "@/components/mode-toggle";
 import { BrandLogo } from "@/components/brand-logo";
@@ -41,9 +43,12 @@ export default async function LoginPage({
         <Link href="/" className="flex items-center justify-center self-center">
           <BrandLogo locale={locale} priority />
         </Link>
+        <RedirectIfAuthenticated />
         <LoginForm />
       </div>
-      <LanguageSwitcherFooter />
+      <Suspense fallback={null}>
+        <LanguageSwitcherFooter />
+      </Suspense>
     </div>
   );
 }

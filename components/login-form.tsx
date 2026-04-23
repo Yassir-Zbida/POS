@@ -58,7 +58,7 @@ export function LoginForm({
         | { error?: string }
       if (!res.ok) {
         const msg =
-          typeof data.error === "string" ? data.error : t("errors.loginFailed")
+          "error" in data && typeof data.error === "string" ? data.error : t("errors.loginFailed")
         toast.error(msg)
         return
       }
@@ -76,7 +76,7 @@ export function LoginForm({
       setSession({
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
-        user: data.user,
+        user: { ...data.user, role: data.user.role as AuthRole },
       })
       router.push(dashboardHomeForRole(data.user.role as AuthRole))
     } finally {

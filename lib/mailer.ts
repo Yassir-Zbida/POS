@@ -1,5 +1,3 @@
-import nodemailer from "nodemailer";
-
 function getRequiredEnv(name: string) {
   const value = process.env[name];
   if (!value) throw new Error(`Missing env var: ${name}`);
@@ -15,6 +13,8 @@ export type SendEmailInput = {
 };
 
 export async function sendEmail(input: SendEmailInput) {
+  const nodemailer = (await import("nodemailer")).default;
+
   const host = getRequiredEnv("SMTP_HOST");
   const port = Number(getRequiredEnv("SMTP_PORT"));
   const user = getRequiredEnv("SMTP_USER");

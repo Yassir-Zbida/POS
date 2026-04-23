@@ -83,5 +83,85 @@
     "errors": {
       "generic": "Une erreur s'est produite. Veuillez réessayer."
     }
+  },
+  "staff": {
+    "brand": {
+      "name": "Hssabaty POS",
+      "tagline": "Personnel"
+    },
+    "status": { "online": "En ligne" },
+    "nav": {
+      "pos": "Point de vente",
+      "products": "Produits & catégories",
+      "customers": "Clients",
+      "sales": "Ventes",
+      "inventory": "Inventaire",
+      "cashRegister": "Caisse",
+      "reports": "Rapports",
+      "settings": "Paramètres"
+    },
+    "titles": {
+      "pos": "Créer une transaction",
+      "products": "Produits & catégories",
+      "customers": "Clients",
+      "sales": "Ventes",
+      "inventory": "Inventaire",
+      "cashRegister": "Sessions de caisse",
+      "reports": "Rapports & tableau de bord",
+      "settings": "Paramètres",
+      "home": "Tableau de bord — personnel"
+    },
+    "topbar": {
+      "search": "Rechercher",
+      "searchStub": "Recherche (démo)",
+      "logout": "Déconnexion"
+    },
+    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "Langue" },
+    "theme": { "light": "Clair", "dark": "Sombre", "label": "Thème" },
+    "placeholders": { "static": "Démo — pas encore de serveur" },
+    "pos": {
+      "searchPlaceholder": "Rechercher un produit",
+      "barcodePlaceholder": "Code-barres / scanner",
+      "stock": "{count} en stock",
+      "categoryBadge": "Catégorie",
+      "addToCart": "Ajouter au panier",
+      "description": "Brève description d’affichage.",
+      "cartEmpty": "Panier vide (démo).",
+      "resetOrder": "Réinitialiser",
+      "detailTransaction": "Détail de la transaction",
+      "changePromo": "Changer la promo",
+      "promoNewUser": "Promo nouveau client (10 %)",
+      "apply": "Appliquer",
+      "remove": "Retirer",
+      "subTotal": "Sous-total",
+      "tax": "TVA (12 %)",
+      "discount": "Remise",
+      "total": "Total",
+      "totalPayment": "Paiement total",
+      "changeMethod": "Changer de moyen",
+      "paymentCredit": "Carte bancaire",
+      "continue": "Continuer",
+      "checkoutTitle": "Paiement (démo)",
+      "checkoutHint": "Paiement et reçu — branchement serveur plus tard",
+      "close": "Fermer",
+      "receipt": "Aperçu du reçu",
+      "items": "Articles",
+      "payPrint": "Payer & imprimer (démo)",
+      "lineEach": "p. u.",
+      "lineDetailA": "Taille 42 · vert",
+      "lineDetailB": "Taille 40 · blanc",
+      "payCash": "Espèces",
+      "payWallet": "Portefeuille",
+      "categories": {
+        "all": "Tout",
+        "allWithCount": "Tout ({count})",
+        "shoes": "Chaussures",
+        "shoesWithCount": "Chaussures ({count})",
+        "clothing": "Vêtements",
+        "clothingWithCount": "Vêtements ({count})",
+        "others": "Autre",
+        "othersWithCount": "Autre ({count})"
+      }
+    }
   }
 }

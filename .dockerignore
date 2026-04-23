@@ -1,0 +1,27 @@
+# Dependencies & build output (installed/generated inside the image)
+node_modules
+npm-debug.log*
+yarn-error.log*
+
+.next
+.next-build
+out
+dist
+
+# Git & IDE
+.git
+.gitignore
+.cursor
+*.md
+
+# Env (compose injects DATABASE_URL for the app service; avoid baking secrets)
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+
+# Test / misc
+coverage
+.turbo

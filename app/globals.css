@@ -152,3 +152,23 @@ html[dir="rtl"] [data-sonner-toast] [data-icon] {
     @apply bg-background font-sans text-foreground antialiased;
   }
 }
+
+/* Staff / cashier dashboard: reference POS UI (lime accent + dark rail). Scoped so auth pages keep global theme tokens. */
+.cashier-shell {
+  --staff-lime: 78 100% 50%;
+  --cashier-canvas: 60 6% 96%;
+  --cashier-surface: 0 0% 100%;
+  --cashier-sidebar: 0 0% 7%;
+  --cashier-sidebar-foreground: 0 0% 100%;
+  --cashier-sidebar-muted: 0 0% 65%;
+  --primary: var(--staff-lime);
+  --primary-foreground: 0 0% 4%;
+  --ring: 78 100% 45%;
+}
+
+.dark .cashier-shell {
+  --cashier-canvas: 240 6% 7%;
+  --cashier-surface: 240 5% 11%;
+  --cashier-sidebar: 0 0% 4%;
+  --primary-foreground: 0 0% 4%;
+}

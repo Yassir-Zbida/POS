@@ -1,29 +1,139 @@
-# saas-pos
+# Hssabaty POS (saas-pos)
 
-Structure initiale d'un SaaS POS avec Next.js 15 (App Router), TypeScript, Tailwind, shadcn/ui, Prisma, MySQL et Docker.
+Next.js 15 (App Router), TypeScript, Tailwind, shadcn/ui, Prisma, MySQL 8, Docker.
 
-## Stack
+---
 
-- Next.js 15 + React
-- TypeScript
-- Tailwind CSS
-- shadcn/ui (configuration de base)
-- Prisma ORM
-- MySQL 8
-- Docker + Docker Compose
+## Quick start — run everything with Docker (one command)
 
-## Structure
+From the project root:
 
-- `app/`: routes App Router + API (`auth`, `admin`, `manager`, `health`)
-- `components/`: UI, layout, forms, dashboard, POS, shared
-- `features/`: modules métier (actions/services/schemas/hooks/types)
-- `lib/`: utilitaires partagés (auth, rbac, audit, prisma)
-- `store/`: stores Zustand
-- `prisma/`: schema + seed
-- `docs/`: documentation API
-- `docker/`: Dockerfile Next.js + init SQL MySQL
+```bash
+docker compose up --build
+```
 
-## Commandes utiles
+Or with **GNU Make**:
+
+```bash
+make up
+```
+
+Or the helper script:
+
+```bash
+chmod +x scripts/docker-up.sh   # once
+./scripts/docker-up.sh
+```
+
+**Detached (background):**
+
+```bash
+docker compose up --build -d
+# or
+make up-bg
+```
+
+What this starts:
+
+| Service | URL / port |
+|--------|------------|
+| **App** | [http://localhost:3000](http://localhost:3000) |
+| **Adminer** (DB UI) | [http://localhost:8088](http://localhost:8088) — server `mysql`, user `saas_pos_user`, password `saas_pos_password`, DB `saas_pos_db` |
+| **MySQL** (host access) | `127.0.0.1:3307` |
+
+On first boot the **app container** runs `prisma migrate deploy`, then **`prisma db seed`** (demo users), then starts Next.js in dev mode.
+
+**Log in after `make up` (demo accounts):**
+
+| Role | Email | Password |
+|------|-------|----------|
+| Manager | `manager@pos.hssabaty.com` | `Test1234!` |
+| Staff | `cashier@pos.hssabaty.com` | `Test1234!` |
+
+If login returns **401**, the DB is empty or seed failed — run:
+
+```bash
+docker compose exec app npm run prisma:seed
+```
+
+**Stop:**
+
+```bash
+docker compose down
+# or
+make down
+```
+
+**If you see “container name … is already in use”** (leftover containers from an older `saas-pos-*` setup):
+
+```bash
+make clean-legacy
+make up
+```
+
+Compose now names containers from the project (`hssabaty-pos-dev-*`) instead of fixed global names, so this should not recur.
+
+---
+
+## Production-style deploy (Docker)
+
+Builds the app (`next build`) and runs `next start` + migrations.
+
+1. Set strong secrets (example):
+
+   ```bash
+   export JWT_SECRET="your-long-random-secret"
+   export NEXTAUTH_SECRET="another-long-secret"
+   ```
+
+2. Start:
+
+   ```bash
+   docker compose -f docker-compose.prod.yml up --build -d
+   # or
+   make prod
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000).
+
+For real deployments, point `DATABASE_URL` at a managed MySQL instance, set `APP_URL` / SMTP env vars, and use a reverse proxy (TLS) in front of the app. Adjust `docker-compose.prod.yml` to your provider’s patterns (secrets, networks, replicas).
+
+---
+
+## Local development without Docker (optional)
+
+1. Start only MySQL:
+
+   ```bash
+   docker compose up -d mysql
+   ```
+
+2. Copy env and use **host** DB URL (port **3307**):
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Ensure `DATABASE_URL` uses `127.0.0.1:3307` (see comments in `.env.example`).
+
+3. Install, migrate, dev:
+
+   ```bash
+   npm install
+   npx prisma migrate dev
+   npm run dev
+   ```
+
+---
+
+## Stack & structure
+
+- **Stack:** Next.js 15, React, TypeScript, Tailwind, Prisma, MySQL, Docker.
+- **Folders:** `app/` (routes + API), `components/`, `features/`, `lib/`, `store/`, `prisma/`, `docker/`, `docs/`.
+
+---
+
+## Useful commands
 
 ```bash
 npm install
@@ -35,70 +145,48 @@ npm run prisma:studio
 npm run prisma:seed
 ```
 
-## Lancement avec Docker
+---
 
-```bash
-docker compose up --build
-```
-
-Application: [http://localhost:3000](http://localhost:3000)
-Adminer: [http://localhost:8080](http://localhost:8080)
-MySQL: `localhost:3307`
-
-## Prisma
-
-1. Copier l'environnement:
+## Prisma (manual)
 
 ```bash
 cp .env.example .env
-```
-
-2. Générer le client Prisma:
-
-```bash
 npm run prisma:generate
-```
-
-3. Lancer une migration:
-
-```bash
 npm run prisma:migrate -- --name init
 ```
 
-> Si vous exécutez Prisma depuis le host, utilisez `localhost:3307` dans `DATABASE_URL`.
-> Si vous exécutez Prisma depuis le container app, utilisez `mysql:3306`.
+- Prisma on the **host** → `DATABASE_URL` with `127.0.0.1:3307`.
+- Prisma **inside** the Docker `app` service → compose sets `mysql:3306` (you do not need to change this manually).
 
-## API Documentation
+---
 
-Documentation des endpoints: `docs/API.md`
+## API documentation
 
-OpenAPI JSON: `GET /api/docs/openapi`
-Swagger UI: [http://localhost:3000/fr/docs](http://localhost:3000/fr/docs) (ou `/en/docs`, `/ar/docs` selon la langue)
+- Endpoints: `docs/API.md`
+- OpenAPI: `GET /api/docs/openapi`
+- Swagger UI: [http://localhost:3000/fr/docs](http://localhost:3000/fr/docs) (also `/en/docs`, `/ar/docs`)
 
-Docs protection:
-- `development`: open access
-- other environments: ADMIN bearer token required
+Docs access: open in `development`; other environments may require an ADMIN bearer token.
 
-## Test Accounts (Seed)
+---
 
-Run:
+## Test accounts (seed)
 
 ```bash
 npm run prisma:seed
 ```
 
-This seed creates/upserts 2 test users (for local testing of role-based dashboards):
+Creates/updates (for dashboard testing):
 
-- **Manager / Business Owner**
-  - **Email**: `manager@pos.hssabaty.com`
-  - **Password**: `Test1234!`
-  - **Role**: `MANAGER`
-- **Staff**
-  - **Email**: `cashier@pos.hssabaty.com`
-  - **Password**: `Test1234!`
-  - **Role**: `CASHIER`
-  - Linked to the manager via `ownerManagerId`
+| Role | Email | Password |
+|------|-------|----------|
+| Manager | `manager@pos.hssabaty.com` | `Test1234!` |
+| Staff (cashier) | `cashier@pos.hssabaty.com` | `Test1234!` |
 
-Notes:
-- If you execute Prisma from the host, ensure `DATABASE_URL` points to `localhost:3307`.
-- If you execute Prisma from the Docker `app` container, use `mysql:3306`.
+Run seed from the host with `DATABASE_URL` on `127.0.0.1:3307`, or `docker compose exec app npm run prisma:seed` when the stack is up.
+
+---
+
+## Structure initiale (référence)
+
+Structure initiale d'un SaaS POS avec Next.js 15, Prisma, MySQL et Docker. Les sections ci-dessus décrivent le démarrage **Docker en une commande** et un flux **production** minimal.

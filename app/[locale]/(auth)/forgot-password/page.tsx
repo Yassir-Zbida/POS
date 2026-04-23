@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
@@ -43,7 +44,9 @@ export default async function ForgotPasswordPage({
         </Link>
         <ForgotPasswordForm />
       </div>
-      <LanguageSwitcherFooter />
+      <Suspense fallback={null}>
+        <LanguageSwitcherFooter />
+      </Suspense>
     </div>
   );
 }

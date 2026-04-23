@@ -3,18 +3,13 @@
 import * as React from "react";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { useAuthPersistHydrated } from "@/hooks/use-auth-persist-hydrated";
 import { useAuthStore } from "@/store/use-auth-store";
 import { dashboardHomeForRole, isAllowedDashboardPath } from "@/lib/dashboard";
 import { AUTH_ROLES } from "@/types/auth";
 
-function useHydrated() {
-  const [hydrated, setHydrated] = React.useState(false);
-  React.useEffect(() => setHydrated(true), []);
-  return hydrated;
-}
-
 export function RoleGuard({ children }: { children: React.ReactNode }) {
-  const hydrated = useHydrated();
+  const persistReady = useAuthPersistHydrated();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -22,7 +17,7 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
   const user = useAuthStore((s) => s.user);
 
   React.useEffect(() => {
-    if (!hydrated) return;
+    if (!persistReady) return;
 
     if (!isAuthenticated || !user) {
       router.replace("/login");
@@ -34,9 +29,9 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
     if (!isAllowedDashboardPath(pathname, user.role)) {
       router.replace(dashboardHomeForRole(user.role));
     }
-  }, [hydrated, isAuthenticated, pathname, router, user]);
+  }, [isAuthenticated, pathname, persistReady, router, user]);
 
-  if (!hydrated) return null;
+  if (!persistReady) return null;
   if (!isAuthenticated || !user) return null;
 
   if (pathname.startsWith("/dashboard") && !isAllowedDashboardPath(pathname, user.role)) return null;
