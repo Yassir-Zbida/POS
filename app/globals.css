@@ -32,7 +32,8 @@
     --chart-5: 27 87% 67%;
     --radius: 0.875rem;
     --font-sans: var(--font-dm-sans);
-    --sidebar-background: 0 0% 98%;
+    /* Sidebar (light): near-white for a softer surface. */
+    --sidebar-background: 240 11.1% 98.2%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -44,7 +45,8 @@
 
   .dark {
     /* Base bg: #05040D */
-    --background: 247 53% 3.3%;
+    /* Base bg: #161622 */
+    --background: 240 21.4% 11%;
     --foreground: 210 40% 98%;
     /* Card bg: #13131f */
     --card: 240 24% 9.8%;
@@ -75,7 +77,9 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
+    /* Match card surface so it stands apart from `bg-muted` in dark mode. */
+    /* Sidebar bg: #13131f */
+    --sidebar-background: 240 24% 9.8%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
