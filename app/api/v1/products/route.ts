@@ -6,6 +6,7 @@ import { writeAuditLog } from "@/lib/audit";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const productSchema = z.object({
+  type: z.enum(["SIMPLE", "VARIABLE", "SERVICE"]).default("SIMPLE"),
   nameFr: z.string().min(1),
   nameEn: z.string().optional(),
   nameAr: z.string().optional(),
@@ -18,6 +19,8 @@ const productSchema = z.object({
   minStock: z.number().int().min(0).default(0),
   imageUrl: z.string().url().optional(),
   categoryId: z.string().min(1),
+  /// IDs of global attributes to attach (for VARIABLE products)
+  attributeIds: z.array(z.string()).optional(),
 });
 
 /** GET /api/v1/products
@@ -115,7 +118,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 422 });
     }
 
-    const { price, costPrice, vatRate, ...rest } = parsed.data;
+    const { price, costPrice, vatRate, attributeIds, ...rest } = parsed.data;
 
     const product = await prisma.product.create({
       data: {
@@ -123,8 +126,14 @@ export async function POST(request: Request) {
         price,
         costPrice: costPrice ?? null,
         vatRate,
+        attributes: attributeIds?.length
+          ? { create: attributeIds.map((attributeId) => ({ attributeId })) }
+          : undefined,
       },
-      include: { category: true },
+      include: {
+        category: true,
+        attributes: { include: { attribute: { include: { values: { orderBy: [{ sortOrder: "asc" }, { value: "asc" }] } } } } },
+      },
     });
 
     await writeAuditLog({

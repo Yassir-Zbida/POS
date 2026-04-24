@@ -29,6 +29,12 @@ enum SubscriptionStatus {
   SUSPENDED
 }
 
+enum ProductType {
+  SIMPLE
+  VARIABLE
+  SERVICE
+}
+
 enum CashSessionStatus {
   OPEN
   CLOSED
@@ -203,8 +209,57 @@ model Category {
   updatedAt DateTime   @updatedAt
 }
 
+// ─────────────────────────────── Attributes (WooCommerce-style) ──────────────
+
+/// Global reusable attribute — e.g., "Color", "Size", "Material"
+model Attribute {
+  id        String             @id @default(cuid())
+  name      String             @unique
+  values    AttributeValue[]
+  products  ProductAttribute[]
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+/// A specific value within an attribute — e.g., "Red", "Large"
+model AttributeValue {
+  id          String             @id @default(cuid())
+  attributeId String
+  attribute   Attribute          @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  value       String
+  sortOrder   Int                @default(0)
+  variants    VariantAttribute[]
+  createdAt   DateTime           @default(now())
+
+  @@unique([attributeId, value])
+  @@index([attributeId])
+}
+
+/// Which attributes apply to a VARIABLE product
+model ProductAttribute {
+  productId   String
+  attributeId String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  @@id([productId, attributeId])
+}
+
+/// Which attribute value a specific variant has (e.g., variant → Red + Large)
+model VariantAttribute {
+  variantId        String
+  attributeValueId String
+  variant          ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  attributeValue   AttributeValue @relation(fields: [attributeValueId], references: [id])
+
+  @@id([variantId, attributeValueId])
+}
+
+// ─────────────────────────────── Products ────────────────────────────────────
+
 model Product {
   id          String              @id @default(cuid())
+  type        ProductType         @default(SIMPLE)
   nameFr      String
   nameEn      String?
   nameAr      String?
@@ -219,6 +274,7 @@ model Product {
   isActive    Boolean             @default(true)
   categoryId  String
   category    Category            @relation(fields: [categoryId], references: [id])
+  attributes  ProductAttribute[]
   variants    ProductVariant[]
   saleItems   SaleItem[]
   movements   InventoryMovement[]
@@ -228,22 +284,30 @@ model Product {
 
   @@index([barcode])
   @@index([categoryId])
+  @@index([type])
 }
 
 model ProductVariant {
-  id            String              @id @default(cuid())
+  id            String             @id @default(cuid())
   productId     String
-  product       Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product       Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  /// Human-readable label, auto-generated from attribute values e.g. "Red / Large"
   name          String
-  barcode       String?             @unique
-  priceOverride Decimal?            @db.Decimal(10, 2)
-  stock         Int                 @default(0)
+  sku           String?            @unique
+  barcode       String?            @unique
+  priceOverride Decimal?           @db.Decimal(10, 2)
+  costOverride  Decimal?           @db.Decimal(10, 2)
+  stock         Int                @default(0)
+  minStock      Int                @default(0)
+  isActive      Boolean            @default(true)
+  attributes    VariantAttribute[]
   saleItems     SaleItem[]
   poItems       PurchaseOrderItem[]
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
 
   @@index([productId])
+  @@index([sku])
 }
 
 // ─────────────────────────────── Inventory ───────────────────────────────────

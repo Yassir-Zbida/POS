@@ -6,6 +6,7 @@ import { writeAuditLog } from "@/lib/audit";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const updateSchema = z.object({
+  type: z.enum(["SIMPLE", "VARIABLE", "SERVICE"]).optional(),
   nameFr: z.string().min(1).optional(),
   nameEn: z.string().optional(),
   nameAr: z.string().optional(),
@@ -18,6 +19,8 @@ const updateSchema = z.object({
   imageUrl: z.string().url().optional(),
   categoryId: z.string().min(1).optional(),
   isActive: z.boolean().optional(),
+  /// Replace the full set of attributes (pass empty array to remove all)
+  attributeIds: z.array(z.string()).optional(),
 });
 
 /** GET /api/v1/products/[id] */
@@ -29,7 +32,23 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const { id } = await params;
     const product = await prisma.product.findUnique({
       where: { id },
-      include: { category: true, variants: true, movements: { orderBy: { createdAt: "desc" }, take: 10 } },
+      include: {
+        category: true,
+        attributes: {
+          include: {
+            attribute: {
+              include: { values: { orderBy: [{ sortOrder: "asc" }, { value: "asc" }] } },
+            },
+          },
+        },
+        variants: {
+          include: {
+            attributes: { include: { attributeValue: { include: { attribute: true } } } },
+          },
+          orderBy: { createdAt: "asc" },
+        },
+        movements: { orderBy: { createdAt: "desc" }, take: 10 },
+      },
     });
 
     if (!product) return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -64,10 +83,37 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 422 });
     }
 
+    const { attributeIds, ...rest } = parsed.data;
+
     const product = await prisma.product.update({
       where: { id },
-      data: parsed.data,
-      include: { category: true, variants: true },
+      data: {
+        ...rest,
+        // Replace all attribute links when attributeIds is provided
+        ...(attributeIds !== undefined
+          ? {
+              attributes: {
+                deleteMany: {},
+                create: attributeIds.map((attributeId) => ({ attributeId })),
+              },
+            }
+          : {}),
+      },
+      include: {
+        category: true,
+        attributes: {
+          include: {
+            attribute: {
+              include: { values: { orderBy: [{ sortOrder: "asc" }, { value: "asc" }] } },
+            },
+          },
+        },
+        variants: {
+          include: {
+            attributes: { include: { attributeValue: { include: { attribute: true } } } },
+          },
+        },
+      },
     });
 
     await writeAuditLog({
