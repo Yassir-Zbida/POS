@@ -19,7 +19,8 @@
       "cashier": "Cashier",
       "cashierPos": "POS",
       "pos": "POS",
-      "docs": "API docs"
+      "docs": "API docs",
+      "otp": "Email code sign-in"
     }
   },
   "home": {
@@ -46,6 +47,28 @@
     "privacy": "Privacy Policy",
     "errors": {
       "loginFailed": "Login failed"
+    },
+    "otpLink": "Sign in with email code"
+  },
+  "otp": {
+    "title": "Email code sign-in",
+    "subtitle": "We’ll email you a 6-digit code. No password needed for this flow.",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "sendCode": "Send verification code",
+    "sendPending": "Sending…",
+    "codeSent": "Check your inbox for the code.",
+    "codeLabel": "Verification code",
+    "rememberMe": "Stay signed in longer on this device",
+    "signIn": "Verify and sign in",
+    "verifyPending": "Signing in…",
+    "useDifferentEmail": "Use a different email",
+    "backToLogin": "Back to password sign-in",
+    "errors": {
+      "emailRequired": "Enter your email",
+      "sendFailed": "Could not send code. Try again.",
+      "codeInvalid": "Enter the 6-digit code",
+      "verifyFailed": "Verification failed"
     }
   },
   "common": {

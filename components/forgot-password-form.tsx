@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
+import { authApiUrl } from "@/lib/auth-client"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 export function ForgotPasswordForm({
@@ -34,7 +35,7 @@ export function ForgotPasswordForm({
     const email = String(fd.get("email") ?? "")
     setPending(true)
     try {
-      const res = await fetch("/api/auth/forgot-password", {
+      const res = await fetch(authApiUrl("forgot-password"), {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-locale": locale },
         body: JSON.stringify({ email }),

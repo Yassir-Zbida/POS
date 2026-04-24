@@ -179,6 +179,22 @@ model PasswordResetToken {
   @@index([expiresAt])
 }
 
+/// One-time codes for email/SMS verification (register, login step-up).
+model OtpChallenge {
+  id         String    @id @default(cuid())
+  channel    String
+  target     String
+  purpose    String
+  codeHash   String    @db.VarChar(128)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int       @default(0)
+  createdAt  DateTime  @default(now())
+
+  @@index([target, purpose, consumedAt])
+  @@index([expiresAt])
+}
+
 model AuditLog {
   id          String   @id @default(cuid())
   actorUserId String

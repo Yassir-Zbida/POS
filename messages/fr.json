@@ -19,7 +19,8 @@
       "cashier": "Caissier",
       "cashierPos": "POS",
       "pos": "POS",
-      "docs": "Docs API"
+      "docs": "Docs API",
+      "otp": "Connexion par code e-mail"
     }
   },
   "home": {
@@ -46,6 +47,28 @@
     "privacy": "Politique de confidentialité",
     "errors": {
       "loginFailed": "Échec de la connexion"
+    },
+    "otpLink": "Se connecter avec un code e-mail"
+  },
+  "otp": {
+    "title": "Connexion par code e-mail",
+    "subtitle": "Nous vous envoyons un code à 6 chiffres. Sans mot de passe pour ce mode.",
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "sendCode": "Envoyer le code",
+    "sendPending": "Envoi…",
+    "codeSent": "Consultez votre boîte de réception.",
+    "codeLabel": "Code de vérification",
+    "rememberMe": "Rester connecté plus longtemps sur cet appareil",
+    "signIn": "Vérifier et se connecter",
+    "verifyPending": "Connexion…",
+    "useDifferentEmail": "Utiliser une autre adresse",
+    "backToLogin": "Retour à la connexion par mot de passe",
+    "errors": {
+      "emailRequired": "Saisissez votre e-mail",
+      "sendFailed": "Impossible d’envoyer le code. Réessayez.",
+      "codeInvalid": "Saisissez le code à 6 chiffres",
+      "verifyFailed": "Échec de la vérification"
     }
   },
   "common": {

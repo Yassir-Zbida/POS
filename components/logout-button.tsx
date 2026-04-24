@@ -2,35 +2,35 @@
 
 import * as React from "react"
 import { toast } from "sonner"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
-import { useRouter } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from "@/store/use-auth-store"
+import { authApiUrl } from "@/lib/auth-client"
+import { defaultLocale } from "@/i18n/routing"
 
 export function LogoutButton() {
-  const router = useRouter()
+  const locale = useLocale()
   const refreshToken = useAuthStore((s) => s.refreshToken)
   const clearSession = useAuthStore((s) => s.clearSession)
   const t = useTranslations("common")
   const [pending, setPending] = React.useState(false)
 
-  async function onLogout() {
+  function onLogout() {
     setPending(true)
-    try {
-      if (refreshToken) {
-        await fetch("/api/auth/logout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken }),
-        }).catch(() => null)
-      }
-      clearSession()
-      router.push("/login")
-      toast.success(t("loggedOut"))
-    } finally {
-      setPending(false)
+    const loginPath =
+      locale === defaultLocale ? "/login" : `/${locale}/login`
+    if (refreshToken) {
+      void fetch(authApiUrl("logout"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken }),
+        keepalive: true,
+      }).catch(() => {})
     }
+    clearSession()
+    toast.success(t("loggedOut"))
+    window.location.assign(loginPath)
   }
 
   return (

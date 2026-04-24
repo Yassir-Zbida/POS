@@ -174,7 +174,13 @@ describe("GET /api/v1/reports/sales", () => {
     vi.resetAllMocks(); // resetAllMocks clears the mockResolvedValueOnce queue; clearAllMocks does not
     mockManagerAuth();
     vi.mocked(prisma.sale.aggregate).mockResolvedValue(EMPTY_AGGREGATE as never);
-    vi.mocked(prisma.sale.groupBy).mockResolvedValue([] as never);
+    vi.mocked(prisma.sale.groupBy).mockImplementation((args) => {
+      const by = (args as { by: string[] }).by?.[0];
+      if (by === "locationId") return Promise.resolve([] as never);
+      if (by === "cashierId") return Promise.resolve([] as never);
+      if (by === "paymentMethod") return Promise.resolve([] as never);
+      return Promise.resolve([] as never);
+    });
     vi.mocked(prisma.saleItem.groupBy).mockResolvedValue([] as never);
     vi.mocked(prisma.product.findMany).mockResolvedValue([] as never);
     vi.mocked(prisma.user.findMany).mockResolvedValue([] as never);
@@ -184,13 +190,13 @@ describe("GET /api/v1/reports/sales", () => {
   it("returns sales report with locationBreakdown", async () => {
     setupReportMocks();
 
-    // Override groupBy to return location data on the third call
-    vi.mocked(prisma.sale.groupBy)
-      .mockResolvedValueOnce([] as never)   // paymentBreakdown
-      .mockResolvedValueOnce([] as never)   // cashierBreakdown
-      .mockResolvedValueOnce([              // locationBreakdown
-        { locationId: "loc-1", _sum: { totalAmount: 5000 }, _count: 20 },
-      ] as never);
+    vi.mocked(prisma.sale.groupBy).mockImplementation((args) => {
+      const by = (args as { by: string[] }).by?.[0];
+      if (by === "locationId") {
+        return Promise.resolve([{ locationId: "loc-1", _sum: { totalAmount: 5000 }, _count: 20 }] as never);
+      }
+      return Promise.resolve([] as never);
+    });
     vi.mocked(prisma.location.findMany).mockResolvedValue([
       { id: "loc-1", name: "Casablanca", city: "Casablanca" },
     ] as never);

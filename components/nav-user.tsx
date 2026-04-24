@@ -10,7 +10,7 @@ import {
   Sparkles,
 } from "lucide-react"
 import { toast } from "sonner"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 import {
   Avatar,
@@ -32,8 +32,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { useRouter } from "@/i18n/navigation"
 import { useAuthStore } from "@/store/use-auth-store"
+import { authApiUrl } from "@/lib/auth-client"
+import { defaultLocale } from "@/i18n/routing"
 
 export function NavUser({
   user,
@@ -45,7 +46,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const router = useRouter()
+  const locale = useLocale()
   const refreshToken = useAuthStore((s) => s.refreshToken)
   const clearSession = useAuthStore((s) => s.clearSession)
   const t = useTranslations("common")
@@ -53,23 +54,22 @@ export function NavUser({
   const avatarSrc = user.avatar?.startsWith("/") || user.avatar?.startsWith("http") ? user.avatar : ""
   const initials = getInitials(user.name)
 
-  async function onLogout() {
+  function onLogout() {
     if (pendingLogout) return
     setPendingLogout(true)
-    try {
-      if (refreshToken) {
-        await fetch("/api/auth/logout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken }),
-        }).catch(() => null)
-      }
-      clearSession()
-      router.push("/login")
-      toast.success(t("loggedOut"))
-    } finally {
-      setPendingLogout(false)
+    const loginPath =
+      locale === defaultLocale ? "/login" : `/${locale}/login`
+    if (refreshToken) {
+      void fetch(authApiUrl("logout"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken }),
+        keepalive: true,
+      }).catch(() => {})
     }
+    clearSession()
+    toast.success(t("loggedOut"))
+    window.location.assign(loginPath)
   }
 
   return (

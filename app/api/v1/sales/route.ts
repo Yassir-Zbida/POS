@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/rbac";
 import { writeAuditLog } from "@/lib/audit";
+import { loadBusinessSettings, getLoyaltyRedeemMadPerPoint } from "@/lib/business-settings";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const saleItemSchema = z.object({
@@ -22,6 +23,8 @@ const createSaleSchema = z.object({
   paymentMethod: z.enum(["CASH", "CARD", "TRANSFER", "CREDIT"]).default("CASH"),
   amountTendered: z.number().positive().optional(),
   discountAmt: z.number().min(0).default(0),
+  /** Redeem loyalty points (requires customerId). MAD value = points × loyaltyRedeemMadPerPoint from business settings (default 0.1). */
+  loyaltyPointsToRedeem: z.number().int().min(0).max(1_000_000).optional(),
   notes: z.string().optional(),
 });
 
@@ -90,7 +93,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 422 });
     }
 
-    const { items, sessionId, locationId, customerId, couponId, paymentMethod, amountTendered, discountAmt, notes } = parsed.data;
+    const { items, sessionId, locationId, customerId, couponId, paymentMethod, amountTendered, discountAmt, loyaltyPointsToRedeem, notes } =
+      parsed.data;
 
     // Validate products + build item data
     const productIds = items.map((i) => i.productId);
@@ -121,7 +125,38 @@ export async function POST(request: Request) {
 
     const subtotal = itemsWithTotals.reduce((sum, i) => sum + i.totalPrice, 0);
     const cartDiscount = discountAmt ?? 0;
-    const afterDiscount = subtotal - cartDiscount;
+    const remainderAfterCart = subtotal - cartDiscount;
+    if (remainderAfterCart < 0) {
+      return NextResponse.json({ error: "Cart discount cannot exceed subtotal" }, { status: 400 });
+    }
+
+    let loyaltyMad = 0;
+    let loyaltyPointsUsed = 0;
+    if (loyaltyPointsToRedeem && loyaltyPointsToRedeem > 0) {
+      if (!customerId) {
+        return NextResponse.json({ error: "customerId is required to redeem loyalty points" }, { status: 400 });
+      }
+      const settings = await loadBusinessSettings();
+      const madPerPoint = getLoyaltyRedeemMadPerPoint(settings);
+      loyaltyPointsUsed = loyaltyPointsToRedeem;
+      loyaltyMad = loyaltyPointsUsed * madPerPoint;
+      if (loyaltyMad > remainderAfterCart + 1e-9) {
+        return NextResponse.json(
+          { error: "Loyalty discount exceeds amount available after cart discount" },
+          { status: 400 },
+        );
+      }
+      const customer = await prisma.customer.findUnique({ where: { id: customerId }, select: { loyaltyPoints: true } });
+      if (!customer) {
+        return NextResponse.json({ error: "Customer not found" }, { status: 404 });
+      }
+      if (customer.loyaltyPoints < loyaltyPointsUsed) {
+        return NextResponse.json({ error: "Insufficient loyalty points" }, { status: 409 });
+      }
+    }
+
+    const totalDiscountForSale = cartDiscount + loyaltyMad;
+    const afterDiscount = subtotal - totalDiscountForSale;
     const vatRate = 0.2; // 20% VAT default
     const vatAmt = afterDiscount * vatRate;
     const totalAmount = afterDiscount + vatAmt;
@@ -154,7 +189,7 @@ export async function POST(request: Request) {
           customerId,
           couponId,
           subtotal,
-          discountAmt: cartDiscount,
+          discountAmt: totalDiscountForSale,
           vatAmt,
           totalAmount,
           paymentMethod,
@@ -203,22 +238,14 @@ export async function POST(request: Request) {
         await tx.coupon.update({ where: { id: couponId }, data: { usedCount: { increment: 1 } } });
       }
 
-      // Add loyalty points (1 point per 10 MAD)
       if (customerId) {
         const pointsEarned = Math.floor(totalAmount / 10);
-        if (pointsEarned > 0) {
-          await tx.customer.update({
-            where: { id: customerId },
-            data: { loyaltyPoints: { increment: pointsEarned } },
-          });
-        }
-
-        // Track credit balance for CREDIT payment method
-        if (paymentMethod === "CREDIT") {
-          await tx.customer.update({
-            where: { id: customerId },
-            data: { creditBalance: { increment: totalAmount } },
-          });
+        const netLoyalty = pointsEarned - loyaltyPointsUsed;
+        const custData: { loyaltyPoints?: { increment: number }; creditBalance?: { increment: number } } = {};
+        if (netLoyalty !== 0) custData.loyaltyPoints = { increment: netLoyalty };
+        if (paymentMethod === "CREDIT") custData.creditBalance = { increment: totalAmount };
+        if (Object.keys(custData).length > 0) {
+          await tx.customer.update({ where: { id: customerId }, data: custData });
         }
       }
 
@@ -247,10 +274,31 @@ export async function POST(request: Request) {
       action: "SALE_CREATED",
       targetType: "SALE",
       targetId: sale.id,
-      metadata: { totalAmount, paymentMethod, itemCount: items.length },
+      metadata: {
+        totalAmount,
+        paymentMethod,
+        itemCount: items.length,
+        loyaltyPointsRedeemed: loyaltyPointsUsed || undefined,
+        loyaltyDiscountMad: loyaltyMad || undefined,
+      },
     });
 
-    return NextResponse.json({ sale, summary: { subtotal, discountAmt: cartDiscount, vatAmt, totalAmount, changeGiven } }, { status: 201 });
+    return NextResponse.json(
+      {
+        sale,
+        summary: {
+          subtotal,
+          discountAmt: cartDiscount,
+          loyaltyDiscountMad: loyaltyMad,
+          loyaltyPointsRedeemed: loyaltyPointsUsed,
+          totalDiscount: totalDiscountForSale,
+          vatAmt,
+          totalAmount,
+          changeGiven,
+        },
+      },
+      { status: 201 },
+    );
   } catch (e) {
     if (isDatabaseConnectionError(e)) return databaseUnavailableResponse();
     return internalErrorResponse(e, "POST /api/v1/sales");

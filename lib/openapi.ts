@@ -51,6 +51,8 @@ export const openApiDocument = {
     { name: "Docs", description: "OpenAPI JSON (access may be restricted by environment)" },
     { name: "Admin", description: "Platform admin" },
     { name: "Manager", description: "Store manager / staff management" },
+    { name: "v1 — Auth", description: "SRS-aligned auth: register, PIN, OTP; mirrors /api/auth routes" },
+    { name: "v1 — Hardware", description: "Printer settings snapshot (ESC/POS is client-side)" },
     { name: "v1 — Business & locations", description: "Tenant business profile and sites" },
     { name: "v1 — Catalog", description: "Categories, products, variants, attributes" },
     { name: "v1 — Customers & suppliers", description: "CRM and purchasing parties" },
@@ -117,6 +119,59 @@ export const openApiDocument = {
     },
     "/manager/cashiers/{id}/status": {
       patch: op("Manager", "Update cashier status", { ...r.ok, ...r.forbidden, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/auth/forgot-password": {
+      post: op("v1 — Auth", "Request password reset email (alias of /auth/forgot-password)", { ...r.ok, ...r.badRequest }, { security: pub }),
+    },
+    "/v1/auth/login": {
+      post: op("v1 — Auth", "Authenticate with email and password", { "200": { description: "Authenticated" }, ...r.unauthorized }, { security: pub }),
+    },
+    "/v1/auth/logout": {
+      post: op("v1 — Auth", "Logout (alias of /auth/logout)", r.ok),
+    },
+    "/v1/auth/me": {
+      get: op("v1 — Auth", "Current user (alias of /auth/me)", r.ok),
+    },
+    "/v1/auth/otp/send": {
+      post: op("v1 — Auth", "Send email or SMS OTP", { ...r.ok, ...r.badRequest }, { security: pub }),
+    },
+    "/v1/auth/otp/verify": {
+      post: op(
+        "v1 — Auth",
+        "Verify OTP; optional issueSession+rememberMe with purpose LOGIN and channel EMAIL returns JWTs",
+        { ...r.ok, ...r.unauthorized },
+        { security: pub },
+      ),
+    },
+    "/v1/auth/pin": {
+      post: op("v1 — Auth", "Login with email + PIN", { "200": { description: "Authenticated" }, ...r.unauthorized }, { security: pub }),
+    },
+    "/v1/auth/refresh": {
+      post: op("v1 — Auth", "Refresh tokens (alias of /auth/refresh)", { "200": { description: "Rotated" } }, { security: pub }),
+    },
+    "/v1/auth/register": {
+      post: op("v1 — Auth", "Register business + owner (manager) account", { ...r.created, ...r.badRequest, ...r.conflict }, { security: pub }),
+    },
+    "/v1/auth/reset-password": {
+      post: op("v1 — Auth", "Complete password reset (alias of /auth/reset-password)", { ...r.ok, ...r.badRequest }, { security: pub }),
+    },
+    "/v1/auth/set-pin": {
+      post: op("v1 — Auth", "Set checkout PIN for current user", r.ok),
+    },
+    "/v1/hardware/status": {
+      get: op("v1 — Hardware", "Printer-related settings from business profile", r.ok),
+    },
+    "/v1/hardware/test-print": {
+      post: op("v1 — Hardware", "Acknowledge test print (device-side printing)", r.ok),
+    },
+    "/v1/pos/search": {
+      get: op("v1 — POS", "Product search for POS (alias of GET /v1/products with search params)", r.ok),
+    },
+    "/v1/products/import": {
+      post: op("v1 — Catalog", "Bulk import products from CSV body", { ...r.created, ...r.badRequest, ...r.forbidden }),
+    },
+    "/v1/reports/dashboard": {
+      get: op("v1 — Reports & notifications", "Dashboard KPI snapshot (revenue today, low stock, credit, sessions)", r.ok),
     },
     "/v1/attributes": {
       get: op("v1 — Catalog", "List attributes", r.ok),
@@ -237,17 +292,21 @@ export const openApiDocument = {
       post: op("v1 — Purchasing", "Receive stock against a purchase order", r.ok, { parameters: pathParams("id") }),
     },
     "/v1/reports/customers": {
-      get: op("v1 — Reports & notifications", "Customer report", r.ok),
+      get: op("v1 — Reports & notifications", "Customer report (?format=csv for export)", r.ok),
     },
     "/v1/reports/inventory": {
-      get: op("v1 — Reports & notifications", "Inventory report", r.ok),
+      get: op("v1 — Reports & notifications", "Inventory report (?format=csv for export)", r.ok),
     },
     "/v1/reports/sales": {
-      get: op("v1 — Reports & notifications", "Sales report", r.ok),
+      get: op("v1 — Reports & notifications", "Sales report (?format=csv for export)", r.ok),
     },
     "/v1/sales": {
       get: op("v1 — POS", "List sales", r.ok),
-      post: op("v1 — POS", "Create sale (checkout)", { ...r.created, ...r.badRequest, ...r.conflict }),
+      post: op(
+        "v1 — POS",
+        "Create sale (checkout); optional loyaltyPointsToRedeem with customerId",
+        { ...r.created, ...r.badRequest, ...r.conflict },
+      ),
     },
     "/v1/sales/{id}": {
       get: op("v1 — POS", "Get sale", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { authApiUrl } from "@/lib/auth-client";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
@@ -22,7 +23,7 @@ export default function ApiDocsClientPage() {
 
   async function verifyAdminToken() {
     setError("");
-    const response = await fetch("/api/auth/me", {
+    const response = await fetch(authApiUrl("me"), {
       headers: { Authorization: `Bearer ${token}` },
     });
 

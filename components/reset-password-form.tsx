@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react"
+import { authApiUrl } from "@/lib/auth-client"
 
 function getPasswordStrength(password: string) {
   const p = password ?? ""
@@ -75,7 +76,7 @@ export function ResetPasswordForm({
 
     setPending(true)
     try {
-      const res = await fetch("/api/auth/reset-password", {
+      const res = await fetch(authApiUrl("reset-password"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password }),

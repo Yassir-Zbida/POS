@@ -2,6 +2,17 @@ import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+/** True when this PrismaClient instance includes generated delegates (avoids stale singleton after `prisma generate`). */
+function clientHasOtpChallenge(client: PrismaClient) {
+  return typeof (client as { otpChallenge?: { deleteMany: unknown } }).otpChallenge?.deleteMany === "function";
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+function getOrCreatePrisma(): PrismaClient {
+  const cached = globalForPrisma.prisma;
+  if (cached && clientHasOtpChallenge(cached)) return cached;
+  const fresh = new PrismaClient();
+  globalForPrisma.prisma = fresh;
+  return fresh;
+}
+
+export const prisma = getOrCreatePrisma();

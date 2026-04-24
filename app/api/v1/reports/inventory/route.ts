@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
+import { rowsToCsv } from "@/lib/csv-export";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
-/** GET /api/v1/reports/inventory */
+/** GET /api/v1/reports/inventory ?format=csv */
 export async function GET(request: Request) {
   try {
     const auth = await requireAuth(request);
@@ -12,6 +13,8 @@ export async function GET(request: Request) {
     if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+
+    const format = new URL(request.url).searchParams.get("format") ?? "json";
 
     const [products, lowStock, movementSummary] = await Promise.all([
       // Stock value summary
@@ -45,6 +48,26 @@ export async function GET(request: Request) {
 
     const belowMinCount = products.filter((p) => p.stock <= p.minStock).length;
     const outOfStockCount = products.filter((p) => p.stock === 0).length;
+
+    if (format === "csv") {
+      const rows = products.map((p) => ({
+        id: p.id,
+        nameFr: p.nameFr,
+        sku: p.sku,
+        stock: p.stock,
+        minStock: p.minStock,
+        price: p.price,
+        costPrice: p.costPrice ?? "",
+        category: p.category?.nameFr ?? "",
+      }));
+      const csv = rowsToCsv(["id", "nameFr", "sku", "stock", "minStock", "price", "costPrice", "category"], rows);
+      return new Response(csv, {
+        headers: {
+          "Content-Type": "text/csv; charset=utf-8",
+          "Content-Disposition": `attachment; filename="inventory-report.csv"`,
+        },
+      });
+    }
 
     return NextResponse.json({
       summary: {

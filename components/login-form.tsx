@@ -23,6 +23,7 @@ import { useLocale } from "next-intl"
 import type { AuthRole } from "@/types/auth"
 import { AUTH_ROLES } from "@/types/auth"
 import { dashboardHomeForRole } from "@/lib/dashboard"
+import { authApiUrl } from "@/lib/auth-client"
 
 export function LoginForm({
   className,
@@ -46,7 +47,7 @@ export function LoginForm({
     const rememberMe = fd.get("rememberMe") === "on"
     setPending(true)
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(authApiUrl("login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, rememberMe }),
@@ -163,6 +164,11 @@ export function LoginForm({
                       )}
                     </button>
                   </div>
+                </div>
+                <div className="text-center text-sm">
+                  <Link href="/otp" className="font-medium text-primary underline-offset-4 hover:underline">
+                    {t("otpLink")}
+                  </Link>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
