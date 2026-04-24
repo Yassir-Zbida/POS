@@ -14,7 +14,11 @@ export default function DashboardPage() {
   const user = useAuthStore((s) => s.user);
 
   React.useEffect(() => {
-    if (!persistReady || !isAuthenticated || !user) return;
+    if (!persistReady) return;
+    if (!isAuthenticated || !user) {
+      router.replace("/login");
+      return;
+    }
     router.replace(dashboardHomeForRole(user.role));
   }, [isAuthenticated, persistReady, router, user]);
 

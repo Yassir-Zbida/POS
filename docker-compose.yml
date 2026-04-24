@@ -11,6 +11,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - /app/.next
     environment:
       NODE_ENV: development
       # Must use service hostname `mysql` inside the compose network (not 127.0.0.1).

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { toast } from "sonner"
+import { useTranslations } from "next-intl"
 
 import { useRouter } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
@@ -11,6 +12,7 @@ export function LogoutButton() {
   const router = useRouter()
   const refreshToken = useAuthStore((s) => s.refreshToken)
   const clearSession = useAuthStore((s) => s.clearSession)
+  const t = useTranslations("common")
   const [pending, setPending] = React.useState(false)
 
   async function onLogout() {
@@ -25,7 +27,7 @@ export function LogoutButton() {
       }
       clearSession()
       router.push("/login")
-      toast.success("Logged out")
+      toast.success(t("loggedOut"))
     } finally {
       setPending(false)
     }

@@ -23,7 +23,13 @@ const LABELS: Record<Locale, string> = {
   ar: "العربية",
 };
 
-export function LanguageSwitcherFooter({ className }: { className?: string }) {
+const SHORT_LABELS: Record<Locale, string> = {
+  fr: "FR",
+  en: "EN",
+  ar: "ع",
+};
+
+function LanguageSwitcherDropdown({ buttonClassName }: { buttonClassName?: string }) {
   const locale = useLocale() as Locale;
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -45,41 +51,55 @@ export function LanguageSwitcherFooter({ className }: { className?: string }) {
   );
 
   return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          className={cn(
+            "h-10 rounded-full border-border/70 bg-background/80 px-3 font-medium shadow-sm backdrop-blur",
+            "hover:bg-background",
+            buttonClassName
+          )}
+        >
+          <span className="flex items-center gap-1">
+            <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
+            <span className="min-w-6 text-center tabular-nums">{SHORT_LABELS[locale]}</span>
+            <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
+          </span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="min-w-44">
+        <DropdownMenuRadioGroup value={locale} onValueChange={onValueChange}>
+          {locales.map((l) => (
+            <DropdownMenuRadioItem key={l} value={l}>
+              {LABELS[l]}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export function LanguageSwitcherFooter({ className }: { className?: string }) {
+  return (
     <div
       className={cn(
         "fixed bottom-6 left-6 right-6 z-50 flex items-center justify-start",
         className
       )}
     >
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            type="button"
-            variant="outline"
-            className={cn(
-              "h-10 rounded-full border-border/70 bg-background/80 px-3 font-medium shadow-sm backdrop-blur",
-              "hover:bg-background"
-            )}
-          >
-            <Globe className="me-2 size-4 text-muted-foreground" aria-hidden="true" />
-            <span>{LABELS[locale]}</span>
-            <ChevronDown
-              className="ms-2 size-4 text-muted-foreground"
-              aria-hidden="true"
-            />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="min-w-44">
-          <DropdownMenuRadioGroup value={locale} onValueChange={onValueChange}>
-            {locales.map((l) => (
-              <DropdownMenuRadioItem key={l} value={l}>
-                {LABELS[l]}
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <LanguageSwitcherDropdown />
     </div>
+  );
+}
+
+export function LanguageSwitcherInline({ className }: { className?: string }) {
+  return (
+    <LanguageSwitcherDropdown
+      buttonClassName={cn("h-8 px-2 rounded-md", className)}
+    />
   );
 }
 

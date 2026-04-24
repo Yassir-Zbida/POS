@@ -20,8 +20,9 @@ import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
 import { useAuthStore } from "@/store/use-auth-store"
 import { useLocale } from "next-intl"
-import { dashboardHomeForRole } from "@/lib/dashboard"
 import type { AuthRole } from "@/types/auth"
+import { AUTH_ROLES } from "@/types/auth"
+import { dashboardHomeForRole } from "@/lib/dashboard"
 
 export function LoginForm({
   className,
@@ -32,6 +33,7 @@ export function LoginForm({
   const locale = useLocale()
   const subtitle = t("loginSubtitle")
   const [pending, setPending] = React.useState(false)
+  const [redirecting, setRedirecting] = React.useState(false)
   const [showPassword, setShowPassword] = React.useState(false)
   const setSession = useAuthStore((s) => s.setSession)
 
@@ -73,18 +75,40 @@ export function LoginForm({
         toast.error(t("errors.loginFailed"))
         return
       }
+      const rawRole = String(data.user.role ?? "")
+      const normalizedRole = rawRole.toUpperCase()
+      const role =
+        normalizedRole === AUTH_ROLES.ADMIN ||
+        normalizedRole === AUTH_ROLES.MANAGER ||
+        normalizedRole === AUTH_ROLES.CASHIER
+          ? (normalizedRole as AuthRole)
+          : null
+      if (!role) {
+        toast.error(t("errors.loginFailed"))
+        return
+      }
       setSession({
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
-        user: { ...data.user, role: data.user.role as AuthRole },
+        user: { ...data.user, role },
       })
-      router.push(dashboardHomeForRole(data.user.role as AuthRole))
+      // Show the full-screen overlay first, then navigate directly to the
+      // role's home — no intermediate /dashboard stop needed.
+      setRedirecting(true)
+      router.push(dashboardHomeForRole(role))
     } finally {
       setPending(false)
     }
   }
 
   return (
+    <>
+      {/* Fixed full-screen overlay — covers the entire viewport while Next.js loads the new route */}
+      {redirecting && (
+        <div className="fixed inset-0 z-[9999] grid place-items-center bg-background">
+          <div className="h-12 w-12 animate-spin rounded-full border-2 border-muted border-t-primary" />
+        </div>
+      )}
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
@@ -169,5 +193,6 @@ export function LoginForm({
         <a href="#">{t("privacy")}</a>.
       </div>
     </div>
+    </>
   )
 }
