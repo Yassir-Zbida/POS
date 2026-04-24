@@ -1,26 +1,36 @@
+# Full stack (dev): `docker compose up --build` or `make up` or `./scripts/docker-up.sh`
+name: hssabaty-pos-dev
+
 services:
   app:
     build:
       context: .
       dockerfile: docker/next/Dockerfile
-    container_name: saas-pos-app
     ports:
       - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
+      - /app/.next
     environment:
       NODE_ENV: development
+      # Must use service hostname `mysql` inside the compose network (not 127.0.0.1).
       DATABASE_URL: mysql://saas_pos_user:saas_pos_password@mysql:3306/saas_pos_db
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   mysql:
     image: mysql:8.0
-    container_name: saas-pos-mysql
     restart: unless-stopped
     ports:
       - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: saas_pos_db
@@ -31,11 +41,11 @@ services:
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
   adminer:
     image: adminer:latest
-    container_name: saas-pos-adminer
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8088:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 volumes:
   mysql_data:

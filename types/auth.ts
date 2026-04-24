@@ -1,1 +1,16 @@
-export type AuthUser = { id: string; email: string; role: string };
+export const AUTH_ROLES = {
+  ADMIN: "ADMIN",
+  MANAGER: "MANAGER",
+  CASHIER: "CASHIER",
+} as const;
+
+export type AuthRole = (typeof AUTH_ROLES)[keyof typeof AUTH_ROLES];
+
+export type AuthUser = {
+  id: string;
+  email: string;
+  role: AuthRole;
+  status: string;
+  name?: string | null;
+  ownerManagerId?: string | null;
+};

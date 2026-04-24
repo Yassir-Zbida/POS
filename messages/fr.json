@@ -1,0 +1,262 @@
+{
+  "brand": {
+    "name": "Hssabaty Point de vente"
+  },
+  "meta": {
+    "description": "Hssabaty Point de vente est une solution de point de vente par Hssabaty, conçue pour les entreprises.",
+    "titles": {
+      "login": "Se connecter",
+      "forgotPassword": "Réinitialiser le mot de passe",
+      "dashboard": "Tableau de bord",
+      "dashboardSales": "Ventes",
+      "dashboardReports": "Rapports",
+      "dashboardSettings": "Paramètres",
+      "dashboardCustomers": "Clients",
+      "dashboardProducts": "Produits",
+      "dashboardCategories": "Catégories",
+      "dashboardInventory": "Inventaire",
+      "dashboardCashRegister": "Caisse",
+      "cashier": "Caissier",
+      "cashierPos": "POS",
+      "pos": "POS",
+      "docs": "Docs API"
+    }
+  },
+  "home": {
+    "headline": "Hssabaty Point de vente",
+    "subhead": "Solution POS moderne par Hssabaty, pensée pour les entreprises.",
+    "login": "Se connecter"
+  },
+  "auth": {
+    "loginTitle": "Ravi de vous revoir",
+    "loginSubtitle": "Connectez-vous avec votre e-mail et votre mot de passe",
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "emailPlaceholderHint": "Saisissez votre e-mail",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Saisissez votre mot de passe",
+    "passwordPlaceholderDots": "••••••••",
+    "rememberMe": "Se souvenir de moi sur cet appareil",
+    "forgotPassword": "Mot de passe oublié ?",
+    "loginButton": "Se connecter",
+    "loginPending": "Connexion…",
+    "termsPrefix": "En cliquant sur Continuer, vous acceptez nos",
+    "terms": "Conditions d'utilisation",
+    "and": "et notre",
+    "privacy": "Politique de confidentialité",
+    "errors": {
+      "loginFailed": "Échec de la connexion"
+    }
+  },
+  "common": {
+    "redirecting": "Redirection…",
+    "preparingDashboard": "Préparation de votre tableau de bord",
+    "loggedOut": "Déconnecté"
+  },
+  "resetPassword": {
+    "title": "Réinitialiser le mot de passe",
+    "subtitle": "Saisissez votre e-mail et nous vous enverrons un lien.",
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "emailPlaceholderHint": "Saisissez votre e-mail",
+    "submit": "Envoyer le lien",
+    "submitPending": "Envoi…",
+    "success": "Si un compte existe pour cet e-mail, vous recevrez des instructions sous peu.",
+    "newTitle": "Définir un nouveau mot de passe",
+    "newSubtitle": "Choisissez un mot de passe fort (au moins 8 caractères).",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Saisissez votre nouveau mot de passe",
+    "newSubmit": "Mettre à jour le mot de passe",
+    "newSubmitPending": "Mise à jour…",
+    "resetSuccess": "Votre mot de passe a été mis à jour. Veuillez vous connecter.",
+    "missingToken": "Ce lien de réinitialisation est invalide. Veuillez en demander un nouveau.",
+    "backToLogin": "Retour à la connexion",
+    "validationError": "Le mot de passe ne respecte pas toutes les exigences.",
+    "strength": {
+      "label": "Solidité",
+      "levels": {
+        "weak": "Faible",
+        "fair": "Moyenne",
+        "good": "Bonne",
+        "strong": "Forte"
+      },
+      "rules": {
+        "min8": "Au moins 8 caractères",
+        "upperLower": "Majuscule + minuscule",
+        "number": "Au moins 1 chiffre",
+        "special": "Au moins 1 symbole"
+      }
+    },
+    "errors": {
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    }
+  },
+  "cashierHome": {
+    "title": "Tableau de bord",
+    "periods": {
+      "today": "Aujourd'hui",
+      "week": "Cette semaine",
+      "month": "Ce mois"
+    },
+    "overview": {
+      "title": "Aperçu des performances",
+      "subtitle": "Suivez vos indicateurs commerciaux",
+      "salesInsights": "Aperçu des ventes",
+      "totalSales": "Total des ventes",
+      "transactions": "Transactions",
+      "avgBasket": "Panier moyen",
+      "noData": "Aucune donnée"
+    },
+    "kpi": {
+      "revenue": "Chiffre d'affaires",
+      "transactions": "Transactions",
+      "avgBasket": "Panier moyen",
+      "lowStock": "Stock faible",
+      "credit": "Créances clients",
+      "sessions": "Sessions actives",
+      "items": "articles",
+      "vsLastPeriod": "vs période préc."
+    },
+    "operations": {
+      "title": "Performance opérationnelle",
+      "topProducts": "Top produits",
+      "topCategories": "Top catégories",
+      "recentSales": "Ventes récentes",
+      "lowStockAlerts": "Alertes stock faible",
+      "noProducts": "Aucun produit",
+      "noCategories": "Aucune catégorie",
+      "noSales": "Aucune vente",
+      "noAlerts": "Aucune alerte",
+      "product": "Produit",
+      "category": "Catégorie",
+      "qty": "Qté",
+      "revenue": "CA",
+      "stock": "Stock",
+      "min": "Min",
+      "cashier": "Caissier",
+      "amount": "Montant",
+      "date": "Date"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "openPos": "Ouvrir la caisse",
+      "openSession": "Ouvrir une session",
+      "addProduct": "Ajouter un produit",
+      "viewReports": "Voir les rapports"
+    }
+  },
+  "sidebar": {
+    "navGroup": "Menu",
+    "settingsGroup": "Système",
+    "posLocations": "Points de vente",
+    "selectLocation": "Sélectionner un point de vente",
+    "noLocations": "Aucun point de vente trouvé",
+    "manageLocations": "Gérer les points de vente",
+    "nav": {
+      "pos": "Point de vente",
+      "cashRegister": "Caisse",
+      "customers": "Clients",
+      "products": "Produits",
+      "categories": "Catégories",
+      "inventory": "Inventaire",
+      "sales": "Ventes",
+      "reports": "Rapports",
+      "settings": "Paramètres",
+      "support": "Support technique"
+    },
+    "support": {
+      "title": "Besoin d'aide ?",
+      "subtitle": "Contactez notre équipe support",
+      "chat": "Chat en direct",
+      "email": "Envoyer un e-mail",
+      "docs": "Documentation"
+    },
+    "settings": {
+      "store": "Paramètres du magasin",
+      "hardware": "Matériel (imprimante/scanner)",
+      "staff": "Personnel & permissions",
+      "billing": "Facturation & abonnement"
+    }
+  },
+  "staff": {
+    "brand": {
+      "name": "Hssabaty POS",
+      "tagline": "Personnel"
+    },
+    "status": { "online": "En ligne" },
+    "navGroup": { "label": "Menu" },
+    "nav": {
+      "pos": "Point de vente",
+      "products": "Produits & catégories",
+      "customers": "Clients",
+      "sales": "Ventes",
+      "inventory": "Inventaire",
+      "cashRegister": "Caisse",
+      "reports": "Rapports",
+      "settings": "Paramètres"
+    },
+    "titles": {
+      "pos": "Créer une transaction",
+      "products": "Produits & catégories",
+      "customers": "Clients",
+      "sales": "Ventes",
+      "inventory": "Inventaire",
+      "cashRegister": "Sessions de caisse",
+      "reports": "Rapports & tableau de bord",
+      "settings": "Paramètres",
+      "home": "Tableau de bord — personnel"
+    },
+    "topbar": {
+      "search": "Rechercher",
+      "searchStub": "Recherche (démo)",
+      "logout": "Déconnexion"
+    },
+    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "Langue" },
+    "theme": { "light": "Clair", "dark": "Sombre", "label": "Thème" },
+    "placeholders": { "static": "Démo — pas encore de serveur" },
+    "pos": {
+      "searchPlaceholder": "Rechercher un produit",
+      "barcodePlaceholder": "Code-barres / scanner",
+      "stock": "{count} en stock",
+      "categoryBadge": "Catégorie",
+      "addToCart": "Ajouter au panier",
+      "description": "Brève description d’affichage.",
+      "cartEmpty": "Panier vide (démo).",
+      "resetOrder": "Réinitialiser",
+      "detailTransaction": "Détail de la transaction",
+      "changePromo": "Changer la promo",
+      "promoNewUser": "Promo nouveau client (10 %)",
+      "apply": "Appliquer",
+      "remove": "Retirer",
+      "subTotal": "Sous-total",
+      "tax": "TVA (12 %)",
+      "discount": "Remise",
+      "total": "Total",
+      "totalPayment": "Paiement total",
+      "changeMethod": "Changer de moyen",
+      "paymentCredit": "Carte bancaire",
+      "continue": "Continuer",
+      "checkoutTitle": "Paiement (démo)",
+      "checkoutHint": "Paiement et reçu — branchement serveur plus tard",
+      "close": "Fermer",
+      "receipt": "Aperçu du reçu",
+      "items": "Articles",
+      "payPrint": "Payer & imprimer (démo)",
+      "lineEach": "p. u.",
+      "lineDetailA": "Taille 42 · vert",
+      "lineDetailB": "Taille 40 · blanc",
+      "payCash": "Espèces",
+      "payWallet": "Portefeuille",
+      "categories": {
+        "all": "Tout",
+        "allWithCount": "Tout ({count})",
+        "shoes": "Chaussures",
+        "shoesWithCount": "Chaussures ({count})",
+        "clothing": "Vêtements",
+        "clothingWithCount": "Vêtements ({count})",
+        "others": "Autre",
+        "othersWithCount": "Autre ({count})"
+      }
+    }
+  }
+}

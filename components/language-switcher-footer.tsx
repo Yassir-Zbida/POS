@@ -1,0 +1,105 @@
+"use client";
+
+import * as React from "react";
+import { Globe, ChevronDown } from "lucide-react";
+import { useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
+
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { locales, type Locale } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const LABELS: Record<Locale, string> = {
+  fr: "Français",
+  en: "English",
+  ar: "العربية",
+};
+
+const SHORT_LABELS: Record<Locale, string> = {
+  fr: "FR",
+  en: "EN",
+  ar: "ع",
+};
+
+function LanguageSwitcherDropdown({ buttonClassName }: { buttonClassName?: string }) {
+  const locale = useLocale() as Locale;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const onChange = React.useCallback(
+    (nextLocale: Locale) => {
+      const qs = searchParams.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { locale: nextLocale });
+    },
+    [pathname, router, searchParams]
+  );
+
+  const onValueChange = React.useCallback(
+    (value: string) => {
+      onChange(value as Locale);
+    },
+    [onChange]
+  );
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          className={cn(
+            "h-10 rounded-full border-border/70 bg-background/80 px-3 font-medium shadow-sm backdrop-blur",
+            "hover:bg-background",
+            buttonClassName
+          )}
+        >
+          <span className="flex items-center gap-1">
+            <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
+            <span className="min-w-6 text-center tabular-nums">{SHORT_LABELS[locale]}</span>
+            <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
+          </span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="min-w-44">
+        <DropdownMenuRadioGroup value={locale} onValueChange={onValueChange}>
+          {locales.map((l) => (
+            <DropdownMenuRadioItem key={l} value={l}>
+              {LABELS[l]}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export function LanguageSwitcherFooter({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        "fixed bottom-6 left-6 right-6 z-50 flex items-center justify-start",
+        className
+      )}
+    >
+      <LanguageSwitcherDropdown />
+    </div>
+  );
+}
+
+export function LanguageSwitcherInline({ className }: { className?: string }) {
+  return (
+    <LanguageSwitcherDropdown
+      buttonClassName={cn("h-8 px-2 rounded-md", className)}
+    />
+  );
+}
+

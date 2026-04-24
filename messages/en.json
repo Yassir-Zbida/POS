@@ -1,0 +1,264 @@
+{
+  "brand": {
+    "name": "Hssabaty Point de vente"
+  },
+  "meta": {
+    "description": "Hssabaty Point de vente is a POS solution by Hssabaty startup, building multiple solutions for companies.",
+    "titles": {
+      "login": "Log in",
+      "forgotPassword": "Reset password",
+      "dashboard": "Dashboard",
+      "dashboardSales": "Sales",
+      "dashboardReports": "Reports",
+      "dashboardSettings": "Settings",
+      "dashboardCustomers": "Customers",
+      "dashboardProducts": "Products",
+      "dashboardCategories": "Categories",
+      "dashboardInventory": "Inventory",
+      "dashboardCashRegister": "Cash register",
+      "cashier": "Cashier",
+      "cashierPos": "POS",
+      "pos": "POS",
+      "docs": "API docs"
+    }
+  },
+  "home": {
+    "headline": "Hssabaty Point de vente",
+    "subhead": "Modern POS solution by Hssabaty, built for companies.",
+    "login": "Log in"
+  },
+  "auth": {
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Sign in with your email and password",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "emailPlaceholderHint": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordPlaceholderDots": "••••••••",
+    "rememberMe": "Remember me on this device",
+    "forgotPassword": "Forgot your password?",
+    "loginButton": "Log in",
+    "loginPending": "Signing in…",
+    "termsPrefix": "By clicking Continue, you agree to our",
+    "terms": "Terms of Service",
+    "and": "and our",
+    "privacy": "Privacy Policy",
+    "errors": {
+      "loginFailed": "Login failed"
+    }
+  },
+  "common": {
+    "redirecting": "Redirecting…",
+    "preparingDashboard": "Preparing your dashboard",
+    "loggedOut": "Logged out"
+  },
+  "resetPassword": {
+    "title": "Reset password",
+    "subtitle": "Enter your email and we’ll send you a link to reset your password.",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "emailPlaceholderHint": "Enter your email",
+    "submit": "Send reset link",
+    "submitPending": "Sending…",
+    "success": "If an account exists for this email, you will receive instructions shortly.",
+    "newTitle": "Set a new password",
+    "newSubtitle": "Choose a strong password (at least 8 characters).",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "newSubmit": "Update password",
+    "newSubmitPending": "Updating…",
+    "resetSuccess": "Your password has been updated. Please sign in.",
+    "missingToken": "This reset link is invalid. Please request a new one.",
+    "backToLogin": "Back to sign in",
+    "validationError": "Password does not meet all requirements.",
+    "strength": {
+      "label": "Strength",
+      "levels": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "rules": {
+        "min8": "At least 8 characters",
+        "upperLower": "Uppercase + lowercase letter",
+        "number": "At least 1 number",
+        "special": "At least 1 symbol"
+      }
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "cashierHome": {
+    "title": "Home dashboard",
+    "periods": {
+      "today": "Today",
+      "week": "This week",
+      "month": "This month"
+    },
+    "overview": {
+      "title": "Performance Overview",
+      "subtitle": "Track your business metrics over time",
+      "salesInsights": "Sales insights",
+      "totalSales": "Total Sales",
+      "transactions": "Transactions",
+      "avgBasket": "Avg. basket",
+      "noData": "No data found"
+    },
+    "kpi": {
+      "revenue": "Revenue",
+      "transactions": "Transactions",
+      "avgBasket": "Avg. basket",
+      "lowStock": "Low stock",
+      "credit": "Outstanding credit",
+      "sessions": "Active sessions",
+      "items": "items",
+      "vsLastPeriod": "vs last period"
+    },
+    "operations": {
+      "title": "Operations performance",
+      "topProducts": "Top products",
+      "topCategories": "Top categories",
+      "recentSales": "Recent sales",
+      "lowStockAlerts": "Low stock alerts",
+      "noProducts": "No products yet",
+      "noCategories": "No categories yet",
+      "noSales": "No sales yet",
+      "noAlerts": "No alerts",
+      "product": "Product",
+      "category": "Category",
+      "qty": "Qty",
+      "revenue": "Revenue",
+      "stock": "Stock",
+      "min": "Min",
+      "cashier": "Cashier",
+      "amount": "Amount",
+      "date": "Date"
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "openPos": "Open POS",
+      "openSession": "Open cash session",
+      "addProduct": "Add product",
+      "viewReports": "View reports"
+    }
+  },
+  "sidebar": {
+    "navGroup": "Menu",
+    "settingsGroup": "System",
+    "posLocations": "POS locations",
+    "selectLocation": "Select a location",
+    "noLocations": "No locations found",
+    "manageLocations": "Manage locations",
+    "nav": {
+      "pos": "Point of sale",
+      "cashRegister": "Cash register",
+      "customers": "Customers",
+      "products": "Products",
+      "categories": "Categories",
+      "inventory": "Inventory",
+      "sales": "Sales",
+      "reports": "Reports",
+      "settings": "Settings",
+      "support": "Technical support"
+    },
+    "support": {
+      "title": "Need help?",
+      "subtitle": "Contact our support team",
+      "chat": "Live chat",
+      "email": "Send email",
+      "docs": "Documentation"
+    },
+    "settings": {
+      "store": "Store settings",
+      "hardware": "Hardware (printer/scanner)",
+      "staff": "Staff & permissions",
+      "billing": "Billing & subscription"
+    }
+  },
+  "staff": {
+    "brand": {
+      "name": "Hssabaty POS",
+      "tagline": "Staff"
+    },
+    "status": { "online": "Online" },
+    "navGroup": { "label": "Menu" },
+    "nav": {
+      "pos": "Point of sale",
+      "products": "Products & categories",
+      "customers": "Customers",
+      "sales": "Sales",
+      "inventory": "Inventory",
+      "cashRegister": "Cash register",
+      "reports": "Reports",
+      "settings": "Settings"
+    },
+    "titles": {
+      "pos": "Create transaction",
+      "products": "Products & categories",
+      "customers": "Customers",
+      "sales": "Sales",
+      "inventory": "Inventory",
+      "cashRegister": "Cash register sessions",
+      "reports": "Reports & dashboard",
+      "settings": "Settings",
+      "home": "Staff dashboard"
+    },
+    "topbar": {
+      "search": "Search",
+      "searchStub": "Search (demo)",
+      "logout": "Log out"
+    },
+    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "Language" },
+    "theme": { "light": "Light", "dark": "Dark", "label": "Theme" },
+    "placeholders": {
+      "static": "Demo — no server yet"
+    },
+    "pos": {
+      "searchPlaceholder": "Search products",
+      "barcodePlaceholder": "Barcode / scanner",
+      "stock": "{count} in stock",
+      "categoryBadge": "Category",
+      "addToCart": "Add to cart",
+      "description": "Short description for display.",
+      "cartEmpty": "Cart is empty (demo).",
+      "resetOrder": "Reset order",
+      "detailTransaction": "Detail transaction",
+      "changePromo": "Change promo",
+      "promoNewUser": "New user promo (10%)",
+      "apply": "Apply",
+      "remove": "Remove",
+      "subTotal": "Sub-total",
+      "tax": "Tax (12%)",
+      "discount": "Discount",
+      "total": "Total",
+      "totalPayment": "Total payment",
+      "changeMethod": "Change method",
+      "paymentCredit": "Credit card",
+      "continue": "Continue",
+      "checkoutTitle": "Checkout (demo)",
+      "checkoutHint": "Payment and receipt — connect backend later",
+      "close": "Close",
+      "receipt": "Receipt preview",
+      "items": "Items",
+      "payPrint": "Pay & print (demo)",
+      "lineEach": "ea.",
+      "lineDetailA": "Size 42 · green",
+      "lineDetailB": "Size 40 · white",
+      "payCash": "Cash",
+      "payWallet": "Wallet",
+      "categories": {
+        "all": "All",
+        "allWithCount": "All product ({count})",
+        "shoes": "Shoes",
+        "shoesWithCount": "Shoes ({count})",
+        "clothing": "Clothing",
+        "clothingWithCount": "Clothing ({count})",
+        "others": "Other",
+        "othersWithCount": "Other ({count})"
+      }
+    }
+  }
+}
