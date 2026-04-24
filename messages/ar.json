@@ -148,6 +148,10 @@
   "sidebar": {
     "navGroup": "القائمة",
     "settingsGroup": "النظام",
+    "posLocations": "مواقع نقاط البيع",
+    "selectLocation": "اختر موقعاً",
+    "noLocations": "لا توجد مواقع",
+    "manageLocations": "إدارة المواقع",
     "nav": {
       "pos": "نقطة البيع",
       "cashRegister": "الصندوق",

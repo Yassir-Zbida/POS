@@ -4,7 +4,7 @@ import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 /** GET /api/v1/reports/sales
- * ?from= ?to= ?cashierId= ?groupBy=day|week|month
+ * ?from= ?to= ?cashierId= ?locationId= ?groupBy=day|week|month
  */
 export async function GET(request: Request) {
   try {
@@ -19,14 +19,16 @@ export async function GET(request: Request) {
     const from = searchParams.get("from") ? new Date(searchParams.get("from")!) : new Date(Date.now() - 30 * 86400000);
     const to = searchParams.get("to") ? new Date(searchParams.get("to")!) : new Date();
     const cashierId = searchParams.get("cashierId") ?? undefined;
+    const locationId = searchParams.get("locationId") ?? undefined;
 
     const where = {
       status: { not: "REFUNDED" as const },
       createdAt: { gte: from, lte: to },
       ...(cashierId ? { cashierId } : {}),
+      ...(locationId ? { locationId } : {}),
     };
 
-    const [sales, paymentBreakdown, topProducts, cashierBreakdown] = await Promise.all([
+    const [sales, paymentBreakdown, topProducts, cashierBreakdown, locationBreakdown] = await Promise.all([
       // Aggregate totals
       prisma.sale.aggregate({
         where,
@@ -61,6 +63,15 @@ export async function GET(request: Request) {
         _count: true,
         orderBy: { _sum: { totalAmount: "desc" } },
       }),
+
+      // Per-location breakdown
+      prisma.sale.groupBy({
+        by: ["locationId"],
+        where,
+        _sum: { totalAmount: true },
+        _count: true,
+        orderBy: { _sum: { totalAmount: "desc" } },
+      }),
     ]);
 
     // Enrich top products with names
@@ -77,6 +88,13 @@ export async function GET(request: Request) {
       select: { id: true, name: true },
     });
     const cashierMap = new Map(cashiers.map((c) => [c.id, c]));
+
+    const locationIds = locationBreakdown.map((l) => l.locationId).filter(Boolean) as string[];
+    const locations = await prisma.location.findMany({
+      where: { id: { in: locationIds } },
+      select: { id: true, name: true, city: true },
+    });
+    const locationMap = new Map(locations.map((l) => [l.id, l]));
 
     return NextResponse.json({
       period: { from, to },
@@ -101,6 +119,11 @@ export async function GET(request: Request) {
         cashier: cashierMap.get(c.cashierId ?? "") ?? { id: c.cashierId, name: "Unknown" },
         totalRevenue: c._sum.totalAmount,
         totalTransactions: c._count,
+      })),
+      locationBreakdown: locationBreakdown.map((l) => ({
+        location: locationMap.get(l.locationId ?? "") ?? { id: l.locationId, name: "Unknown", city: null },
+        totalRevenue: l._sum.totalAmount,
+        totalTransactions: l._count,
       })),
     });
   } catch (e) {

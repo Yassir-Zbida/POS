@@ -7,6 +7,7 @@ import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectio
 
 const openSessionSchema = z.object({
   floatOpen: z.number().min(0),
+  locationId: z.string().optional(),
   notes: z.string().optional(),
 });
 
@@ -18,6 +19,7 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status") as "OPEN" | "CLOSED" | null;
+    const locationId = searchParams.get("locationId") ?? undefined;
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
     const limit = Math.min(50, parseInt(searchParams.get("limit") ?? "20", 10));
     const skip = (page - 1) * limit;
@@ -25,6 +27,7 @@ export async function GET(request: Request) {
     const where = {
       cashierId: auth.user.role === "CASHIER" ? auth.user.id : undefined,
       ...(status ? { status } : {}),
+      ...(locationId ? { locationId } : {}),
     };
 
     const [sessions, total] = await Promise.all([
@@ -32,6 +35,7 @@ export async function GET(request: Request) {
         where,
         include: {
           cashier: { select: { id: true, name: true, email: true } },
+          location: { select: { id: true, name: true, city: true } },
           _count: { select: { sales: true, cashMovements: true } },
         },
         orderBy: { openedAt: "desc" },
@@ -73,8 +77,16 @@ export async function POST(request: Request) {
     }
 
     const session = await prisma.cashRegisterSession.create({
-      data: { cashierId: auth.user.id, floatOpen: parsed.data.floatOpen, notes: parsed.data.notes },
-      include: { cashier: { select: { id: true, name: true } } },
+      data: {
+        cashierId: auth.user.id,
+        locationId: parsed.data.locationId,
+        floatOpen: parsed.data.floatOpen,
+        notes: parsed.data.notes,
+      },
+      include: {
+        cashier: { select: { id: true, name: true } },
+        location: { select: { id: true, name: true, city: true } },
+      },
     });
 
     await writeAuditLog({

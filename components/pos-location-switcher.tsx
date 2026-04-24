@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { ChevronsUpDown, MapPin } from "lucide-react";
-import { useLocale } from "next-intl";
+import { ChevronsUpDown, MapPin, Plus } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
+import { useLocationStore, type ActiveLocation } from "@/lib/stores/location-store";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,24 +18,63 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 
-type PosLocation = {
+type ApiLocation = {
   id: string;
-  storeName: string;
-  locationName: string;
-  storeType: string;
+  name: string;
+  city: string | null;
 };
-
-const DEMO_LOCATIONS: readonly PosLocation[] = [
-  { id: "loc-1", storeName: "Hssabaty POS", storeType: "Retail", locationName: "Casablanca" },
-  { id: "loc-2", storeName: "Hssabaty POS", storeType: "Retail", locationName: "Rabat" },
-  { id: "loc-3", storeName: "Hssabaty POS", storeType: "Retail", locationName: "Marrakesh" },
-];
 
 export function PosLocationSwitcher() {
   const locale = useLocale() as Locale;
   const isRtl = locale === "ar";
-  const [active, setActive] = React.useState<PosLocation>(DEMO_LOCATIONS[0]);
+  const t = useTranslations("sidebar");
+
+  const { activeLocation, setActiveLocation } = useLocationStore();
+  const [locations, setLocations] = React.useState<ApiLocation[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    let cancelled = false;
+
+    async function fetchLocations() {
+      try {
+        const res = await fetch("/api/v1/locations?limit=50", {
+          credentials: "include",
+        });
+        if (!res.ok) return;
+        const data: { locations: ApiLocation[] } = await res.json();
+        if (cancelled) return;
+
+        setLocations(data.locations);
+
+        // Auto-select first location if nothing is stored yet
+        if (!activeLocation && data.locations.length > 0) {
+          setActiveLocation({
+            id: data.locations[0].id,
+            name: data.locations[0].name,
+            city: data.locations[0].city,
+          });
+        }
+      } catch {
+        // Network / auth errors — fail silently, keep stored selection
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchLocations();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function handleSelect(loc: ApiLocation) {
+    setActiveLocation({ id: loc.id, name: loc.name, city: loc.city });
+  }
+
+  const displayName = activeLocation?.name ?? "Hssabaty POS";
+  const displaySub = activeLocation?.city ?? t("selectLocation");
 
   return (
     <SidebarMenu>
@@ -53,14 +94,22 @@ export function PosLocationSwitcher() {
                 priority
               />
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{active.storeName}</span>
-                <span className="truncate text-xs text-muted-foreground">
-                  {active.storeType} - {active.locationName}
-                </span>
+                {loading ? (
+                  <>
+                    <Skeleton className="mb-1 h-3 w-24" />
+                    <Skeleton className="h-2.5 w-16" />
+                  </>
+                ) : (
+                  <>
+                    <span className="truncate font-semibold">{displayName}</span>
+                    <span className="truncate text-xs text-muted-foreground">{displaySub}</span>
+                  </>
+                )}
               </div>
               <ChevronsUpDown className={cn("ml-auto", isRtl && "ml-0 mr-auto")} />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             align="start"
@@ -68,28 +117,61 @@ export function PosLocationSwitcher() {
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
-              POS locations
+              {t("posLocations")}
             </DropdownMenuLabel>
-            {DEMO_LOCATIONS.map((loc) => (
-              <DropdownMenuItem
-                key={loc.id}
-                onClick={() => setActive(loc)}
-                className="gap-2 p-2"
-              >
-                <div className="flex size-6 items-center justify-center rounded-sm border bg-background">
-                  <MapPin className="size-4 shrink-0 text-muted-foreground" />
-                </div>
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-medium">{loc.locationName}</div>
-                  <div className="truncate text-xs text-muted-foreground">
-                    {loc.storeType} - {loc.storeName}
-                  </div>
-                </div>
+
+            {loading && (
+              <div className="space-y-1 p-2">
+                <Skeleton className="h-8 w-full rounded-md" />
+                <Skeleton className="h-8 w-full rounded-md" />
+              </div>
+            )}
+
+            {!loading && locations.length === 0 && (
+              <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+                {t("noLocations")}
               </DropdownMenuItem>
-            ))}
+            )}
+
+            {!loading &&
+              locations.map((loc) => (
+                <DropdownMenuItem
+                  key={loc.id}
+                  onClick={() => handleSelect(loc)}
+                  className="gap-2 p-2"
+                  data-active={activeLocation?.id === loc.id}
+                >
+                  <div
+                    className={cn(
+                      "flex size-6 items-center justify-center rounded-sm border bg-background",
+                      activeLocation?.id === loc.id && "border-primary bg-primary/10",
+                    )}
+                  >
+                    <MapPin
+                      className={cn(
+                        "size-4 shrink-0 text-muted-foreground",
+                        activeLocation?.id === loc.id && "text-primary",
+                      )}
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-medium">{loc.name}</div>
+                    {loc.city && (
+                      <div className="truncate text-xs text-muted-foreground">{loc.city}</div>
+                    )}
+                  </div>
+                  {activeLocation?.id === loc.id && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+              ))}
+
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2 text-muted-foreground">
-              Manage locations…
+            <DropdownMenuItem asChild className="gap-2 p-2 text-muted-foreground">
+              <Link href={`/${locale}/dashboard/settings/locations`}>
+                <Plus className="size-4" />
+                {t("manageLocations")}
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -97,4 +179,3 @@ export function PosLocationSwitcher() {
     </SidebarMenu>
   );
 }
-

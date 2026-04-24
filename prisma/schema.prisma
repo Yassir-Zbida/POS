@@ -83,6 +83,28 @@ enum NotificationType {
   STAFF_LOGIN
 }
 
+// ─────────────────────────────── Locations ───────────────────────────────────
+
+model Location {
+  id             String                @id @default(cuid())
+  name           String
+  address        String?
+  phone          String?
+  city           String?
+  isActive       Boolean               @default(true)
+  managerId      String?
+  manager        User?                 @relation("LocationManager", fields: [managerId], references: [id])
+  users          User[]                @relation("UserLocation")
+  sessions       CashRegisterSession[]
+  sales          Sale[]
+  purchaseOrders PurchaseOrder[]
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  @@index([managerId])
+  @@index([isActive])
+}
+
 // ─────────────────────────────── Auth / Users ────────────────────────────────
 
 model User {
@@ -99,6 +121,9 @@ model User {
   ownerManagerId      String?
   ownerManager        User?                @relation("ManagerCashiers", fields: [ownerManagerId], references: [id])
   cashiers            User[]               @relation("ManagerCashiers")
+  locationId          String?
+  location            Location?            @relation("UserLocation", fields: [locationId], references: [id])
+  managedLocations    Location[]           @relation("LocationManager")
   refreshTokens       RefreshToken[]
   passwordResetTokens PasswordResetToken[]
   auditActions        AuditLog[]           @relation("AuditActor")
@@ -110,6 +135,8 @@ model User {
   creditPayments      CreditPayment[]      @relation("CashierCreditPayments")
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
+
+  @@index([locationId])
 }
 
 model Subscription {
@@ -279,6 +306,8 @@ model CashRegisterSession {
   id            String            @id @default(cuid())
   cashierId     String
   cashier       User              @relation("SessionCashier", fields: [cashierId], references: [id])
+  locationId    String?
+  location      Location?         @relation(fields: [locationId], references: [id])
   status        CashSessionStatus @default(OPEN)
   floatOpen     Decimal           @db.Decimal(10, 2)
   floatClose    Decimal?          @db.Decimal(10, 2)
@@ -290,6 +319,7 @@ model CashRegisterSession {
   cashMovements CashMovement[]
 
   @@index([cashierId])
+  @@index([locationId])
   @@index([status])
 }
 
@@ -313,6 +343,8 @@ model Sale {
   id             String               @id @default(cuid())
   sessionId      String?
   session        CashRegisterSession? @relation(fields: [sessionId], references: [id])
+  locationId     String?
+  location       Location?            @relation(fields: [locationId], references: [id])
   cashierId      String?
   cashier        User?                @relation("CashierSales", fields: [cashierId], references: [id])
   customerId     String?
@@ -333,6 +365,7 @@ model Sale {
   updatedAt      DateTime             @updatedAt
 
   @@index([sessionId])
+  @@index([locationId])
   @@index([cashierId])
   @@index([customerId])
   @@index([createdAt])
@@ -394,6 +427,8 @@ model PurchaseOrder {
   id          String              @id @default(cuid())
   supplierId  String?
   supplier    Supplier?           @relation(fields: [supplierId], references: [id])
+  locationId  String?
+  location    Location?           @relation(fields: [locationId], references: [id])
   status      POStatus            @default(PENDING)
   totalCost   Decimal             @db.Decimal(10, 2)
   notes       String?
@@ -404,6 +439,7 @@ model PurchaseOrder {
   updatedAt   DateTime            @updatedAt
 
   @@index([supplierId])
+  @@index([locationId])
   @@index([status])
 }
 

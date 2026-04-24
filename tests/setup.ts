@@ -18,6 +18,7 @@ vi.mock("@/lib/prisma", () => ({
     purchaseOrder: { findMany: vi.fn(), findUnique: vi.fn(), create: vi.fn(), update: vi.fn(), count: vi.fn() },
     purchaseOrderItem: { findMany: vi.fn(), update: vi.fn() },
     notification: { findMany: vi.fn(), findUnique: vi.fn(), create: vi.fn(), update: vi.fn(), updateMany: vi.fn(), count: vi.fn() },
+    location: { findMany: vi.fn(), findUnique: vi.fn(), create: vi.fn(), update: vi.fn(), count: vi.fn() },
     user: { findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn() },
     subscription: { findUnique: vi.fn() },
     refreshToken: { create: vi.fn() },

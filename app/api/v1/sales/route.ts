@@ -15,6 +15,7 @@ const saleItemSchema = z.object({
 
 const createSaleSchema = z.object({
   sessionId: z.string().optional(),
+  locationId: z.string().optional(),
   customerId: z.string().optional(),
   couponId: z.string().optional(),
   items: z.array(saleItemSchema).min(1),
@@ -32,6 +33,7 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const sessionId = searchParams.get("sessionId") ?? undefined;
+    const locationId = searchParams.get("locationId") ?? undefined;
     const customerId = searchParams.get("customerId") ?? undefined;
     const from = searchParams.get("from");
     const to = searchParams.get("to");
@@ -41,6 +43,7 @@ export async function GET(request: Request) {
 
     const where = {
       ...(sessionId ? { sessionId } : {}),
+      ...(locationId ? { locationId } : {}),
       ...(customerId ? { customerId } : {}),
       ...(auth.user.role === "CASHIER" ? { cashierId: auth.user.id } : {}),
       ...((from || to)
@@ -87,7 +90,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 422 });
     }
 
-    const { items, sessionId, customerId, couponId, paymentMethod, amountTendered, discountAmt, notes } = parsed.data;
+    const { items, sessionId, locationId, customerId, couponId, paymentMethod, amountTendered, discountAmt, notes } = parsed.data;
 
     // Validate products + build item data
     const productIds = items.map((i) => i.productId);
@@ -146,6 +149,7 @@ export async function POST(request: Request) {
       const newSale = await tx.sale.create({
         data: {
           sessionId,
+          locationId,
           cashierId: auth.user.id,
           customerId,
           couponId,

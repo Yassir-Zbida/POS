@@ -13,6 +13,7 @@ const poItemSchema = z.object({
 
 const createPoSchema = z.object({
   supplierId: z.string().optional(),
+  locationId: z.string().optional(),
   notes: z.string().optional(),
   items: z.array(poItemSchema).min(1),
 });
@@ -28,11 +29,15 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status") ?? undefined;
+    const locationId = searchParams.get("locationId") ?? undefined;
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
     const limit = Math.min(50, parseInt(searchParams.get("limit") ?? "20", 10));
     const skip = (page - 1) * limit;
 
-    const where = status ? { status: status as never } : {};
+    const where = {
+      ...(status ? { status: status as never } : {}),
+      ...(locationId ? { locationId } : {}),
+    };
 
     const [orders, total] = await Promise.all([
       prisma.purchaseOrder.findMany({
@@ -74,12 +79,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 422 });
     }
 
-    const { supplierId, notes, items } = parsed.data;
+    const { supplierId, locationId, notes, items } = parsed.data;
     const totalCost = items.reduce((sum, i) => sum + i.qtyOrdered * i.unitCost, 0);
 
     const order = await prisma.purchaseOrder.create({
       data: {
         supplierId,
+        locationId,
         notes,
         totalCost,
         createdById: auth.user.id,

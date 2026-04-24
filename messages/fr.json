@@ -148,6 +148,10 @@
   "sidebar": {
     "navGroup": "Menu",
     "settingsGroup": "Système",
+    "posLocations": "Points de vente",
+    "selectLocation": "Sélectionner un point de vente",
+    "noLocations": "Aucun point de vente trouvé",
+    "manageLocations": "Gérer les points de vente",
     "nav": {
       "pos": "Point de vente",
       "cashRegister": "Caisse",
