@@ -38,9 +38,9 @@ export default async function ForgotPasswordPage({
       >
         <ModeToggle />
       </div>
-      <div className="relative z-10 flex w-full max-w-sm flex-col gap-6">
+      <div className="relative z-10 flex w-full max-w-sm flex-col justify-center gap-6 min-h-[28rem]">
         <Link href="/" className="flex items-center justify-center self-center">
-          <BrandLogo locale={locale} priority />
+          <BrandLogo locale={locale} width={64} height={16} priority />
         </Link>
         <ForgotPasswordForm />
       </div>
