@@ -16,6 +16,8 @@
       "dashboardCategories": "التصنيفات",
       "dashboardInventory": "المخزون",
       "dashboardCashRegister": "الصندوق",
+      "cashier": "الكاشير",
+      "cashierPos": "نقطة البيع",
       "pos": "نقطة البيع",
       "docs": "توثيق API"
     }
@@ -45,6 +47,11 @@
     "errors": {
       "loginFailed": "فشل تسجيل الدخول"
     }
+  },
+  "common": {
+    "redirecting": "جارٍ التحويل…",
+    "preparingDashboard": "جارٍ تجهيز لوحة التحكم",
+    "loggedOut": "تم تسجيل الخروج"
   },
   "resetPassword": {
     "title": "إعادة تعيين كلمة المرور",
@@ -82,6 +89,89 @@
     },
     "errors": {
       "generic": "حدث خطأ. حاول مرة أخرى."
+    }
+  },
+  "cashierHome": {
+    "title": "لوحة التحكم",
+    "periods": {
+      "today": "اليوم",
+      "week": "هذا الأسبوع",
+      "month": "هذا الشهر"
+    },
+    "overview": {
+      "title": "نظرة عامة على الأداء",
+      "subtitle": "تتبع مؤشرات عملك",
+      "salesInsights": "ملخص المبيعات",
+      "totalSales": "إجمالي المبيعات",
+      "transactions": "المعاملات",
+      "avgBasket": "متوسط السلة",
+      "noData": "لا توجد بيانات"
+    },
+    "kpi": {
+      "revenue": "الإيرادات",
+      "transactions": "المعاملات",
+      "avgBasket": "متوسط السلة",
+      "lowStock": "مخزون منخفض",
+      "credit": "الديون المعلقة",
+      "sessions": "الجلسات النشطة",
+      "items": "منتج",
+      "vsLastPeriod": "مقارنة بالفترة السابقة"
+    },
+    "operations": {
+      "title": "الأداء التشغيلي",
+      "topProducts": "أفضل المنتجات",
+      "topCategories": "أفضل التصنيفات",
+      "recentSales": "المبيعات الأخيرة",
+      "lowStockAlerts": "تنبيهات المخزون",
+      "noProducts": "لا توجد منتجات",
+      "noCategories": "لا توجد تصنيفات",
+      "noSales": "لا توجد مبيعات",
+      "noAlerts": "لا توجد تنبيهات",
+      "product": "المنتج",
+      "category": "التصنيف",
+      "qty": "الكمية",
+      "revenue": "الإيرادات",
+      "stock": "المخزون",
+      "min": "الحد الأدنى",
+      "cashier": "الكاشير",
+      "amount": "المبلغ",
+      "date": "التاريخ"
+    },
+    "quickActions": {
+      "title": "إجراءات سريعة",
+      "openPos": "فتح نقطة البيع",
+      "openSession": "فتح جلسة صندوق",
+      "addProduct": "إضافة منتج",
+      "viewReports": "عرض التقارير"
+    }
+  },
+  "sidebar": {
+    "navGroup": "القائمة",
+    "settingsGroup": "النظام",
+    "nav": {
+      "pos": "نقطة البيع",
+      "cashRegister": "الصندوق",
+      "customers": "العملاء",
+      "products": "المنتجات",
+      "categories": "التصنيفات",
+      "inventory": "المخزون",
+      "sales": "المبيعات",
+      "reports": "التقارير",
+      "settings": "الإعدادات",
+      "support": "الدعم الفني"
+    },
+    "support": {
+      "title": "هل تحتاج مساعدة؟",
+      "subtitle": "تواصل مع فريق الدعم",
+      "chat": "دردشة مباشرة",
+      "email": "إرسال بريد إلكتروني",
+      "docs": "التوثيق"
+    },
+    "settings": {
+      "store": "إعدادات المتجر",
+      "hardware": "الأجهزة (طابعة/ماسح)",
+      "staff": "الموظفون والصلاحيات",
+      "billing": "الفوترة والاشتراك"
     }
   },
   "staff": {

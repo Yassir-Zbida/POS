@@ -16,6 +16,8 @@
       "dashboardCategories": "Categories",
       "dashboardInventory": "Inventory",
       "dashboardCashRegister": "Cash register",
+      "cashier": "Cashier",
+      "cashierPos": "POS",
       "pos": "POS",
       "docs": "API docs"
     }
@@ -45,6 +47,11 @@
     "errors": {
       "loginFailed": "Login failed"
     }
+  },
+  "common": {
+    "redirecting": "Redirecting…",
+    "preparingDashboard": "Preparing your dashboard",
+    "loggedOut": "Logged out"
   },
   "resetPassword": {
     "title": "Reset password",
@@ -82,6 +89,89 @@
     },
     "errors": {
       "generic": "Something went wrong. Please try again."
+    }
+  },
+  "cashierHome": {
+    "title": "Home dashboard",
+    "periods": {
+      "today": "Today",
+      "week": "This week",
+      "month": "This month"
+    },
+    "overview": {
+      "title": "Performance Overview",
+      "subtitle": "Track your business metrics over time",
+      "salesInsights": "Sales insights",
+      "totalSales": "Total Sales",
+      "transactions": "Transactions",
+      "avgBasket": "Avg. basket",
+      "noData": "No data found"
+    },
+    "kpi": {
+      "revenue": "Revenue",
+      "transactions": "Transactions",
+      "avgBasket": "Avg. basket",
+      "lowStock": "Low stock",
+      "credit": "Outstanding credit",
+      "sessions": "Active sessions",
+      "items": "items",
+      "vsLastPeriod": "vs last period"
+    },
+    "operations": {
+      "title": "Operations performance",
+      "topProducts": "Top products",
+      "topCategories": "Top categories",
+      "recentSales": "Recent sales",
+      "lowStockAlerts": "Low stock alerts",
+      "noProducts": "No products yet",
+      "noCategories": "No categories yet",
+      "noSales": "No sales yet",
+      "noAlerts": "No alerts",
+      "product": "Product",
+      "category": "Category",
+      "qty": "Qty",
+      "revenue": "Revenue",
+      "stock": "Stock",
+      "min": "Min",
+      "cashier": "Cashier",
+      "amount": "Amount",
+      "date": "Date"
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "openPos": "Open POS",
+      "openSession": "Open cash session",
+      "addProduct": "Add product",
+      "viewReports": "View reports"
+    }
+  },
+  "sidebar": {
+    "navGroup": "Menu",
+    "settingsGroup": "System",
+    "nav": {
+      "pos": "Point of sale",
+      "cashRegister": "Cash register",
+      "customers": "Customers",
+      "products": "Products",
+      "categories": "Categories",
+      "inventory": "Inventory",
+      "sales": "Sales",
+      "reports": "Reports",
+      "settings": "Settings",
+      "support": "Technical support"
+    },
+    "support": {
+      "title": "Need help?",
+      "subtitle": "Contact our support team",
+      "chat": "Live chat",
+      "email": "Send email",
+      "docs": "Documentation"
+    },
+    "settings": {
+      "store": "Store settings",
+      "hardware": "Hardware (printer/scanner)",
+      "staff": "Staff & permissions",
+      "billing": "Billing & subscription"
     }
   },
   "staff": {

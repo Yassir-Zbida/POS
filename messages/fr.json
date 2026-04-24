@@ -16,6 +16,8 @@
       "dashboardCategories": "Catégories",
       "dashboardInventory": "Inventaire",
       "dashboardCashRegister": "Caisse",
+      "cashier": "Caissier",
+      "cashierPos": "POS",
       "pos": "POS",
       "docs": "Docs API"
     }
@@ -45,6 +47,11 @@
     "errors": {
       "loginFailed": "Échec de la connexion"
     }
+  },
+  "common": {
+    "redirecting": "Redirection…",
+    "preparingDashboard": "Préparation de votre tableau de bord",
+    "loggedOut": "Déconnecté"
   },
   "resetPassword": {
     "title": "Réinitialiser le mot de passe",
@@ -82,6 +89,89 @@
     },
     "errors": {
       "generic": "Une erreur s'est produite. Veuillez réessayer."
+    }
+  },
+  "cashierHome": {
+    "title": "Tableau de bord",
+    "periods": {
+      "today": "Aujourd'hui",
+      "week": "Cette semaine",
+      "month": "Ce mois"
+    },
+    "overview": {
+      "title": "Aperçu des performances",
+      "subtitle": "Suivez vos indicateurs commerciaux",
+      "salesInsights": "Aperçu des ventes",
+      "totalSales": "Total des ventes",
+      "transactions": "Transactions",
+      "avgBasket": "Panier moyen",
+      "noData": "Aucune donnée"
+    },
+    "kpi": {
+      "revenue": "Chiffre d'affaires",
+      "transactions": "Transactions",
+      "avgBasket": "Panier moyen",
+      "lowStock": "Stock faible",
+      "credit": "Créances clients",
+      "sessions": "Sessions actives",
+      "items": "articles",
+      "vsLastPeriod": "vs période préc."
+    },
+    "operations": {
+      "title": "Performance opérationnelle",
+      "topProducts": "Top produits",
+      "topCategories": "Top catégories",
+      "recentSales": "Ventes récentes",
+      "lowStockAlerts": "Alertes stock faible",
+      "noProducts": "Aucun produit",
+      "noCategories": "Aucune catégorie",
+      "noSales": "Aucune vente",
+      "noAlerts": "Aucune alerte",
+      "product": "Produit",
+      "category": "Catégorie",
+      "qty": "Qté",
+      "revenue": "CA",
+      "stock": "Stock",
+      "min": "Min",
+      "cashier": "Caissier",
+      "amount": "Montant",
+      "date": "Date"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "openPos": "Ouvrir la caisse",
+      "openSession": "Ouvrir une session",
+      "addProduct": "Ajouter un produit",
+      "viewReports": "Voir les rapports"
+    }
+  },
+  "sidebar": {
+    "navGroup": "Menu",
+    "settingsGroup": "Système",
+    "nav": {
+      "pos": "Point de vente",
+      "cashRegister": "Caisse",
+      "customers": "Clients",
+      "products": "Produits",
+      "categories": "Catégories",
+      "inventory": "Inventaire",
+      "sales": "Ventes",
+      "reports": "Rapports",
+      "settings": "Paramètres",
+      "support": "Support technique"
+    },
+    "support": {
+      "title": "Besoin d'aide ?",
+      "subtitle": "Contactez notre équipe support",
+      "chat": "Chat en direct",
+      "email": "Envoyer un e-mail",
+      "docs": "Documentation"
+    },
+    "settings": {
+      "store": "Paramètres du magasin",
+      "hardware": "Matériel (imprimante/scanner)",
+      "staff": "Personnel & permissions",
+      "billing": "Facturation & abonnement"
     }
   },
   "staff": {
