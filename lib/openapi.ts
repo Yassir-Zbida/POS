@@ -42,7 +42,7 @@ export const openApiDocument = {
     title: "saas-pos API",
     version: "1.0.0",
     description:
-      "Authentication, health, platform admin, manager, and docs metadata. v1 tenant routes are documented in a follow-up commit.",
+      "Full HTTP API for saas-pos: auth, health, admin, manager, and v1 POS/catalog/inventory routes. Most routes require a Bearer access token.",
   },
   servers: [{ url: "http://localhost:3000/api" }],
   tags: [
@@ -51,6 +51,13 @@ export const openApiDocument = {
     { name: "Docs", description: "OpenAPI JSON (access may be restricted by environment)" },
     { name: "Admin", description: "Platform admin" },
     { name: "Manager", description: "Store manager / staff management" },
+    { name: "v1 — Business & locations", description: "Tenant business profile and sites" },
+    { name: "v1 — Catalog", description: "Categories, products, variants, attributes" },
+    { name: "v1 — Customers & suppliers", description: "CRM and purchasing parties" },
+    { name: "v1 — Inventory", description: "Stock movements, adjustments, alerts" },
+    { name: "v1 — Purchasing", description: "Purchase orders and receiving" },
+    { name: "v1 — POS", description: "Sales, sessions, parked carts, discounts" },
+    { name: "v1 — Reports & notifications", description: "Reporting and in-app notifications" },
   ],
   components: {
     securitySchemes: {
@@ -110,6 +117,166 @@ export const openApiDocument = {
     },
     "/manager/cashiers/{id}/status": {
       patch: op("Manager", "Update cashier status", { ...r.ok, ...r.forbidden, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/attributes": {
+      get: op("v1 — Catalog", "List attributes", r.ok),
+      post: op("v1 — Catalog", "Create attribute", r.created),
+    },
+    "/v1/attributes/{id}": {
+      get: op("v1 — Catalog", "Get attribute", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — Catalog", "Update attribute", r.ok, { parameters: pathParams("id") }),
+      delete: op("v1 — Catalog", "Delete attribute", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/attributes/{id}/values": {
+      post: op("v1 — Catalog", "Add attribute value", r.created, { parameters: pathParams("id") }),
+    },
+    "/v1/attributes/{id}/values/{valueId}": {
+      put: op("v1 — Catalog", "Update attribute value", r.ok, { parameters: pathParams("id", "valueId") }),
+      delete: op("v1 — Catalog", "Delete attribute value", { ...r.ok, ...r.notFound }, { parameters: pathParams("id", "valueId") }),
+    },
+    "/v1/business": {
+      get: op("v1 — Business & locations", "Get business profile", r.ok),
+      put: op("v1 — Business & locations", "Update business profile", r.ok),
+    },
+    "/v1/categories": {
+      get: op("v1 — Catalog", "List categories", r.ok),
+      post: op("v1 — Catalog", "Create category", r.created),
+    },
+    "/v1/categories/{id}": {
+      get: op("v1 — Catalog", "Get category", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — Catalog", "Update category", r.ok, { parameters: pathParams("id") }),
+      delete: op("v1 — Catalog", "Delete category", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/customers": {
+      get: op("v1 — Customers & suppliers", "List customers", r.ok),
+      post: op("v1 — Customers & suppliers", "Create customer", r.created),
+    },
+    "/v1/customers/{id}": {
+      get: op("v1 — Customers & suppliers", "Get customer", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — Customers & suppliers", "Update customer", r.ok, { parameters: pathParams("id") }),
+      delete: op("v1 — Customers & suppliers", "Delete customer", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/customers/{id}/credit": {
+      get: op("v1 — Customers & suppliers", "Get customer credit balance", r.ok, { parameters: pathParams("id") }),
+      post: op("v1 — Customers & suppliers", "Adjust or record customer credit", r.ok, { parameters: pathParams("id") }),
+    },
+    "/v1/discounts/coupons": {
+      get: op("v1 — POS", "List discount coupons", r.ok),
+      post: op("v1 — POS", "Create discount coupon", r.created),
+    },
+    "/v1/discounts/coupons/{id}": {
+      get: op("v1 — POS", "Get discount coupon", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — POS", "Update discount coupon", r.ok, { parameters: pathParams("id") }),
+      delete: op("v1 — POS", "Delete discount coupon", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/discounts/validate": {
+      post: op("v1 — POS", "Validate a discount or coupon for the cart", r.ok),
+    },
+    "/v1/inventory/adjust": {
+      post: op("v1 — Inventory", "Adjust inventory (manual stock change)", r.ok),
+    },
+    "/v1/inventory/low-stock": {
+      get: op("v1 — Inventory", "List low-stock items", r.ok),
+    },
+    "/v1/inventory/movements": {
+      get: op("v1 — Inventory", "List inventory movements", r.ok),
+    },
+    "/v1/locations": {
+      get: op("v1 — Business & locations", "List locations", r.ok),
+      post: op("v1 — Business & locations", "Create location", r.created),
+    },
+    "/v1/locations/{id}": {
+      get: op("v1 — Business & locations", "Get location", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — Business & locations", "Update location", r.ok, { parameters: pathParams("id") }),
+      delete: op("v1 — Business & locations", "Delete location", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/notifications": {
+      get: op("v1 — Reports & notifications", "List notifications", r.ok),
+    },
+    "/v1/notifications/read-all": {
+      patch: op("v1 — Reports & notifications", "Mark all notifications as read", r.ok),
+    },
+    "/v1/notifications/{id}/read": {
+      patch: op("v1 — Reports & notifications", "Mark one notification as read", r.ok, { parameters: pathParams("id") }),
+    },
+    "/v1/pos/parked-carts": {
+      get: op("v1 — POS", "List parked carts", r.ok),
+      post: op("v1 — POS", "Create parked cart", r.created),
+    },
+    "/v1/pos/parked-carts/{id}": {
+      get: op("v1 — POS", "Get parked cart", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      delete: op("v1 — POS", "Delete parked cart", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/products": {
+      get: op("v1 — Catalog", "List products", r.ok),
+      post: op("v1 — Catalog", "Create product", r.created),
+    },
+    "/v1/products/{id}": {
+      get: op("v1 — Catalog", "Get product", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — Catalog", "Update product", r.ok, { parameters: pathParams("id") }),
+      delete: op("v1 — Catalog", "Delete product", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/products/{id}/variants": {
+      get: op("v1 — Catalog", "List product variants", r.ok, { parameters: pathParams("id") }),
+      post: op("v1 — Catalog", "Create product variant", r.created, { parameters: pathParams("id") }),
+    },
+    "/v1/products/{id}/variants/{variantId}": {
+      get: op("v1 — Catalog", "Get product variant", { ...r.ok, ...r.notFound }, { parameters: pathParams("id", "variantId") }),
+      put: op("v1 — Catalog", "Update product variant", r.ok, { parameters: pathParams("id", "variantId") }),
+      delete: op("v1 — Catalog", "Delete product variant", { ...r.ok, ...r.notFound }, { parameters: pathParams("id", "variantId") }),
+    },
+    "/v1/purchase-orders": {
+      get: op("v1 — Purchasing", "List purchase orders", r.ok),
+      post: op("v1 — Purchasing", "Create purchase order", r.created),
+    },
+    "/v1/purchase-orders/{id}": {
+      get: op("v1 — Purchasing", "Get purchase order", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — Purchasing", "Update purchase order", r.ok, { parameters: pathParams("id") }),
+    },
+    "/v1/purchase-orders/{id}/receive": {
+      post: op("v1 — Purchasing", "Receive stock against a purchase order", r.ok, { parameters: pathParams("id") }),
+    },
+    "/v1/reports/customers": {
+      get: op("v1 — Reports & notifications", "Customer report", r.ok),
+    },
+    "/v1/reports/inventory": {
+      get: op("v1 — Reports & notifications", "Inventory report", r.ok),
+    },
+    "/v1/reports/sales": {
+      get: op("v1 — Reports & notifications", "Sales report", r.ok),
+    },
+    "/v1/sales": {
+      get: op("v1 — POS", "List sales", r.ok),
+      post: op("v1 — POS", "Create sale (checkout)", { ...r.created, ...r.badRequest, ...r.conflict }),
+    },
+    "/v1/sales/{id}": {
+      get: op("v1 — POS", "Get sale", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/sales/{id}/refund": {
+      post: op("v1 — POS", "Refund a sale", r.ok, { parameters: pathParams("id") }),
+    },
+    "/v1/sessions": {
+      get: op("v1 — POS", "List register/cashier sessions", r.ok),
+      post: op("v1 — POS", "Open session", r.created),
+    },
+    "/v1/sessions/{id}": {
+      get: op("v1 — POS", "Get session", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+    },
+    "/v1/sessions/{id}/close": {
+      post: op("v1 — POS", "Close session", r.ok, { parameters: pathParams("id") }),
+    },
+    "/v1/sessions/{id}/movements": {
+      get: op("v1 — POS", "List session cash movements", r.ok, { parameters: pathParams("id") }),
+      post: op("v1 — POS", "Record session cash movement", { ...r.created, ...r.badRequest }, { parameters: pathParams("id") }),
+    },
+    "/v1/suppliers": {
+      get: op("v1 — Customers & suppliers", "List suppliers", r.ok),
+      post: op("v1 — Customers & suppliers", "Create supplier", r.created),
+    },
+    "/v1/suppliers/{id}": {
+      get: op("v1 — Customers & suppliers", "Get supplier", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
+      put: op("v1 — Customers & suppliers", "Update supplier", r.ok, { parameters: pathParams("id") }),
+      delete: op("v1 — Customers & suppliers", "Delete supplier", { ...r.ok, ...r.notFound }, { parameters: pathParams("id") }),
     },
   },
 } as const;
