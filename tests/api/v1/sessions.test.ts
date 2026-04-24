@@ -9,6 +9,8 @@ const MOCK_SESSION = {
   id: "sess-1",
   cashierId: CASHIER_USER.id,
   cashier: { id: CASHIER_USER.id, name: CASHIER_USER.name },
+  location: { id: "loc-1", name: "Casablanca", city: "Casablanca" },
+  locationId: "loc-1",
   status: "OPEN",
   floatOpen: 500,
   floatClose: null,
@@ -34,6 +36,23 @@ describe("POST /api/v1/sessions — open session", () => {
     expect(json.session.floatOpen).toBe(500);
   });
 
+  it("stores locationId when provided", async () => {
+    vi.mocked(prisma.cashRegisterSession.findFirst).mockResolvedValue(null);
+    vi.mocked(prisma.cashRegisterSession.create).mockResolvedValue(MOCK_SESSION as never);
+
+    const req = makeRequest("POST", "/api/v1/sessions", { floatOpen: 500, locationId: "loc-1" });
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(201);
+    expect(vi.mocked(prisma.cashRegisterSession.create)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ locationId: "loc-1" }),
+      }),
+    );
+    expect(json.session.location.id).toBe("loc-1");
+  });
+
   it("returns 409 if cashier already has open session", async () => {
     vi.mocked(prisma.cashRegisterSession.findFirst).mockResolvedValue(MOCK_SESSION as never);
 
@@ -50,6 +69,53 @@ describe("POST /api/v1/sessions — open session", () => {
     const res = await POST(req);
 
     expect(res.status).toBe(422);
+  });
+});
+
+describe("GET /api/v1/sessions", () => {
+  beforeEach(() => { vi.clearAllMocks(); mockManagerAuth(); });
+
+  it("returns all sessions for managers", async () => {
+    vi.mocked(prisma.cashRegisterSession.findMany).mockResolvedValue([MOCK_SESSION] as never);
+    vi.mocked(prisma.cashRegisterSession.count).mockResolvedValue(1);
+
+    const res = await GET(makeRequest("GET", "/api/v1/sessions"));
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.sessions).toHaveLength(1);
+    expect(json.meta.total).toBe(1);
+  });
+
+  it("filters sessions by locationId", async () => {
+    vi.mocked(prisma.cashRegisterSession.findMany).mockResolvedValue([MOCK_SESSION] as never);
+    vi.mocked(prisma.cashRegisterSession.count).mockResolvedValue(1);
+
+    const res = await GET(makeRequest("GET", "/api/v1/sessions?locationId=loc-1"));
+    await res.json();
+
+    expect(res.status).toBe(200);
+    expect(vi.mocked(prisma.cashRegisterSession.findMany)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ locationId: "loc-1" }),
+      }),
+    );
+  });
+
+  it("cashier only sees their own sessions", async () => {
+    vi.clearAllMocks();
+    mockCashierAuth();
+    vi.mocked(prisma.cashRegisterSession.findMany).mockResolvedValue([MOCK_SESSION] as never);
+    vi.mocked(prisma.cashRegisterSession.count).mockResolvedValue(1);
+
+    const res = await GET(makeRequest("GET", "/api/v1/sessions"));
+    await res.json();
+
+    expect(vi.mocked(prisma.cashRegisterSession.findMany)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ cashierId: CASHIER_USER.id }),
+      }),
+    );
   });
 });
 
