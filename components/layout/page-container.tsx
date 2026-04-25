@@ -1,3 +1,13 @@
-export function PageContainer({ children }: { children: React.ReactNode }) {
-  return <section className="p-6">{children}</section>;
+export function PageContainer({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={`p-3 sm:p-4 md:p-6 ${className ?? ""}`}>
+      {children}
+    </section>
+  );
 }
