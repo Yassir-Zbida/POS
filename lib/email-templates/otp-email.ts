@@ -1,7 +1,7 @@
 import { getAppUrl } from "@/lib/reset-password";
 import { OTP_TTL_MS } from "@/lib/otp-challenge";
 
-export type OtpEmailPurpose = "LOGIN" | "REGISTER" | "VERIFY_PHONE";
+export type OtpEmailPurpose = "LOGIN" | "LOGIN_2FA" | "REGISTER" | "VERIFY_PHONE";
 
 export function buildOtpEmail(input: {
   locale: string;
@@ -73,9 +73,11 @@ function getStrings(locale: string, purpose: OtpEmailPurpose, expiryMinutes: num
   const expiryEn = expiryMinutes === 1 ? "1 minute" : `${expiryMinutes} minutes`;
   const expiryAr = expiryMinutes === 1 ? "دقيقة واحدة" : `${expiryMinutes} دقائق`;
 
+  const isLogin = purpose === "LOGIN" || purpose === "LOGIN_2FA";
+
   if (locale === "fr") {
     const head =
-      purpose === "LOGIN"
+      isLogin
         ? {
             subject: "Votre code de connexion",
             title: "Connexion sécurisée",
@@ -108,7 +110,7 @@ function getStrings(locale: string, purpose: OtpEmailPurpose, expiryMinutes: num
 
   if (locale === "ar") {
     const head =
-      purpose === "LOGIN"
+      isLogin
         ? {
             subject: "رمز تسجيل الدخول",
             title: "تسجيل دخول آمن",
@@ -140,7 +142,7 @@ function getStrings(locale: string, purpose: OtpEmailPurpose, expiryMinutes: num
   }
 
   const head =
-    purpose === "LOGIN"
+    isLogin
       ? {
           subject: "Your sign-in code",
           title: "Secure sign-in",

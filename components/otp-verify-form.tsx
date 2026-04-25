@@ -162,7 +162,11 @@ export function OtpVerifyForm({
         | { error?: string };
 
       if (!res.ok) {
-        toast.error(typeof data.error === "string" ? data.error : t("errors.verifyFailed"));
+        toast.error(
+          "error" in data && typeof data.error === "string"
+            ? data.error
+            : t("errors.verifyFailed")
+        );
         return;
       }
       if (

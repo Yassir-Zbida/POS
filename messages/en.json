@@ -156,6 +156,23 @@
       "generic": "Something went wrong. Please try again."
     }
   },
+  "errors": {
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you’re looking for doesn’t exist or was moved."
+    },
+    "unexpected": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. You can try again or go back home.",
+      "reference": "Reference:"
+    },
+    "actions": {
+      "tryAgain": "Try again",
+      "home": "Go to home",
+      "dashboard": "Open dashboard",
+      "back": "Go back"
+    }
+  },
   "cashierHome": {
     "title": "Home dashboard",
     "periods": {

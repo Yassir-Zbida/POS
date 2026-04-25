@@ -1,0 +1,202 @@
+"use client";
+
+import * as React from "react";
+import Image from "next/image";
+import { Globe, ChevronDown, Moon, Sun } from "lucide-react";
+
+import { ThemeProvider } from "@/components/theme-provider";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+type Lang = "fr" | "en" | "ar";
+
+const COPY: Record<Lang, { title: string; description: string; reload: string; reference: string; themeLight: string; themeDark: string; langs: Record<Lang, string> }> = {
+  fr: {
+    title: "Erreur inattendue",
+    description: "Un problème critique est survenu. Veuillez recharger la page.",
+    reload: "Recharger",
+    reference: "Référence :",
+    themeLight: "Clair",
+    themeDark: "Sombre",
+    langs: { fr: "Français", en: "English", ar: "العربية" },
+  },
+  en: {
+    title: "Unexpected error",
+    description: "A critical error occurred. Please reload the page.",
+    reload: "Reload",
+    reference: "Reference:",
+    themeLight: "Light",
+    themeDark: "Dark",
+    langs: { fr: "Français", en: "English", ar: "العربية" },
+  },
+  ar: {
+    title: "حدث خطأ غير متوقع",
+    description: "حدثت مشكلة حرجة. يرجى إعادة تحميل الصفحة.",
+    reload: "إعادة تحميل",
+    reference: "المرجع:",
+    themeLight: "فاتح",
+    themeDark: "داكن",
+    langs: { fr: "Français", en: "English", ar: "العربية" },
+  },
+};
+
+const SHORT: Record<Lang, string> = { fr: "FR", en: "EN", ar: "ع" };
+const LOCALES: Lang[] = ["fr", "en", "ar"];
+
+function readLang(): Lang {
+  if (typeof document === "undefined") return "en";
+  const raw = (document.documentElement.lang || "").toLowerCase().split("-")[0];
+  if (raw === "fr" || raw === "en" || raw === "ar") return raw as Lang;
+  const seg = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+  if (seg === "fr" || seg === "en" || seg === "ar") return seg as Lang;
+  return "en";
+}
+
+function InnerGlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  const [lang, setLang] = React.useState<Lang>("en");
+  const [isDark, setIsDark] = React.useState(false);
+
+  React.useEffect(() => {
+    setLang(readLang());
+    setIsDark(document.documentElement.classList.contains("dark"));
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }, [error]);
+
+  function toggleTheme() {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle("dark", next);
+  }
+
+  const c = COPY[lang];
+  const isRtl = lang === "ar";
+
+  return (
+    <div
+      dir={isRtl ? "rtl" : "ltr"}
+      className="relative flex min-h-svh flex-col items-center justify-center gap-6 overflow-y-auto bg-muted px-4 py-8 pb-24 sm:p-6 sm:pb-24 md:p-10"
+    >
+      {/* Mode toggle */}
+      <div
+        className={`absolute top-[max(1rem,env(safe-area-inset-top,1rem))] z-20 ${
+          isRtl
+            ? "left-[max(1rem,env(safe-area-inset-left,1rem))]"
+            : "right-[max(1rem,env(safe-area-inset-right,1rem))]"
+        }`}
+      >
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative size-8 overflow-hidden"
+          aria-label={isDark ? c.themeLight : c.themeDark}
+          onClick={toggleTheme}
+        >
+          <Sun className="size-4 scale-100 rotate-0 transition-all duration-500 ease-in-out dark:scale-0 dark:-rotate-90" />
+          <Moon className="absolute size-4 scale-0 rotate-90 transition-all duration-500 ease-in-out dark:scale-100 dark:rotate-0" />
+        </Button>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex w-full max-w-sm flex-col items-center gap-6 text-center">
+        <Image
+          src="/assets/server-failure_syqp.svg"
+          alt=""
+          width={260}
+          height={219}
+          priority
+          aria-hidden="true"
+          className="w-52 sm:w-64 dark:opacity-80"
+        />
+
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">{c.title}</h1>
+          <p className="text-sm text-muted-foreground">{c.description}</p>
+          {error?.digest ? (
+            <p className="mt-1 text-xs text-muted-foreground/70">
+              {c.reference} <span className="font-mono">{error.digest}</span>
+            </p>
+          ) : null}
+        </div>
+
+        <Button
+          size="lg"
+          className="w-full max-w-xs"
+          onClick={() => {
+            reset();
+            window.location.reload();
+          }}
+        >
+          {c.reload}
+        </Button>
+      </div>
+
+      {/* Language switcher — fixed bottom-left */}
+      <div className="fixed bottom-6 left-6 right-6 z-50 flex items-center justify-start">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 rounded-full border-border/70 bg-background/80 px-3 font-medium shadow-sm backdrop-blur hover:bg-background"
+            >
+              <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
+              <span className="min-w-6 text-center tabular-nums">{SHORT[lang]}</span>
+              <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="min-w-44">
+            <DropdownMenuRadioGroup
+              value={lang}
+              onValueChange={(v) => {
+                setLang(v as Lang);
+                window.location.href = `/${v}`;
+              }}
+            >
+              {LOCALES.map((l) => (
+                <DropdownMenuRadioItem key={l} value={l}>
+                  {c.langs[l]}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
+  );
+}
+
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  return (
+    <html suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <InnerGlobalError error={error} reset={reset} />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
