@@ -32,6 +32,7 @@ export function OtpVerifyForm({
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations("otp");
+  const tAuth = useTranslations("auth");
   const locale = useLocale();
   const setSession = useAuthStore((s) => s.setSession);
 
@@ -237,7 +238,7 @@ export function OtpVerifyForm({
                       autoComplete="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder={t("emailPlaceholder")}
+                      placeholder={tAuth("emailPlaceholderHint")}
                       required
                     />
                   </div>
