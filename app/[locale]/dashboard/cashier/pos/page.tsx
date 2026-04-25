@@ -17,7 +17,7 @@ export async function generateMetadata({
 
 export default function StaffPosPage() {
   return (
-    <div className="rounded-xl border bg-card p-6 text-sm text-muted-foreground">
+    <div className="flex h-full min-h-[60vh] items-center justify-center rounded-xl border bg-card p-4 text-sm text-muted-foreground sm:p-6">
       POS page (empty)
     </div>
   );

@@ -19,12 +19,12 @@ export async function generateMetadata({
 
 export default function SettingsPage() {
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Settings</h1>
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-xl font-semibold sm:text-2xl">Settings</h1>
         <ThemeToggle />
       </div>
-      <div className="mt-8 grid max-w-xl gap-6">
+      <div className="mt-4 grid max-w-xl gap-4 sm:mt-8 sm:gap-6">
         <TwoFactorSetting />
       </div>
     </div>

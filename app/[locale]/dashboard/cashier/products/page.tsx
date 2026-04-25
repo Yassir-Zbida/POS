@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function StaffProductsPage() {
   return (
-    <div className="p-4">
+    <div>
       <Card>
         <CardHeader>
           <CardTitle>Products & Categories (static)</CardTitle>

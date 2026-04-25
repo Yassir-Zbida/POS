@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function StaffReportsPage() {
   return (
-    <div className="p-4">
-      <div className="grid gap-4 lg:grid-cols-3">
+    <div>
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>Revenue (static)</CardTitle>

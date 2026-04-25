@@ -3,7 +3,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function StaffSettingsPage() {
   return (
-    <div className="p-4">
+    <div>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between gap-4">
           <CardTitle>Settings (static)</CardTitle>
