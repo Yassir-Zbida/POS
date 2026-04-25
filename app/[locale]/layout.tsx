@@ -1,6 +1,6 @@
 import "../globals.css";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -25,6 +25,18 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
 function getDir(locale: Locale) {
   return locale === "ar" ? "rtl" : "ltr";
 }
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#161622" },
+  ],
+};
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
