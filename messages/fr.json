@@ -46,9 +46,38 @@
     "and": "et notre",
     "privacy": "Politique de confidentialité",
     "errors": {
-      "loginFailed": "Échec de la connexion"
+      "loginFailed": "Échec de la connexion",
+      "INVALID_CREDENTIALS": "E-mail ou mot de passe incorrect",
+      "ACCOUNT_LOCKED": "Compte temporairement verrouillé. Réessayez plus tard.",
+      "ACCOUNT_INACTIVE": "Ce compte est inactif. Contactez le support.",
+      "TOO_MANY_ATTEMPTS": "Trop de tentatives. Veuillez réessayer plus tard.",
+      "EMAIL_SEND_FAILED": "Impossible d'envoyer l'e-mail de vérification. Réessayez."
     },
     "otpLink": "Se connecter avec un code e-mail"
+  },
+  "auth2fa": {
+    "title": "Vérification en deux étapes",
+    "subtitle": "Nous avons envoyé un code à 6 chiffres à",
+    "codeSent": "Code de vérification envoyé à votre adresse e-mail.",
+    "signIn": "Vérifier et se connecter",
+    "verifyPending": "Connexion…",
+    "back": "Retour à la connexion",
+    "errors": {
+      "codeInvalid": "Saisissez le code à 6 chiffres",
+      "verifyFailed": "Échec de la vérification. Vérifiez le code et réessayez."
+    },
+    "settings": {
+      "title": "Authentification à deux facteurs (2FA)",
+      "description": "Lorsqu'elle est activée, vous devrez saisir un code à 6 chiffres envoyé à votre e-mail à chaque connexion.",
+      "enable": "Activer la 2FA",
+      "disable": "Désactiver la 2FA",
+      "enabled": "La 2FA est activée",
+      "disabled": "La 2FA est désactivée",
+      "pending": "Enregistrement…",
+      "successEnabled": "Authentification à deux facteurs activée.",
+      "successDisabled": "Authentification à deux facteurs désactivée.",
+      "error": "Échec de la mise à jour du paramètre 2FA."
+    }
   },
   "otp": {
     "title": "Connexion par code e-mail",
@@ -58,6 +87,8 @@
     "sendCode": "Envoyer le code",
     "sendPending": "Envoi…",
     "codeSent": "Consultez votre boîte de réception.",
+    "codeTitle": "Entrez le code de vérification",
+    "codeSubtitle": "Nous avons envoyé un code à 6 chiffres à",
     "codeLabel": "Code de vérification",
     "rememberMe": "Rester connecté plus longtemps sur cet appareil",
     "signIn": "Vérifier et se connecter",
@@ -74,7 +105,18 @@
   "common": {
     "redirecting": "Redirection…",
     "preparingDashboard": "Préparation de votre tableau de bord",
-    "loggedOut": "Déconnecté"
+    "loggedOut": "Vous avez été déconnecté",
+    "loggingOut": "Déconnexion…",
+    "logout": "Se déconnecter",
+    "upgradePro": "Passer à Pro",
+    "account": "Compte",
+    "billing": "Facturation",
+    "notifications": "Notifications",
+    "theme": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    }
   },
   "resetPassword": {
     "title": "Réinitialiser le mot de passe",

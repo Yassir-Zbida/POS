@@ -46,9 +46,38 @@
     "and": "and our",
     "privacy": "Privacy Policy",
     "errors": {
-      "loginFailed": "Login failed"
+      "loginFailed": "Login failed",
+      "INVALID_CREDENTIALS": "Invalid email or password",
+      "ACCOUNT_LOCKED": "Account temporarily locked. Try again later.",
+      "ACCOUNT_INACTIVE": "This account is inactive. Contact support.",
+      "TOO_MANY_ATTEMPTS": "Too many attempts. Please try again later.",
+      "EMAIL_SEND_FAILED": "Could not send verification email. Please try again."
     },
     "otpLink": "Sign in with email code"
+  },
+  "auth2fa": {
+    "title": "Two-factor verification",
+    "subtitle": "We sent a 6-digit code to",
+    "codeSent": "Verification code sent to your email.",
+    "signIn": "Verify and sign in",
+    "verifyPending": "Signing in…",
+    "back": "Back to sign in",
+    "errors": {
+      "codeInvalid": "Enter the 6-digit code",
+      "verifyFailed": "Verification failed. Check the code and try again."
+    },
+    "settings": {
+      "title": "Two-factor authentication (2FA)",
+      "description": "When enabled, you will be asked to enter a 6-digit code sent to your email every time you sign in.",
+      "enable": "Enable 2FA",
+      "disable": "Disable 2FA",
+      "enabled": "2FA is enabled",
+      "disabled": "2FA is disabled",
+      "pending": "Saving…",
+      "successEnabled": "Two-factor authentication enabled.",
+      "successDisabled": "Two-factor authentication disabled.",
+      "error": "Failed to update 2FA setting."
+    }
   },
   "otp": {
     "title": "Email code sign-in",
@@ -58,6 +87,8 @@
     "sendCode": "Send verification code",
     "sendPending": "Sending…",
     "codeSent": "Check your inbox for the code.",
+    "codeTitle": "Enter verification code",
+    "codeSubtitle": "We sent a 6-digit code to",
     "codeLabel": "Verification code",
     "rememberMe": "Stay signed in longer on this device",
     "signIn": "Verify and sign in",
@@ -74,7 +105,18 @@
   "common": {
     "redirecting": "Redirecting…",
     "preparingDashboard": "Preparing your dashboard",
-    "loggedOut": "Logged out"
+    "loggedOut": "You have been signed out",
+    "loggingOut": "Signing out…",
+    "logout": "Sign out",
+    "upgradePro": "Upgrade to Pro",
+    "account": "Account",
+    "billing": "Billing",
+    "notifications": "Notifications",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
   },
   "resetPassword": {
     "title": "Reset password",
