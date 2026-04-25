@@ -82,7 +82,11 @@ export default async function LocaleLayout({
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
-          <Toaster position={locale === "ar" ? "bottom-left" : "bottom-right"} />
+          <Toaster
+            position={locale === "ar" ? "bottom-left" : "bottom-right"}
+            dir={locale === "ar" ? "rtl" : "ltr"}
+            closeButton
+          />
         </ThemeProvider>
       </body>
     </html>

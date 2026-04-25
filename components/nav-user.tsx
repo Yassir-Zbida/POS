@@ -69,7 +69,8 @@ export function NavUser({
     }
     clearSession()
     toast.success(t("loggedOut"))
-    window.location.assign(loginPath)
+    // Short delay lets the toast render before the page navigates away
+    setTimeout(() => window.location.assign(loginPath), 1200)
   }
 
   return (
@@ -118,28 +119,28 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
-                Upgrade to Pro
+                {t("upgradePro")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
-                Account
+                {t("account")}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
-                Billing
+                {t("billing")}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
-                Notifications
+                {t("notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={onLogout} disabled={pendingLogout}>
               <LogOut />
-              {pendingLogout ? "Logging out…" : "Log out"}
+              {pendingLogout ? t("loggingOut") : t("logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
