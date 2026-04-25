@@ -11,7 +11,7 @@ import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectio
 const bodySchema = z.object({
   channel: z.enum(["EMAIL", "SMS"]),
   target: z.string().min(3).max(200),
-  purpose: z.enum(["REGISTER", "LOGIN", "VERIFY_PHONE"]).default("REGISTER"),
+  purpose: z.enum(["REGISTER", "LOGIN", "LOGIN_2FA", "VERIFY_PHONE"]).default("REGISTER"),
   code: z.string().regex(/^\d{6}$/),
   /** When true with purpose LOGIN and channel EMAIL, returns JWT pair after successful verification (passwordless email login). */
   issueSession: z.boolean().optional(),
@@ -75,9 +75,9 @@ export async function POST(request: Request) {
     const { issueSession, rememberMe } = parsed.data;
 
     if (issueSession) {
-      if (purpose !== "LOGIN" || channel !== "EMAIL") {
+      if ((purpose !== "LOGIN" && purpose !== "LOGIN_2FA") || channel !== "EMAIL") {
         return NextResponse.json(
-          { error: "issueSession is only supported for EMAIL channel and LOGIN purpose" },
+          { error: "issueSession is only supported for EMAIL channel and LOGIN / LOGIN_2FA purpose" },
           { status: 400 },
         );
       }

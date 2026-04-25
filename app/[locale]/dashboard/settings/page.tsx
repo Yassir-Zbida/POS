@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { type Locale } from "@/i18n/routing";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { TwoFactorSetting } from "@/components/two-factor-setting";
 
 export async function generateMetadata({
   params,
@@ -22,6 +23,9 @@ export default function SettingsPage() {
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold">Settings</h1>
         <ThemeToggle />
+      </div>
+      <div className="mt-8 grid max-w-xl gap-6">
+        <TwoFactorSetting />
       </div>
     </div>
   );

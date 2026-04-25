@@ -7,8 +7,30 @@ async function main() {
   const testPassword = "Test1234!";
   const passwordHash = await hashPassword(testPassword);
 
+  const adminEmail = "admin@pos.hssabaty.com";
   const managerEmail = "manager@pos.hssabaty.com";
   const cashierEmail = "cashier@pos.hssabaty.com";
+
+  const admin = await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: {
+      name: "Test Admin",
+      role: "ADMIN",
+      status: "ACTIVE",
+      passwordHash,
+      failedLoginAttempts: 0,
+      lockoutUntil: null,
+      ownerManagerId: null,
+    },
+    create: {
+      email: adminEmail,
+      name: "Test Admin",
+      role: "ADMIN",
+      status: "ACTIVE",
+      passwordHash,
+    },
+    select: { id: true, email: true, role: true },
+  });
 
   const manager = await prisma.user.upsert({
     where: { email: managerEmail },
@@ -61,6 +83,7 @@ async function main() {
   });
 
   console.log("Seeded test users:");
+  console.log(`- Admin: ${admin.email} (role=${admin.role}) password=${testPassword}`);
   console.log(`- Manager: ${manager.email} (role=${manager.role}) password=${testPassword}`);
   console.log(
     `- Staff/Cashier: ${cashier.email} (role=${cashier.role}, ownerManagerId=${cashier.ownerManagerId}) password=${testPassword}`,

@@ -122,6 +122,7 @@ model User {
   pinHash             String?
   role                UserRole             @default(CASHIER)
   status              UserStatus           @default(ACTIVE)
+  otpEnabled          Boolean              @default(false)
   failedLoginAttempts Int                  @default(0)
   lockoutUntil        DateTime?
   ownerManagerId      String?

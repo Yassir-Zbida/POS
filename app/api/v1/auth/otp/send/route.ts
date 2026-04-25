@@ -11,7 +11,7 @@ import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectio
 const bodySchema = z.object({
   channel: z.enum(["EMAIL", "SMS"]),
   target: z.string().min(3).max(200),
-  purpose: z.enum(["REGISTER", "LOGIN", "VERIFY_PHONE"]).default("REGISTER"),
+  purpose: z.enum(["REGISTER", "LOGIN", "LOGIN_2FA", "VERIFY_PHONE"]).default("REGISTER"),
 });
 
 /** POST /api/v1/auth/otp/send — issue a short-lived OTP (email via SMTP; SMS via SMS_HTTP_URL if set). */

@@ -36,7 +36,7 @@ export function buildOtpEmail(input: {
           <p style="margin:0 0 8px;color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">
             ${escapeHtml(t.codeLabel)}
           </p>
-          <div style="display:inline-block;padding:14px 28px;border-radius:12px;background:#faf5ff;border:1px solid #e9d5ff;border-top:3px solid #6D28D9;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:28px;font-weight:800;letter-spacing:0.35em;color:#111827;">
+          <div style="display:inline-block;padding:14px 28px;border-radius:12px;background:#faf5ff;border:1px solid #e9d5ff;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:28px;font-weight:800;letter-spacing:0.35em;color:#111827;">
             ${escapeHtml(input.code)}
           </div>
 
