@@ -35,13 +35,14 @@ export function DataTableViewOptions<TData>({
           variant="outline"
           size="sm"
           className={cn("h-9 gap-1.5 px-3 text-xs", className ?? "sm:ms-auto")}
+          dir="ltr"
         >
           <SlidersHorizontal className="size-3.5" />
           {toggleLabel}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
+        <DropdownMenuLabel className="text-start text-xs font-normal text-muted-foreground">
           {toggleLabel}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

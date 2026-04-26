@@ -7,6 +7,7 @@ import {
   ChevronRightIcon,
 } from "lucide-react"
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
+import { useLocale } from "next-intl"
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -19,19 +20,23 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  dir: dirProp,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
 }) {
   const defaultClassNames = getDefaultClassNames()
+  const appLocale = useLocale()
+  /** react-day-picker v9: `dir="rtl"` fixes layout; popover may not inherit <html dir>. */
+  const dir: React.ComponentProps<typeof DayPicker>["dir"] =
+    dirProp ?? (appLocale === "ar" ? "rtl" : "ltr")
 
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      dir={dir}
       className={cn(
         "bg-background group/calendar rounded-lg p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
-        String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
-        String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
       )}
       captionLayout={captionLayout}
@@ -136,16 +141,21 @@ function Calendar({
           )
         },
         Chevron: ({ className, orientation, ...props }) => {
+          /** Mirror `style.css` rule: `.rdp-root[dir=rtl] .rdp-nav .rdp-chevron { transform: rotate(180deg) }` */
+          const navFlip = dir === "rtl" ? "rotate-180" : undefined
           if (orientation === "left") {
             return (
-              <ChevronLeftIcon className={cn("size-4", className)} {...props} />
+              <ChevronLeftIcon
+                className={cn("size-4 rdp-chevron", navFlip, className)}
+                {...props}
+              />
             )
           }
 
           if (orientation === "right") {
             return (
               <ChevronRightIcon
-                className={cn("size-4", className)}
+                className={cn("size-4 rdp-chevron", navFlip, className)}
                 {...props}
               />
             )

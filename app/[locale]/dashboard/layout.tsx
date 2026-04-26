@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type { ReactNode } from "react";
+import { useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
 import { RoleGuard } from "@/components/role-guard";
@@ -53,7 +54,15 @@ function titleKeyForDashboardPath(pathname: string) {
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const locale = useLocale();
-  const isRtl = locale === "ar";
+  const params = useParams() as { locale?: string | string[] };
+  const paramLocale = params?.locale;
+  const routeLocale = typeof paramLocale === "string" ? paramLocale : Array.isArray(paramLocale) ? paramLocale[0] : null;
+  const isRtl =
+    routeLocale === "ar" ||
+    (routeLocale != null && routeLocale.startsWith("ar-")) ||
+    locale === "ar" ||
+    (typeof locale === "string" && locale.startsWith("ar-"));
+  const pageDir: "rtl" | "ltr" = isRtl ? "rtl" : "ltr";
   const pathname = usePathname();
   const t = useTranslations("meta.titles");
   const pageKey = titleKeyForDashboardPath(pathname);
@@ -97,7 +106,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
           </header>
           {/* ── Page content ── */}
-          <div className="flex flex-1 flex-col p-3 sm:p-4 md:p-6">{children}</div>
+          <div
+            className="flex flex-1 flex-col p-3 sm:p-4 md:p-6"
+            dir={pageDir}
+            style={{ direction: pageDir }}
+          >
+            {children}
+          </div>
         </SidebarInset>
       </SidebarProvider>
 
