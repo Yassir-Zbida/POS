@@ -12,6 +12,7 @@ import {
   Settings,
   Landmark,
   ChevronRight,
+  Lock,
 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname, Link } from "@/i18n/navigation";
@@ -40,6 +41,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useAuthStore } from "@/store/use-auth-store";
+import { useSessionStore } from "@/store/sessionStore";
 import { cn } from "@/lib/utils";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -48,6 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const isRtl = locale === "ar";
   const pathname = usePathname();
   const authUser = useAuthStore((s) => s.user);
+  const lock = useSessionStore((s) => s.lock);
 
   const user = authUser
     ? {
@@ -238,7 +241,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
 
       <SidebarFooter>
-          <NavUser user={user} />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip="Verrouiller"
+              onClick={lock}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <Lock className="size-4 shrink-0" />
+              <span>Verrouiller</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+        <NavUser user={user} />
       </SidebarFooter>
 
       <SidebarRail />
