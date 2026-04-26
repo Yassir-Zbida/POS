@@ -22,6 +22,7 @@
       "adminMerchantDetail": "Merchant",
       "adminUsers": "Users",
       "adminUserDetail": "User",
+      "adminSubscriptions": "Subscriptions",
       "cashier": "Cashier",
       "cashierPos": "POS",
       "pos": "POS",
@@ -758,6 +759,72 @@
         "error": "Failed to update user",
         "cancel": "Cancel"
       }
+    }
+  },
+  "adminSubscriptions": {
+    "title": "Subscriptions",
+    "subtitle": "Monitor and manage merchant subscription status, billing and expiry dates",
+    "fetchError": "Failed to load subscriptions",
+    "stats": {
+      "total": "Total subscriptions",
+      "active": "Active",
+      "pastDue": "Past due",
+      "expiringSoon": "Expiring soon"
+    },
+    "table": {
+      "merchant": "Merchant",
+      "status": "Status",
+      "startDate": "Start date",
+      "expiry": "Expiry",
+      "lastUpdated": "Last updated",
+      "actions": "Actions",
+      "noResults": "No results",
+      "toggleColumns": "Columns",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Canceled",
+      "SUSPENDED": "Suspended"
+    },
+    "expiry": {
+      "noExpiry": "No expiry",
+      "expired": "Expired",
+      "daysLeft": "{count} days left",
+      "today": "Expires today"
+    },
+    "search": "Search by merchant name or email…",
+    "searchLabel": "Search",
+    "filterStatus": "Status",
+    "filterAll": "All",
+    "filterReset": "Reset filters",
+    "empty": {
+      "title": "No subscriptions found",
+      "description": "Try adjusting your filters."
+    },
+    "actions": {
+      "manage": "Manage",
+      "viewMerchant": "View merchant",
+      "copyId": "Copy ID",
+      "idCopied": "ID copied"
+    },
+    "manageDialog": {
+      "title": "Manage Subscription",
+      "description": "Update the subscription status and expiry date for this merchant.",
+      "status": "Subscription status",
+      "expiry": "Expiry date",
+      "expiryHint": "Leave empty for indefinite access",
+      "pickDate": "Pick a date",
+      "clearDate": "Clear date",
+      "startedOn": "Started",
+      "expiresOn": "Expires",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "success": "Subscription updated successfully",
+      "error": "Failed to update subscription"
     }
   },
   "lockScreen": {

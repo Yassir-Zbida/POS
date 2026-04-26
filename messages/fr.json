@@ -21,6 +21,7 @@
       "adminMerchantsNew": "Nouveau marchand",
       "adminUsers": "Utilisateurs",
       "adminUserDetail": "Utilisateur",
+      "adminSubscriptions": "Abonnements",
       "adminMerchantDetail": "Marchand",
       "cashier": "Caissier",
       "cashierPos": "POS",
@@ -756,6 +757,72 @@
         "error": "Échec de la mise à jour",
         "cancel": "Annuler"
       }
+    }
+  },
+  "adminSubscriptions": {
+    "title": "Abonnements",
+    "subtitle": "Surveiller et gérer les abonnements marchands, la facturation et les dates d'expiration",
+    "fetchError": "Échec du chargement des abonnements",
+    "stats": {
+      "total": "Total abonnements",
+      "active": "Actifs",
+      "pastDue": "En retard",
+      "expiringSoon": "Expire bientôt"
+    },
+    "table": {
+      "merchant": "Marchand",
+      "status": "Statut",
+      "startDate": "Date de début",
+      "expiry": "Expiration",
+      "lastUpdated": "Dernière mise à jour",
+      "actions": "Actions",
+      "noResults": "Aucun résultat",
+      "toggleColumns": "Colonnes",
+      "prevPage": "Page précédente",
+      "nextPage": "Page suivante"
+    },
+    "status": {
+      "ACTIVE": "Actif",
+      "PAST_DUE": "En retard",
+      "CANCELED": "Annulé",
+      "SUSPENDED": "Suspendu"
+    },
+    "expiry": {
+      "noExpiry": "Sans expiration",
+      "expired": "Expiré",
+      "daysLeft": "{count} jours restants",
+      "today": "Expire aujourd'hui"
+    },
+    "search": "Rechercher par nom ou e-mail du marchand…",
+    "searchLabel": "Recherche",
+    "filterStatus": "Statut",
+    "filterAll": "Tous",
+    "filterReset": "Réinitialiser",
+    "empty": {
+      "title": "Aucun abonnement trouvé",
+      "description": "Ajustez vos filtres et réessayez."
+    },
+    "actions": {
+      "manage": "Gérer",
+      "viewMerchant": "Voir le marchand",
+      "copyId": "Copier l'ID",
+      "idCopied": "ID copié"
+    },
+    "manageDialog": {
+      "title": "Gérer l'abonnement",
+      "description": "Mettre à jour le statut et la date d'expiration de l'abonnement pour ce marchand.",
+      "status": "Statut de l'abonnement",
+      "expiry": "Date d'expiration",
+      "expiryHint": "Laisser vide pour un accès illimité",
+      "pickDate": "Choisir une date",
+      "clearDate": "Effacer la date",
+      "startedOn": "Démarré le",
+      "expiresOn": "Expire le",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "cancel": "Annuler",
+      "success": "Abonnement mis à jour avec succès",
+      "error": "Échec de la mise à jour de l'abonnement"
     }
   },
   "lockScreen": {
