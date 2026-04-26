@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -152,19 +153,33 @@ function getInitials(name: string | null, email: string) {
   return email.slice(0, 2).toUpperCase();
 }
 
-function InfoRow({ icon: Icon, label, value }: {
+function InfoRow({ icon: Icon, label, value, valueLtrNumeric }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   value?: string | null;
+  /** Set when value is a Latin date/number and should not inherit Arabic script direction */
+  valueLtrNumeric?: boolean;
 }) {
   return (
-    <div className="flex items-start gap-3 py-3">
+    <div className="flex w-full items-start gap-3 py-3">
       <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">
         <Icon className="size-4 text-muted-foreground" />
       </div>
-      <div>
+      <div className="min-w-0 flex-1 text-start">
         <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="text-sm font-medium">{value || "—"}</p>
+        <p className="text-sm font-medium break-words text-start">
+          {valueLtrNumeric && value != null && value !== "" ? (
+            <span
+              className="inline tabular-nums [unicode-bidi:isolate]"
+              dir="ltr"
+              lang="en"
+            >
+              {value}
+            </span>
+          ) : (
+            value || "—"
+          )}
+        </p>
       </div>
     </div>
   );
@@ -172,6 +187,22 @@ function InfoRow({ icon: Icon, label, value }: {
 
 export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
   const t = useTranslations("adminMerchants");
+  const locale = useLocale();
+  const params = useParams() as { locale?: string | string[] };
+  const rawLocale = params?.locale;
+  const paramLocale =
+    typeof rawLocale === "string" ? rawLocale : Array.isArray(rawLocale) ? rawLocale[0] : null;
+  // URL segment is source of truth (next-intl usePathname strips the prefix with localePrefix: "as-needed")
+  const isRtl =
+    paramLocale === "ar" ||
+    (paramLocale != null && paramLocale.startsWith("ar-")) ||
+    locale === "ar" ||
+    (typeof locale === "string" && locale.startsWith("ar-"));
+  const pageDir: "rtl" | "ltr" = isRtl ? "rtl" : "ltr";
+  const pageDirProps: React.ComponentProps<"div"> = {
+    dir: pageDir,
+    style: { direction: pageDir },
+  };
   const accessToken = useAuthStore((s) => s.accessToken);
   const refreshToken = useAuthStore((s) => s.refreshToken);
 
@@ -272,7 +303,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
         method: "DELETE",
       });
       if (!res.ok) throw new Error();
-      toast.success(t("confirmBan.confirm") + " ✓");
+      toast.success(t("confirmBan.confirm"));
       setBanOpen(false);
       fetchMerchant();
     } catch {
@@ -293,7 +324,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
         body: JSON.stringify({ status: "ACTIVE", subscriptionStatus: "ACTIVE" }),
       });
       if (!res.ok) throw new Error();
-      toast.success(t("detail.activateButton") + " ✓");
+      toast.success(t("detail.activateButton"));
       fetchMerchant();
     } catch {
       toast.error("Failed to activate");
@@ -368,7 +399,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
         { method: "DELETE" }
       );
       if (!res.ok) throw new Error();
-      toast.success(t("detail.staff.removeConfirm.confirm") + " ✓");
+      toast.success(t("detail.staff.removeConfirm.confirm"));
       setRemoveStaffTarget(null);
       fetchMerchant();
     } catch {
@@ -447,7 +478,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6" {...pageDirProps}>
         <div className="flex items-center gap-4">
           <Skeleton className="size-14 rounded-xl" />
           <div className="space-y-2">
@@ -463,11 +494,14 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
   if (!merchant) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
+      <div
+        className="flex flex-col items-center justify-center py-16 text-center"
+        {...pageDirProps}
+      >
         <p className="text-sm text-muted-foreground">Merchant not found</p>
         <Button asChild variant="outline" size="sm" className="mt-4 gap-2">
-          <Link href="/dashboard/admin/merchants">
-            <ArrowLeft className="size-4" />
+          <Link href="/dashboard/admin/merchants" className="inline-flex items-center gap-2">
+            <ArrowLeft className="size-4 shrink-0" />
             {t("detail.backToList")}
           </Link>
         </Button>
@@ -476,17 +510,17 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-full space-y-6 text-start" {...pageDirProps}>
       {/* Back + Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-3">
+      <div className="flex w-full max-w-full flex-wrap items-center justify-between gap-4">
+        <div className="flex min-w-0 max-w-full items-center gap-3">
           <Avatar className="size-14 border-2">
             <AvatarFallback className="bg-primary/10 text-base font-bold text-primary">
               {getInitials(merchant.name, merchant.email)}
             </AvatarFallback>
           </Avatar>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="min-w-0 max-w-full text-start">
+            <div className="flex max-w-full flex-wrap items-center gap-2">
               <h1 className="text-xl font-semibold">
                 {merchant.name ?? merchant.email}
               </h1>
@@ -498,25 +532,16 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                   variant={SUB_STATUS_VARIANT[merchant.subscription.status]}
                   className="gap-1"
                 >
-                  <ShieldCheck className="size-3" />
+                  <ShieldCheck className="size-3 shrink-0" />
                   {t(`subStatus.${merchant.subscription.status}`)}
                 </Badge>
               )}
             </div>
-            <p className="mt-0.5 text-sm text-muted-foreground">{merchant.email}</p>
+            <p className="mt-0.5 break-all text-sm text-muted-foreground">{merchant.email}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button asChild variant="outline" size="icon" className="size-9 shrink-0 rounded-md">
-            <Link href="/dashboard/admin/merchants">
-              <ArrowLeft className="size-4" />
-            </Link>
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2" onClick={() => setEditOpen(true)}>
-            <Edit className="size-4" />
-            {t("detail.editButton")}
-          </Button>
+        <div className="flex flex-wrap items-center gap-2">
           {merchant.status !== "BANNED" ? (
             <Button
               variant="destructive"
@@ -524,7 +549,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
               className="gap-2"
               onClick={() => setBanOpen(true)}
             >
-              <Ban className="size-4" />
+              <Ban className="size-4 shrink-0" />
               {t("detail.banButton")}
             </Button>
           ) : (
@@ -534,51 +559,62 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
               className="gap-2 text-emerald-600"
               onClick={handleActivate}
             >
-              <CheckCircle2 className="size-4" />
+              <CheckCircle2 className="size-4 shrink-0" />
               {t("detail.activateButton")}
             </Button>
           )}
+          <Button variant="outline" size="sm" className="gap-2" onClick={() => setEditOpen(true)}>
+            <Edit className="size-4 shrink-0" />
+            {t("detail.editButton")}
+          </Button>
+          <Button asChild variant="outline" size="icon" className="size-9 shrink-0 rounded-md">
+            <Link href="/dashboard/admin/merchants" aria-label={t("detail.backToList")}>
+              <ArrowLeft className="size-4 shrink-0" />
+            </Link>
+          </Button>
         </div>
       </div>
 
-      {/* Tabs */}
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 sm:w-auto sm:inline-flex">
-          <TabsTrigger value="overview" className="gap-1.5">
-            <User className="size-4" />
-            <span className="hidden sm:inline">{t("detail.tabs.overview")}</span>
-          </TabsTrigger>
-          <TabsTrigger value="staff" className="gap-1.5">
-            <Users className="size-4" />
-            <span className="hidden sm:inline">{t("detail.tabs.staff")}</span>
-            {merchant.cashiers.length > 0 && (
-              <Badge variant="secondary" className="h-5 rounded-full px-1.5 text-xs">
-                {merchant.cashiers.length}
-              </Badge>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="locations" className="gap-1.5">
-            <MapPin className="size-4" />
-            <span className="hidden sm:inline">{t("detail.tabs.locations")}</span>
-            {merchant.managedLocations.length > 0 && (
-              <Badge variant="secondary" className="h-5 rounded-full px-1.5 text-xs">
-                {merchant.managedLocations.length}
-              </Badge>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="subscription" className="gap-1.5">
-            <Shield className="size-4" />
-            <span className="hidden sm:inline">{t("detail.tabs.subscription")}</span>
-          </TabsTrigger>
+      {/* Tabs: inline start = right in RTL; explicit dir on Tabs so Radix children inherit */}
+      <Tabs defaultValue="overview" className="w-full max-w-full space-y-4" dir={pageDir}>
+        <div className="flex w-full max-w-full items-center justify-start">
+          <TabsList className="inline-flex h-auto min-h-10 w-auto max-w-full flex-wrap items-center !justify-start gap-0.5 sm:flex-nowrap">
+            <TabsTrigger value="overview" className="gap-1.5 [&>svg]:shrink-0">
+              <User className="size-4" />
+              <span className="hidden sm:inline">{t("detail.tabs.overview")}</span>
+            </TabsTrigger>
+            <TabsTrigger value="staff" className="gap-1.5 [&>svg]:shrink-0">
+              <Users className="size-4" />
+              <span className="hidden sm:inline">{t("detail.tabs.staff")}</span>
+              {merchant.cashiers.length > 0 && (
+                <Badge variant="secondary" className="h-5 rounded-full px-1.5 text-xs">
+                  {merchant.cashiers.length}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="locations" className="gap-1.5 [&>svg]:shrink-0">
+              <MapPin className="size-4" />
+              <span className="hidden sm:inline">{t("detail.tabs.locations")}</span>
+              {merchant.managedLocations.length > 0 && (
+                <Badge variant="secondary" className="h-5 rounded-full px-1.5 text-xs">
+                  {merchant.managedLocations.length}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="subscription" className="gap-1.5 [&>svg]:shrink-0">
+              <Shield className="size-4" />
+              <span className="hidden sm:inline">{t("detail.tabs.subscription")}</span>
+            </TabsTrigger>
         </TabsList>
+        </div>
 
         {/* Overview tab */}
-        <TabsContent value="overview" className="space-y-4">
-          <Card>
+        <TabsContent value="overview" className="w-full max-w-full space-y-4">
+          <Card className="w-full text-start">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">{t("detail.overview.heading")}</CardTitle>
+              <CardTitle className="text-start text-base">{t("detail.overview.heading")}</CardTitle>
             </CardHeader>
-            <CardContent className="divide-y px-4 py-0">
+            <CardContent className="divide-y px-4 py-0 text-start">
               <InfoRow icon={User} label={t("detail.overview.name")} value={merchant.name} />
               <InfoRow icon={Mail} label={t("detail.overview.email")} value={merchant.email} />
               <InfoRow
@@ -590,6 +626,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                 icon={CalendarIcon}
                 label={t("detail.overview.joined")}
                 value={formatDate(merchant.createdAt)}
+                valueLtrNumeric
               />
             </CardContent>
           </Card>
@@ -597,15 +634,15 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
         {/* Staff tab */}
         <TabsContent value="staff" className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0 text-start">
               <h2 className="text-base font-semibold">{t("detail.staff.heading")}</h2>
               <p className="text-xs text-muted-foreground">
                 {merchant.cashiers.length} {t("table.staff").toLowerCase()}
               </p>
             </div>
             <Button size="sm" className="gap-2" onClick={() => setAddStaffOpen(true)}>
-              <Plus className="size-4" />
+              <Plus className="size-4 shrink-0" />
               {t("detail.staff.addStaff")}
             </Button>
           </div>
@@ -626,7 +663,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                     className="mt-4 gap-2"
                     onClick={() => setAddStaffOpen(true)}
                   >
-                    <Plus className="size-4" />
+                    <Plus className="size-4 shrink-0" />
                     {t("detail.staff.addStaff")}
                   </Button>
                 </div>
@@ -677,12 +714,12 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                               >
                                 {staff.status === "ACTIVE" ? (
                                   <>
-                                    <Ban className="me-2 size-4" />
+                                    <Ban className="size-4 shrink-0" />
                                     {t("detail.staff.statusToggle.suspend")}
                                   </>
                                 ) : (
                                   <>
-                                    <CheckCircle2 className="me-2 size-4" />
+                                    <CheckCircle2 className="size-4 shrink-0" />
                                     {t("detail.staff.statusToggle.activate")}
                                   </>
                                 )}
@@ -692,7 +729,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                                 className="text-destructive focus:text-destructive"
                                 onClick={() => setRemoveStaffTarget(staff)}
                               >
-                                <Trash2 className="me-2 size-4" />
+                                <Trash2 className="size-4 shrink-0" />
                                 {t("detail.staff.removeConfirm.confirm")}
                               </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -709,7 +746,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
         {/* Locations tab */}
         <TabsContent value="locations" className="space-y-4">
-          <div>
+          <div className="text-start">
             <h2 className="text-base font-semibold">{t("detail.locations.heading")}</h2>
             <p className="text-xs text-muted-foreground">
               {merchant.managedLocations.length} {t("table.locations").toLowerCase()}
@@ -765,7 +802,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
         {/* Subscription tab */}
         <TabsContent value="subscription" className="space-y-4">
-          <div>
+          <div className="text-start">
             <h2 className="text-base font-semibold">{t("detail.subscription.heading")}</h2>
           </div>
 
@@ -782,32 +819,33 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
             <div className="grid gap-4 sm:grid-cols-2">
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-base">{t("detail.subscription.heading")}</CardTitle>
+                  <CardTitle className="text-start text-base">{t("detail.subscription.heading")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between rounded-lg bg-muted/40 p-3">
-                    <span className="text-sm text-muted-foreground">
+                  <div className="flex items-center justify-between gap-3 rounded-lg bg-muted/40 p-3">
+                    <span className="min-w-0 text-start text-sm text-muted-foreground">
                       {t("detail.subscription.status")}
                     </span>
                     <Badge
+                      className="shrink-0"
                       variant={SUB_STATUS_VARIANT[merchant.subscription.status]}
                     >
                       {t(`subStatus.${merchant.subscription.status}`)}
                     </Badge>
                   </div>
-                  <div className="flex items-center justify-between rounded-lg bg-muted/40 p-3">
-                    <span className="text-sm text-muted-foreground">
+                  <div className="flex items-center justify-between gap-3 rounded-lg bg-muted/40 p-3">
+                    <span className="min-w-0 text-start text-sm text-muted-foreground">
                       {t("detail.subscription.startDate")}
                     </span>
-                    <span className="text-sm font-medium">
+                    <span className="shrink-0 text-end text-sm font-medium">
                       {formatDate(merchant.subscription.startedAt)}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between rounded-lg bg-muted/40 p-3">
-                    <span className="text-sm text-muted-foreground">
+                  <div className="flex items-center justify-between gap-3 rounded-lg bg-muted/40 p-3">
+                    <span className="min-w-0 text-start text-sm text-muted-foreground">
                       {t("detail.subscription.endDate")}
                     </span>
-                    <span className="text-sm font-medium">
+                    <span className="shrink-0 text-end text-sm font-medium">
                       {merchant.subscription.endedAt
                         ? formatDate(merchant.subscription.endedAt)
                         : t("detail.subscription.noExpiry")}
@@ -818,8 +856,10 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-base">{t("detail.subscription.updateStatus")}</CardTitle>
-                  <CardDescription>{t("detail.subscription.updateEndDate")}</CardDescription>
+                  <CardTitle className="text-start text-base">{t("detail.subscription.updateStatus")}</CardTitle>
+                  <CardDescription className="text-start">
+                    {t("detail.subscription.updateEndDate")}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-1.5">
@@ -860,7 +900,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                             !subEndDate && "text-muted-foreground"
                           )}
                         >
-                          <CalendarClock className="size-4 text-muted-foreground" />
+                          <CalendarClock className="size-4 shrink-0 text-muted-foreground" />
                           {subEndDate
                             ? formatLongDate(parseYmd(subEndDate) ?? new Date(), "fr")
                             : t("detail.subscription.endDate")}
@@ -908,7 +948,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                     onClick={handleSubSave}
                     disabled={subSaving}
                   >
-                    {subSaving && <Loader2 className="size-4 animate-spin" />}
+                    {subSaving && <Loader2 className="size-4 shrink-0 animate-spin" />}
                     {subSaving ? t("detail.subscription.saving") : t("detail.subscription.saveChanges")}
                   </Button>
                 </CardContent>
@@ -921,7 +961,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
       {/* Edit merchant dialog */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
+          <DialogHeader className="pe-8">
             <DialogTitle>{t("detail.editForm.title")}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
@@ -998,7 +1038,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
         }}
       >
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
+          <DialogHeader className="pe-8">
             <DialogTitle>{t("detail.staff.addForm.title")}</DialogTitle>
             <DialogDescription>
               {merchant.name ?? merchant.email}
@@ -1124,7 +1164,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
         onOpenChange={(open) => !open && setRemoveStaffTarget(null)}
       >
         <DialogContent className="sm:max-w-md" onOpenAutoFocus={(e) => e.preventDefault()}>
-          <DialogHeader>
+          <DialogHeader className="pe-8">
             <DialogTitle>{t("detail.staff.removeConfirm.title")}</DialogTitle>
             <DialogDescription asChild>
               <div>
@@ -1160,7 +1200,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
       {/* Ban merchant confirm */}
       <Dialog open={banOpen} onOpenChange={setBanOpen}>
         <DialogContent className="sm:max-w-md" onOpenAutoFocus={(e) => e.preventDefault()}>
-          <DialogHeader>
+          <DialogHeader className="pe-8">
             <DialogTitle>{t("confirmBan.title")}</DialogTitle>
             <DialogDescription asChild>
               <div>

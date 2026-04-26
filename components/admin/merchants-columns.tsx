@@ -102,7 +102,7 @@ export function useMerchantsColumns({
                   {getInitials(m.name, m.email)}
                 </AvatarFallback>
               </Avatar>
-              <div className="min-w-0">
+              <div className="min-w-0 text-start">
                 <p className="text-sm font-medium leading-snug">{m.name ?? "—"}</p>
                 <p className="truncate text-[0.7rem] text-muted-foreground">{m.email}</p>
               </div>
@@ -153,12 +153,15 @@ export function useMerchantsColumns({
           <DataTableColumnHeader
             column={column}
             title={t("table.staff")}
-            className="w-full justify-start"
+            className="w-full justify-center"
           />
         ),
         cell: ({ row }) => (
-          <div className="text-start text-sm">
-            <span className="inline-flex items-center justify-start gap-1">
+          <div className="text-center text-sm">
+            <span
+              dir="ltr"
+              className="inline-flex items-center justify-center gap-1 tabular-nums"
+            >
               <Users className="size-3.5 text-muted-foreground" />
               {row.original._count.cashiers}
             </span>
@@ -173,12 +176,15 @@ export function useMerchantsColumns({
           <DataTableColumnHeader
             column={column}
             title={t("table.locations")}
-            className="w-full justify-start"
+            className="w-full justify-center"
           />
         ),
         cell: ({ row }) => (
-          <div className="text-start text-sm">
-            <span className="inline-flex items-center justify-start gap-1">
+          <div className="text-center text-sm">
+            <span
+              dir="ltr"
+              className="inline-flex items-center justify-center gap-1 tabular-nums"
+            >
               <Building2 className="size-3.5 text-muted-foreground" />
               {row.original._count.managedLocations}
             </span>
@@ -193,7 +199,7 @@ export function useMerchantsColumns({
           <DataTableColumnHeader column={column} title={t("table.joined")} />
         ),
         cell: ({ row }) => (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-start text-sm tabular-nums text-muted-foreground" dir="ltr">
             {formatDate(row.original.createdAt)}
           </span>
         ),
@@ -223,7 +229,7 @@ export function useMerchantsColumns({
                       router.push(`/dashboard/admin/merchants/${merchant.id}`)
                     }
                   >
-                    <Eye className="me-2 size-4" />
+                    <Eye className="size-4 shrink-0" />
                     {t("actions.view")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -232,7 +238,7 @@ export function useMerchantsColumns({
                       toast.success(t("actions.idCopied"));
                     }}
                   >
-                    <Copy className="me-2 size-4" />
+                    <Copy className="size-4 shrink-0" />
                     {t("actions.copyId")}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -241,7 +247,7 @@ export function useMerchantsColumns({
                       onClick={() => onActivate(merchant)}
                       className="text-emerald-600 focus:text-emerald-600"
                     >
-                      <CheckCircle2 className="me-2 size-4" />
+                      <CheckCircle2 className="size-4 shrink-0" />
                       {t("actions.activate")}
                     </DropdownMenuItem>
                   ) : (
@@ -249,7 +255,7 @@ export function useMerchantsColumns({
                       onClick={() => onOpenBan(merchant)}
                       className="text-destructive focus:text-destructive"
                     >
-                      <Ban className="me-2 size-4" />
+                      <Ban className="size-4 shrink-0" />
                       {t("actions.ban")}
                     </DropdownMenuItem>
                   )}
@@ -257,7 +263,7 @@ export function useMerchantsColumns({
                     onClick={() => onOpenDelete(merchant)}
                     className="text-destructive focus:text-destructive"
                   >
-                    <Trash2 className="me-2 size-4" />
+                    <Trash2 className="size-4 shrink-0" />
                     {t("actions.delete")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>

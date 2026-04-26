@@ -158,7 +158,7 @@ export function MerchantsDataTable({
             <div className="w-full min-w-0 space-y-1.5 md:min-w-[200px] md:max-w-sm md:flex-1">
               <Label
                 htmlFor="merchants-search"
-                className="text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
+                className="text-start text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
               >
                 {t("searchLabel")}
               </Label>
@@ -198,7 +198,7 @@ export function MerchantsDataTable({
             <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:w-auto md:min-w-0 md:max-w-2xl">
               <div className="min-w-0 space-y-1.5">
                 <Label
-                  className="text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
+                  className="text-start text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
                   htmlFor="merchants-status-filter"
                 >
                   {t("filterStatus")}
@@ -228,7 +228,7 @@ export function MerchantsDataTable({
               </div>
               <div className="min-w-0 space-y-1.5">
                 <Label
-                  className="text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
+                  className="text-start text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
                   htmlFor="merchants-sub-filter"
                 >
                   {t("filterSubStatus")}
@@ -391,11 +391,11 @@ export function MerchantsDataTable({
         <>
           <Separator className="bg-border/50" />
           <div className="flex items-center justify-between bg-white px-3 py-2.5 dark:bg-card sm:px-4">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-start text-xs text-muted-foreground tabular-nums" dir="ltr">
               {(pagination.page - 1) * pagination.limit + 1}–
               {Math.min(pagination.page * pagination.limit, pagination.total)} / {pagination.total}
             </p>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" dir="ltr">
               <Button
                 type="button"
                 variant="ghost"

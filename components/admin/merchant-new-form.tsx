@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { formatLongDate, formatYmd, parseYmd } from "@/lib/merchant-form-dates";
@@ -110,6 +111,15 @@ const stepKeys = ["account", "subscription", "review"] as const;
 export function MerchantNewForm() {
   const t = useTranslations("adminMerchants");
   const appLocale = useLocale();
+  const params = useParams() as { locale?: string | string[] };
+  const rawLoc = params?.locale;
+  const paramLocale =
+    typeof rawLoc === "string" ? rawLoc : Array.isArray(rawLoc) ? rawLoc[0] : null;
+  const isRtl =
+    paramLocale === "ar" ||
+    (paramLocale != null && paramLocale.startsWith("ar-")) ||
+    appLocale === "ar" ||
+    (typeof appLocale === "string" && appLocale.startsWith("ar-"));
   const accessToken = useAuthStore((s) => s.accessToken);
   const refreshToken = useAuthStore((s) => s.refreshToken);
   const router = useRouter();
@@ -567,8 +577,17 @@ export function MerchantNewForm() {
               <Link href="/dashboard/admin/merchants">{t("form.cancel")}</Link>
             ) : (
               <span className="inline-flex items-center justify-center gap-2">
-                <ArrowLeft className="size-3.5 opacity-70" />
-                {t("form.back")}
+                {isRtl ? (
+                  <>
+                    {t("form.back")}
+                    <ArrowLeft className="size-3.5 shrink-0 opacity-70" />
+                  </>
+                ) : (
+                  <>
+                    <ArrowLeft className="size-3.5 shrink-0 opacity-70" />
+                    {t("form.back")}
+                  </>
+                )}
               </span>
             )}
           </Button>
@@ -583,7 +602,11 @@ export function MerchantNewForm() {
               disabled={step === 0 && !isStep0Valid()}
             >
               {t("form.next")}
-              <ArrowRight className="ms-1.5 size-3.5 opacity-80" />
+              {isRtl ? (
+                <ArrowLeft className="ms-1.5 size-3.5 shrink-0 opacity-80" />
+              ) : (
+                <ArrowRight className="ms-1.5 size-3.5 shrink-0 opacity-80" />
+              )}
             </Button>
           ) : (
             <Button

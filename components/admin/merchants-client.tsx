@@ -160,7 +160,7 @@ export function MerchantsClient() {
   return (
     <div className="space-y-4 md:space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
+        <div className="min-w-0 text-start">
           <h1 className="text-base font-semibold leading-none tracking-tight sm:text-lg">
             {t("title")}
           </h1>
@@ -169,7 +169,7 @@ export function MerchantsClient() {
           </p>
         </div>
         <Button asChild size="sm" className="h-8 gap-1.5 px-3 text-xs sm:h-9 sm:text-sm">
-          <Link href="/dashboard/admin/merchants/new">
+          <Link href="/dashboard/admin/merchants/new" dir="ltr">
             <Plus className="size-3.5 sm:size-4" />
             {t("addMerchant")}
           </Link>
@@ -265,7 +265,7 @@ export function MerchantsClient() {
                   {t("empty.description")}
                 </p>
                 <Button asChild size="sm" className="mt-4 h-8 gap-1.5">
-                  <Link href="/dashboard/admin/merchants/new">
+                  <Link href="/dashboard/admin/merchants/new" dir="ltr">
                     <Plus className="size-3.5" />
                     {t("addMerchant")}
                   </Link>
