@@ -280,12 +280,14 @@ function CashierSidebarContent({
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const locale = useLocale();
-  const isRtl = locale === "ar";
+  const isRtl = locale.toLowerCase().startsWith("ar");
   const pathname = usePathname();
   const authUser = useAuthStore((s) => s.user);
   const lock = useSessionStore((s) => s.lock);
 
   const isAdmin = authUser?.role === "ADMIN";
+  const adminTitle = isRtl ? "حساباتي" : "HSSABTY ADMIN";
+  const adminSubtitle = isRtl ? "الإدارة" : undefined;
 
   const user = authUser
     ? {
@@ -300,7 +302,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" dir={isRtl ? "rtl" : "ltr"} {...props}>
       <SidebarHeader>
         {isAdmin ? (
           <SidebarMenu>
@@ -316,9 +318,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     priority
                   />
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Hssabaty POS</span>
-                  <span className="truncate text-xs text-muted-foreground">Admin</span>
+                <div className={cn("grid flex-1 text-sm leading-tight", isRtl ? "text-right" : "text-left")}>
+                  <span className="truncate font-semibold">{adminTitle}</span>
+                  {adminSubtitle ? (
+                    <span className="truncate text-xs text-muted-foreground">{adminSubtitle}</span>
+                  ) : null}
                 </div>
               </SidebarMenuButton>
             </SidebarMenuItem>

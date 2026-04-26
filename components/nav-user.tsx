@@ -47,6 +47,9 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar()
   const locale = useLocale()
+  const isRtl = locale.toLowerCase().startsWith("ar")
+  const userRole = useAuthStore((s) => s.user?.role)
+  const isAdmin = userRole === "ADMIN"
   const refreshToken = useAuthStore((s) => s.refreshToken)
   const clearSession = useAuthStore((s) => s.clearSession)
   const t = useTranslations("common")
@@ -82,63 +85,97 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground focus-visible:ring-0 focus-visible:ring-transparent"
             >
-              <Avatar className="h-8 w-8 rounded-lg border border-sidebar-border">
-                <AvatarImage src={avatarSrc} alt={user.name} />
-                <AvatarFallback className="rounded-lg font-semibold text-sidebar-foreground">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
-              </div>
-              <EllipsisVertical className="ml-auto size-4 text-muted-foreground" />
+              {isRtl ? (
+                /* RTL: parent dir=rtl flips flex, so DOM order = visual right→left
+                   DOM: [avatar] [text] [⋯]  →  visual: avatar(right) text ⋯(left) */
+                <>
+                  <Avatar className="h-8 w-8 shrink-0 rounded-lg border border-sidebar-border">
+                    <AvatarImage src={avatarSrc} alt={user.name} />
+                    <AvatarFallback className="rounded-lg font-semibold text-sidebar-foreground">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-right text-sm leading-tight">
+                    <span className="truncate font-semibold">{user.name}</span>
+                    <span className="truncate text-xs">{user.email}</span>
+                  </div>
+                  <EllipsisVertical className="shrink-0 size-4 text-muted-foreground" />
+                </>
+              ) : (
+                /* LTR: DOM: [avatar] [text] [⋯]  →  visual: avatar(left) text ⋯(right) */
+                <>
+                  <Avatar className="h-8 w-8 shrink-0 rounded-lg border border-sidebar-border">
+                    <AvatarImage src={avatarSrc} alt={user.name} />
+                    <AvatarFallback className="rounded-lg font-semibold text-sidebar-foreground">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{user.name}</span>
+                    <span className="truncate text-xs">{user.email}</span>
+                  </div>
+                  <EllipsisVertical className="shrink-0 size-4 text-muted-foreground" />
+                </>
+              )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
+            dir={isRtl ? "rtl" : "ltr"}
+            className={`w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg ${isRtl ? "text-right" : "text-left"}`}
+            side={isMobile ? "bottom" : isRtl ? "left" : "right"}
+            align={isRtl ? "start" : "end"}
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg border border-border">
+              {/* Dropdown content has dir="rtl", so same rule: first DOM child = rightmost visual */}
+              <div className="flex items-center gap-2 px-1 py-1.5 text-sm">
+                <Avatar className="h-8 w-8 shrink-0 rounded-lg border border-border">
                   <AvatarImage src={avatarSrc} alt={user.name} />
                   <AvatarFallback className="rounded-lg font-semibold">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className={`grid flex-1 text-sm leading-tight ${isRtl ? "text-right" : "text-left"}`}>
                   <span className="truncate font-semibold">{user.name}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
+            {!isAdmin && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
+                    <Sparkles />
+                    {t("upgradePro")}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                {t("upgradePro")}
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
                 <BadgeCheck />
                 {t("account")}
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                {t("billing")}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+              {!isAdmin && (
+                <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
+                  <CreditCard />
+                  {t("billing")}
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
                 <Bell />
                 {t("notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={onLogout} disabled={pendingLogout}>
+            <DropdownMenuItem
+              className={isRtl ? "flex-row-reverse justify-end text-right" : ""}
+              onSelect={(e) => e.preventDefault()}
+              onClick={onLogout}
+              disabled={pendingLogout}
+            >
               <LogOut />
               {pendingLogout ? t("loggingOut") : t("logout")}
             </DropdownMenuItem>
