@@ -1,5 +1,9 @@
+import { createRequire } from "node:module";
+import path from "node:path";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+
+const requireFromProject = createRequire(path.join(process.cwd(), "package.json"));
 
 /**
  * Optional: if the dev server logs "Blocked cross-origin request … to /_next/*" when you open
@@ -26,6 +30,24 @@ const nextConfig: NextConfig = {
     // "Could not find the module ...segment-explorer-node.js#SegmentViewNode in the React Client Manifest"
     devtoolSegmentExplorer: false,
   },
+  // `date-fns` v4 `exports` can make Webpack miss `import "date-fns/locale"`. `react-day-picker`
+  // (DayPicker) pulls that in internally — only fix that, without rewriting `react-day-picker/*`
+  // to absolute disk paths (breaks pnpm / Docker when files sit under `.pnpm/`).
+  webpack: (config, { webpack: webpackInstance }) => {
+    const dateFnsLocaleFile = requireFromProject.resolve("date-fns/locale");
+    const alias = (config.resolve?.alias ?? {}) as Record<string, string | false | string[]>;
+    config.resolve = config.resolve ?? {};
+    config.resolve.alias = {
+      ...alias,
+      "date-fns/locale": dateFnsLocaleFile,
+    };
+    config.plugins = config.plugins ?? [];
+    config.plugins.push(
+      new webpackInstance.NormalModuleReplacementPlugin(/^date-fns\/locale$/, dateFnsLocaleFile)
+    );
+    return config;
+  },
+  transpilePackages: ["date-fns", "react-day-picker"],
 };
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
