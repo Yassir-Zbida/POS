@@ -637,6 +637,12 @@
       "BANNED": "محظور",
       "SUSPENDED": "موقوف"
     },
+    "subStatus": {
+      "ACTIVE": "نشط",
+      "PAST_DUE": "متأخر",
+      "CANCELED": "ملغي",
+      "SUSPENDED": "موقوف"
+    },
     "stats": {
       "total": "إجمالي المستخدمين",
       "active": "نشط",
@@ -725,7 +731,19 @@
         "cashiers": "حسابات الكاشيرين",
         "locations": "فروع المتجر",
         "subscription": "الاشتراك",
-        "none": "لا توجد حسابات مرتبطة"
+        "none": "لا توجد حسابات مرتبطة",
+        "subscriptionStatus": "الحالة",
+        "subscriptionStarted": "تاريخ البدء",
+        "viewMerchantProfile": "عرض ملف التاجر الكامل",
+        "emptyCashiers": "لا توجد حسابات كاشير",
+        "emptyLocations": "لا توجد فروع",
+        "table": {
+          "name": "الاسم",
+          "status": "الحالة",
+          "joined": "تاريخ الإضافة",
+          "location": "الفرع",
+          "city": "المدينة"
+        }
       },
       "editForm": {
         "title": "تعديل ملف المستخدم",

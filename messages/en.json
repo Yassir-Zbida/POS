@@ -639,6 +639,12 @@
       "BANNED": "Banned",
       "SUSPENDED": "Suspended"
     },
+    "subStatus": {
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Canceled",
+      "SUSPENDED": "Suspended"
+    },
     "stats": {
       "total": "Total users",
       "active": "Active",
@@ -727,7 +733,19 @@
         "cashiers": "Cashier accounts",
         "locations": "Store locations",
         "subscription": "Subscription",
-        "none": "No related accounts"
+        "none": "No related accounts",
+        "subscriptionStatus": "Status",
+        "subscriptionStarted": "Started",
+        "viewMerchantProfile": "View full merchant profile",
+        "emptyCashiers": "No cashiers",
+        "emptyLocations": "No locations",
+        "table": {
+          "name": "Name",
+          "status": "Status",
+          "joined": "Joined",
+          "location": "Location",
+          "city": "City"
+        }
       },
       "editForm": {
         "title": "Edit user profile",

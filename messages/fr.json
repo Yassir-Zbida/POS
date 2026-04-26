@@ -637,6 +637,12 @@
       "BANNED": "Banni",
       "SUSPENDED": "Suspendu"
     },
+    "subStatus": {
+      "ACTIVE": "Actif",
+      "PAST_DUE": "En retard",
+      "CANCELED": "Annulé",
+      "SUSPENDED": "Suspendu"
+    },
     "stats": {
       "total": "Total utilisateurs",
       "active": "Actifs",
@@ -725,7 +731,19 @@
         "cashiers": "Comptes caissiers",
         "locations": "Sites du magasin",
         "subscription": "Abonnement",
-        "none": "Aucun compte associé"
+        "none": "Aucun compte associé",
+        "subscriptionStatus": "Statut",
+        "subscriptionStarted": "Début",
+        "viewMerchantProfile": "Voir le profil complet du marchand",
+        "emptyCashiers": "Aucun caissier",
+        "emptyLocations": "Aucun site",
+        "table": {
+          "name": "Nom",
+          "status": "Statut",
+          "joined": "Ajouté le",
+          "location": "Site",
+          "city": "Ville"
+        }
       },
       "editForm": {
         "title": "Modifier le profil",
