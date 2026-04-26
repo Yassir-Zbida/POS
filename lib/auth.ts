@@ -44,6 +44,20 @@ export async function verifyToken(token: string) {
   return payload as AppTokenPayload;
 }
 
+/**
+ * Verifies the JWT signature without enforcing expiry.
+ * Only used by the lock-screen PIN verify endpoint — the PIN itself is the
+ * authentication factor; the token is only needed to identify the user.
+ */
+export async function verifyTokenIgnoreExpiry(token: string) {
+  const { payload } = await jwtVerify(token, secret, {
+    // A huge tolerance effectively disables the expiry check while still
+    // requiring a valid signature (prevents forged tokens).
+    clockTolerance: 999_999_999,
+  });
+  return payload as AppTokenPayload;
+}
+
 export function getBearerToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) return null;
   return authHeader.replace("Bearer ", "").trim();
