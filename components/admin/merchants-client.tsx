@@ -176,7 +176,7 @@ export function MerchantsClient() {
         </Button>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         {loading && !stats ? (
           <div className="grid grid-cols-2 sm:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -184,10 +184,10 @@ export function MerchantsClient() {
                 key={i}
                 className={cn(
                   "flex items-center gap-2.5 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-2.5",
-                  i < 2 && "border-b border-border/50",
-                  i % 2 === 0 && "border-e border-border/50",
+                  i < 2 && "border-b border-border/80",
+                  i % 2 === 0 && "border-e border-border/80",
                   "sm:border-b-0 sm:border-e-0",
-                  i > 0 && "sm:border-s sm:border-border/50"
+                  i > 0 && "sm:border-s sm:border-border/80"
                 )}
               >
                 <Skeleton className="size-7 shrink-0 rounded-lg sm:size-8" />
@@ -208,10 +208,10 @@ export function MerchantsClient() {
                   key={def.key}
                   className={cn(
                     "flex min-w-0 items-center gap-2.5 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-2.5",
-                    i < 2 && "border-b border-border/50",
-                    i % 2 === 0 && "border-e border-border/50",
+                    i < 2 && "border-b border-border/80",
+                    i % 2 === 0 && "border-e border-border/80",
                     "sm:border-b-0 sm:border-e-0",
-                    i > 0 && "sm:border-s sm:border-border/50"
+                    i > 0 && "sm:border-s sm:border-border/80"
                   )}
                 >
                   <div
@@ -237,7 +237,7 @@ export function MerchantsClient() {
         )}
       </div>
 
-      <Card className="overflow-hidden border-border/60 bg-white py-0 shadow-sm dark:bg-card">
+      <Card className="overflow-hidden border-border bg-white py-0 shadow-sm dark:bg-card">
         <CardContent className="p-0">
           <MerchantsDataTable
             data={merchants}

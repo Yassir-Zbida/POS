@@ -139,7 +139,7 @@ export function MerchantsDataTable({
     <div>
       <div
         className={cn(
-          "flex flex-col gap-3 border-b border-border/60 bg-white px-3 py-3",
+          "flex flex-col gap-3 border-b border-border bg-white px-3 py-3",
           "dark:bg-card sm:px-4"
         )}
       >
@@ -210,7 +210,11 @@ export function MerchantsDataTable({
                 >
                   <SelectTrigger
                     id="merchants-status-filter"
-                    className="h-9 w-full min-w-0 shadow-sm sm:min-w-[9.5rem] md:min-w-[10.5rem]"
+                    className={cn(
+                      "h-9 w-full min-w-0 shadow-sm sm:min-w-[9.5rem] md:min-w-[10.5rem]",
+                      "focus-visible:ring-0 focus-visible:ring-offset-0",
+                      "focus:border-border data-[state=open]:border-border"
+                    )}
                   >
                     <SelectValue />
                   </SelectTrigger>
@@ -236,7 +240,11 @@ export function MerchantsDataTable({
                 >
                   <SelectTrigger
                     id="merchants-sub-filter"
-                    className="h-9 w-full min-w-0 shadow-sm sm:min-w-[9.5rem] md:min-w-[11.5rem]"
+                    className={cn(
+                      "h-9 w-full min-w-0 shadow-sm sm:min-w-[9.5rem] md:min-w-[11.5rem]",
+                      "focus-visible:ring-0 focus-visible:ring-offset-0",
+                      "focus:border-border data-[state=open]:border-border"
+                    )}
                   >
                     <SelectValue />
                   </SelectTrigger>
@@ -312,7 +320,7 @@ export function MerchantsDataTable({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
-                  className="border-b border-border/60 bg-white hover:!bg-white dark:border-border/50 dark:bg-card dark:hover:!bg-card"
+                  className="border-b border-border bg-white hover:!bg-white dark:border-border/70 dark:bg-card dark:hover:!bg-card"
                 >
                   {headerGroup.headers.map((header) => (
                     <TableHead

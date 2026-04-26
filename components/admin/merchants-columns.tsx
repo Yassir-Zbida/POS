@@ -227,14 +227,6 @@ export function useMerchantsColumns({
                     {t("actions.view")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() =>
-                      router.push(`/dashboard/admin/merchants/${merchant.id}`)
-                    }
-                  >
-                    <Edit className="me-2 size-4" />
-                    {t("actions.edit")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
                     onClick={() => {
                       void navigator.clipboard.writeText(merchant.id);
                       toast.success(t("actions.idCopied"));
