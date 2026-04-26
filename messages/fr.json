@@ -16,6 +16,10 @@
       "dashboardCategories": "Catégories",
       "dashboardInventory": "Inventaire",
       "dashboardCashRegister": "Caisse",
+      "admin": "Admin",
+      "adminMerchants": "Marchands",
+      "adminMerchantsNew": "Nouveau marchand",
+      "adminMerchantDetail": "Marchand",
       "cashier": "Caissier",
       "cashierPos": "POS",
       "pos": "POS",
@@ -360,6 +364,244 @@
         "clothingWithCount": "Vêtements ({count})",
         "others": "Autre",
         "othersWithCount": "Autre ({count})"
+      }
+    }
+  },
+  "adminMerchants": {
+    "title": "Marchands",
+    "subtitle": "Gérer les comptes marchands, abonnements et personnel",
+    "addMerchant": "Ajouter un marchand",
+    "table": {
+      "name": "Nom",
+      "email": "E-mail",
+      "status": "Statut",
+      "subscription": "Abonnement",
+      "staff": "Personnel",
+      "locations": "Sites",
+      "joined": "Inscription",
+      "actions": "Actions",
+      "noResults": "Aucun résultat",
+      "toggleColumns": "Colonnes",
+      "prevPage": "Page précédente",
+      "nextPage": "Page suivante"
+    },
+    "userStatus": {
+      "ACTIVE": "Actif",
+      "BANNED": "Banni",
+      "SUSPENDED": "Suspendu"
+    },
+    "subStatus": {
+      "ACTIVE": "Actif",
+      "PAST_DUE": "En retard",
+      "CANCELED": "Annulé",
+      "SUSPENDED": "Suspendu",
+      "none": "Pas d'abonnement"
+    },
+    "stats": {
+      "total": "Total marchands",
+      "active": "Comptes actifs",
+      "subActive": "Abonnements actifs",
+      "subPastDue": "En retard"
+    },
+    "search": "Rechercher par nom ou e-mail…",
+    "searchLabel": "Recherche",
+    "filterReset": "Réinitialiser les filtres",
+    "filterStatus": "Statut du compte",
+    "filterSubStatus": "Abonnement",
+    "filterAll": "Tous",
+    "empty": {
+      "title": "Aucun marchand trouvé",
+      "description": "Ajustez vos filtres ou ajoutez votre premier marchand."
+    },
+    "actions": {
+      "view": "Voir les détails",
+      "edit": "Modifier",
+      "suspend": "Suspendre",
+      "activate": "Activer",
+      "ban": "Bannir le compte",
+      "delete": "Supprimer",
+      "copyId": "Copier l'ID",
+      "idCopied": "ID copié dans le presse-papiers"
+    },
+    "confirmBan": {
+      "title": "Bannir ce marchand ?",
+      "description": "Le compte sera banni et l'abonnement annulé. Cette action est réversible.",
+      "confirm": "Bannir le marchand",
+      "cancel": "Annuler"
+    },
+    "confirmDelete": {
+      "title": "Supprimer définitivement ce marchand ?",
+      "description": "Le compte marchand et toutes les données associées (personnel, emplacements, ventes, etc.) seront supprimées définitivement. Cette action est irréversible !",
+      "confirm": "Supprimer définitivement",
+      "cancel": "Annuler"
+    },
+    "form": {
+      "title": "Ajouter un marchand",
+      "subtitle": "Créer un compte marchand avec accès au système",
+      "steps": {
+        "account": "Compte",
+        "subscription": "Abonnement",
+        "review": "Récapitulatif"
+      },
+      "account": {
+        "heading": "Informations du compte",
+        "subheading": "Configurer les identifiants de connexion",
+        "name": "Nom complet",
+        "namePlaceholder": "Nom du propriétaire",
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "marchand@exemple.com",
+        "phone": "Numéro de téléphone",
+        "phonePlaceholder": "+212 6XX XXX XXX",
+        "password": "Mot de passe",
+        "passwordPlaceholder": "Min. 8 caractères",
+        "confirmPassword": "Confirmer le mot de passe",
+        "confirmPlaceholder": "Ressaisir le mot de passe",
+        "passwordMismatch": "Les mots de passe ne correspondent pas",
+        "generatePassword": "Générer",
+        "showPassword": "Afficher",
+        "hidePassword": "Masquer",
+        "validation": {
+          "nameRequired": "Le nom est obligatoire (au moins 2 caractères).",
+          "nameMin": "Utilisez au moins 2 caractères.",
+          "emailRequired": "L’e-mail est obligatoire.",
+          "emailInvalid": "Saisissez une adresse e-mail valide.",
+          "phoneInvalid": "Utilisez uniquement des chiffres, espaces et + ( ) -.",
+          "passwordMin": "Utilisez au moins 8 caractères.",
+          "passwordRequired": "Le mot de passe est obligatoire (min. 8 caractères).",
+          "passwordHint": "8 caractères ou plus recommandés.",
+          "confirmMismatch": "Ne correspond pas au mot de passe ci-dessus.",
+          "confirmRequired": "Saisissez à nouveau le mot de passe pour confirmer."
+        }
+      },
+      "subscription": {
+        "heading": "Configuration de l'abonnement",
+        "subheading": "Configurer l'accès et le statut de facturation",
+        "status": "Statut de l'abonnement",
+        "endDate": "Date d'expiration (optionnel)",
+        "endDateHint": "Laisser vide pour un accès indéfini",
+        "endDatePlaceholder": "AAAA-MM-JJ",
+        "pickDate": "Choisir une date",
+        "clearDate": "Effacer"
+      },
+      "review": {
+        "heading": "Récapitulatif",
+        "subheading": "Vérifiez les informations avant de créer le compte",
+        "accountInfo": "Compte",
+        "subscriptionInfo": "Abonnement",
+        "noExpiry": "Pas de date d'expiration"
+      },
+      "next": "Continuer",
+      "back": "Retour",
+      "submit": "Créer le marchand",
+      "submitting": "Création en cours…",
+      "cancel": "Annuler",
+      "success": "Compte marchand créé avec succès",
+      "errors": {
+        "emailExists": "Cette adresse e-mail est déjà utilisée",
+        "unauthorized": "Session expirée ou non connecté. Veuillez vous reconnecter.",
+        "forbidden": "Vous n’avez pas l’autorisation de créer des marchands (réservé aux administrateurs).",
+        "unavailable": "Base de données indisponible. Vérifiez que MySQL est démarré et réessayez.",
+        "validation": "Vérifiez les champs du formulaire et réessayez.",
+        "generic": "Échec de la création du marchand. Veuillez réessayer."
+      }
+    },
+    "detail": {
+      "backToList": "Retour aux marchands",
+      "editButton": "Modifier",
+      "banButton": "Bannir le compte",
+      "activateButton": "Activer le compte",
+      "tabs": {
+        "overview": "Vue d'ensemble",
+        "staff": "Personnel",
+        "locations": "Sites",
+        "subscription": "Abonnement"
+      },
+      "overview": {
+        "heading": "Informations du compte",
+        "name": "Nom complet",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "status": "Statut du compte",
+        "joined": "Membre depuis",
+        "notProvided": "Non renseigné"
+      },
+      "staff": {
+        "heading": "Membres du personnel",
+        "addStaff": "Ajouter du personnel",
+        "name": "Nom",
+        "email": "E-mail",
+        "status": "Statut",
+        "joined": "Ajouté le",
+        "actions": "Actions",
+        "empty": {
+          "title": "Aucun membre du personnel",
+          "description": "Ajoutez des caissiers pour leur donner accès au POS."
+        },
+        "addForm": {
+          "title": "Ajouter un membre du personnel",
+          "name": "Nom complet",
+          "namePlaceholder": "Nom du caissier",
+          "email": "Adresse e-mail",
+          "emailPlaceholder": "caissier@exemple.com",
+          "phone": "Téléphone",
+          "phonePlaceholder": "+212 6XX XXX XXX",
+          "password": "Mot de passe",
+          "passwordPlaceholder": "Min. 8 caractères",
+          "submit": "Ajouter le membre",
+          "submitting": "Ajout…",
+          "success": "Membre du personnel ajouté avec succès",
+          "errors": {
+            "emailExists": "Cet e-mail est déjà utilisé",
+            "generic": "Échec de l'ajout du membre du personnel"
+          }
+        },
+        "removeConfirm": {
+          "title": "Retirer ce membre ?",
+          "description": "Son accès au POS sera révoqué.",
+          "confirm": "Retirer",
+          "cancel": "Annuler"
+        },
+        "statusToggle": {
+          "suspend": "Suspendre",
+          "activate": "Activer"
+        }
+      },
+      "locations": {
+        "heading": "Sites de vente",
+        "name": "Nom du site",
+        "address": "Adresse",
+        "city": "Ville",
+        "status": "Statut",
+        "active": "Actif",
+        "inactive": "Inactif",
+        "empty": {
+          "title": "Aucun site pour l'instant",
+          "description": "Les sites sont créés par le marchand dans son tableau de bord."
+        }
+      },
+      "subscription": {
+        "heading": "Détails de l'abonnement",
+        "status": "Statut",
+        "startDate": "Date de début",
+        "endDate": "Date d'expiration",
+        "noExpiry": "Pas d'expiration",
+        "noSubscription": "Aucun abonnement trouvé",
+        "updateStatus": "Modifier le statut",
+        "updateEndDate": "Modifier l'expiration",
+        "saveChanges": "Enregistrer",
+        "saving": "Enregistrement…",
+        "success": "Abonnement mis à jour avec succès",
+        "error": "Échec de la mise à jour de l'abonnement"
+      },
+      "editForm": {
+        "title": "Modifier le marchand",
+        "name": "Nom complet",
+        "phone": "Téléphone",
+        "status": "Statut du compte",
+        "save": "Enregistrer",
+        "saving": "Enregistrement…",
+        "success": "Marchand mis à jour avec succès",
+        "error": "Échec de la mise à jour"
       }
     }
   },

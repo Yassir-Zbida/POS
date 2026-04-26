@@ -16,6 +16,10 @@
       "dashboardCategories": "التصنيفات",
       "dashboardInventory": "المخزون",
       "dashboardCashRegister": "الصندوق",
+      "admin": "الإدارة",
+      "adminMerchants": "التجار",
+      "adminMerchantsNew": "تاجر جديد",
+      "adminMerchantDetail": "التاجر",
       "cashier": "الكاشير",
       "cashierPos": "نقطة البيع",
       "pos": "نقطة البيع",
@@ -360,6 +364,244 @@
         "clothingWithCount": "ملابس ({count})",
         "others": "أخرى",
         "othersWithCount": "أخرى ({count})"
+      }
+    }
+  },
+  "adminMerchants": {
+    "title": "التجار",
+    "subtitle": "إدارة حسابات التجار والاشتراكات والموظفين",
+    "addMerchant": "إضافة تاجر",
+    "table": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "status": "الحالة",
+      "subscription": "الاشتراك",
+      "staff": "الموظفون",
+      "locations": "الفروع",
+      "joined": "تاريخ الانضمام",
+      "actions": "الإجراءات",
+      "noResults": "لا توجد نتائج",
+      "toggleColumns": "الأعمدة",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية"
+    },
+    "userStatus": {
+      "ACTIVE": "نشط",
+      "BANNED": "محظور",
+      "SUSPENDED": "موقوف"
+    },
+    "subStatus": {
+      "ACTIVE": "نشط",
+      "PAST_DUE": "متأخر",
+      "CANCELED": "ملغى",
+      "SUSPENDED": "موقوف",
+      "none": "لا يوجد اشتراك"
+    },
+    "stats": {
+      "total": "إجمالي التجار",
+      "active": "الحسابات النشطة",
+      "subActive": "الاشتراكات النشطة",
+      "subPastDue": "اشتراكات متأخرة"
+    },
+    "search": "البحث بالاسم أو البريد الإلكتروني…",
+    "searchLabel": "بحث",
+    "filterReset": "إعادة ضبط عوامل التصفية",
+    "filterStatus": "حالة الحساب",
+    "filterSubStatus": "الاشتراك",
+    "filterAll": "الكل",
+    "empty": {
+      "title": "لا يوجد تجار",
+      "description": "عدّل الفلاتر أو أضف أول تاجر."
+    },
+    "actions": {
+      "view": "عرض التفاصيل",
+      "edit": "تعديل",
+      "suspend": "إيقاف",
+      "activate": "تفعيل",
+      "ban": "حظر الحساب",
+      "delete": "حذف",
+      "copyId": "نسخ المعرف",
+      "idCopied": "تم نسخ المعرّف"
+    },
+    "confirmBan": {
+      "title": "حظر هذا التاجر؟",
+      "description": "سيتم حظر الحساب وإلغاء الاشتراك. يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حظر التاجر",
+      "cancel": "إلغاء"
+    },
+    "confirmDelete": {
+      "title": "حذف هذا التاجر نهائيًا؟",
+      "description": "سيتم حذف حساب التاجر نهائيًا وجميع البيانات المرتبطة (الموظفين والمواقع والمبيعات وغيرها). لا يمكن التراجع عن هذا الإجراء!",
+      "confirm": "حذف نهائي",
+      "cancel": "إلغاء"
+    },
+    "form": {
+      "title": "إضافة تاجر جديد",
+      "subtitle": "إنشاء حساب تاجر مع صلاحية الوصول للنظام",
+      "steps": {
+        "account": "الحساب",
+        "subscription": "الاشتراك",
+        "review": "مراجعة"
+      },
+      "account": {
+        "heading": "معلومات الحساب",
+        "subheading": "إعداد بيانات تسجيل الدخول",
+        "name": "الاسم الكامل",
+        "namePlaceholder": "اسم صاحب العمل",
+        "email": "البريد الإلكتروني",
+        "emailPlaceholder": "merchant@example.com",
+        "phone": "رقم الهاتف",
+        "phonePlaceholder": "+212 6XX XXX XXX",
+        "password": "كلمة المرور",
+        "passwordPlaceholder": "8 أحرف على الأقل",
+        "confirmPassword": "تأكيد كلمة المرور",
+        "confirmPlaceholder": "أعد إدخال كلمة المرور",
+        "passwordMismatch": "كلمتا المرور غير متطابقتين",
+        "generatePassword": "توليد",
+        "showPassword": "إظهار",
+        "hidePassword": "إخفاء",
+        "validation": {
+          "nameRequired": "الاسم إلزامي (حرفان على الأقل).",
+          "nameMin": "استخدم حرفين على الأقل.",
+          "emailRequired": "البريد الإلكتروني إلزامي.",
+          "emailInvalid": "أدخل بريداً إلكترونياً صالحاً.",
+          "phoneInvalid": "استخدم أرقاماً ومسافات و + ( ) - فقط.",
+          "passwordMin": "استخدم 8 أحرف على الأقل.",
+          "passwordRequired": "كلمة المرور إلزامية (8 أحرف كحد أدنى).",
+          "passwordHint": "يُنصح بـ 8 أحرف أو أكثر.",
+          "confirmMismatch": "لا يطابق كلمة المرور أعلاه.",
+          "confirmRequired": "أعد إدخال كلمة المرور للتأكيد."
+        }
+      },
+      "subscription": {
+        "heading": "إعداد الاشتراك",
+        "subheading": "تحديد صلاحية الوصول وحالة الفوترة",
+        "status": "حالة الاشتراك",
+        "endDate": "تاريخ الانتهاء (اختياري)",
+        "endDateHint": "اتركه فارغاً للوصول غير المحدود",
+        "endDatePlaceholder": "YYYY-MM-DD",
+        "pickDate": "اختر تاريخاً",
+        "clearDate": "مسح"
+      },
+      "review": {
+        "heading": "مراجعة وتأكيد",
+        "subheading": "تحقق من جميع البيانات قبل إنشاء الحساب",
+        "accountInfo": "الحساب",
+        "subscriptionInfo": "الاشتراك",
+        "noExpiry": "بدون تاريخ انتهاء"
+      },
+      "next": "متابعة",
+      "back": "رجوع",
+      "submit": "إنشاء حساب التاجر",
+      "submitting": "جارٍ الإنشاء…",
+      "cancel": "إلغاء",
+      "success": "تم إنشاء حساب التاجر بنجاح",
+      "errors": {
+        "emailExists": "البريد الإلكتروني مستخدم بالفعل",
+        "unauthorized": "انتهت الجلسة أو أنك غير متصل. يرجى تسجيل الدخول مجدداً.",
+        "forbidden": "ليست لديك صلاحية إنشاء حسابات التجار (للمسؤولين فقط).",
+        "unavailable": "قاعدة البيانات غير متاحة. تأكد من تشغيل MySQL ثم أعد المحاولة.",
+        "validation": "تحقق من الحقول ثم أعد المحاولة.",
+        "generic": "فشل إنشاء التاجر. يرجى المحاولة مجدداً."
+      }
+    },
+    "detail": {
+      "backToList": "العودة إلى قائمة التجار",
+      "editButton": "تعديل",
+      "banButton": "حظر الحساب",
+      "activateButton": "تفعيل الحساب",
+      "tabs": {
+        "overview": "نظرة عامة",
+        "staff": "الموظفون",
+        "locations": "الفروع",
+        "subscription": "الاشتراك"
+      },
+      "overview": {
+        "heading": "معلومات الحساب",
+        "name": "الاسم الكامل",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "status": "حالة الحساب",
+        "joined": "عضو منذ",
+        "notProvided": "غير محدد"
+      },
+      "staff": {
+        "heading": "أعضاء الفريق",
+        "addStaff": "إضافة موظف",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "status": "الحالة",
+        "joined": "تاريخ الإضافة",
+        "actions": "الإجراءات",
+        "empty": {
+          "title": "لا يوجد موظفون",
+          "description": "أضف كاشيرين لمنحهم صلاحية الوصول إلى نقطة البيع."
+        },
+        "addForm": {
+          "title": "إضافة موظف",
+          "name": "الاسم الكامل",
+          "namePlaceholder": "اسم الكاشير",
+          "email": "البريد الإلكتروني",
+          "emailPlaceholder": "cashier@example.com",
+          "phone": "الهاتف",
+          "phonePlaceholder": "+212 6XX XXX XXX",
+          "password": "كلمة المرور",
+          "passwordPlaceholder": "8 أحرف على الأقل",
+          "submit": "إضافة الموظف",
+          "submitting": "جارٍ الإضافة…",
+          "success": "تمت إضافة الموظف بنجاح",
+          "errors": {
+            "emailExists": "البريد الإلكتروني مستخدم بالفعل",
+            "generic": "فشل إضافة الموظف"
+          }
+        },
+        "removeConfirm": {
+          "title": "إزالة هذا الموظف؟",
+          "description": "سيتم إلغاء صلاحية وصوله إلى نقطة البيع.",
+          "confirm": "إزالة",
+          "cancel": "إلغاء"
+        },
+        "statusToggle": {
+          "suspend": "إيقاف",
+          "activate": "تفعيل"
+        }
+      },
+      "locations": {
+        "heading": "فروع المتجر",
+        "name": "اسم الفرع",
+        "address": "العنوان",
+        "city": "المدينة",
+        "status": "الحالة",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "empty": {
+          "title": "لا توجد فروع بعد",
+          "description": "يتم إنشاء الفروع من قبل التاجر في لوحة تحكمه."
+        }
+      },
+      "subscription": {
+        "heading": "تفاصيل الاشتراك",
+        "status": "الحالة",
+        "startDate": "تاريخ البدء",
+        "endDate": "تاريخ الانتهاء",
+        "noExpiry": "بدون انتهاء",
+        "noSubscription": "لم يتم العثور على سجل اشتراك",
+        "updateStatus": "تحديث الحالة",
+        "updateEndDate": "تحديث تاريخ الانتهاء",
+        "saveChanges": "حفظ التغييرات",
+        "saving": "جارٍ الحفظ…",
+        "success": "تم تحديث الاشتراك بنجاح",
+        "error": "فشل تحديث الاشتراك"
+      },
+      "editForm": {
+        "title": "تعديل التاجر",
+        "name": "الاسم الكامل",
+        "phone": "الهاتف",
+        "status": "حالة الحساب",
+        "save": "حفظ التغييرات",
+        "saving": "جارٍ الحفظ…",
+        "success": "تم تحديث التاجر بنجاح",
+        "error": "فشل التحديث"
       }
     }
   },

@@ -16,6 +16,10 @@
       "dashboardCategories": "Categories",
       "dashboardInventory": "Inventory",
       "dashboardCashRegister": "Cash register",
+      "admin": "Admin",
+      "adminMerchants": "Merchants",
+      "adminMerchantsNew": "Add merchant",
+      "adminMerchantDetail": "Merchant",
       "cashier": "Cashier",
       "cashierPos": "POS",
       "pos": "POS",
@@ -362,6 +366,244 @@
         "clothingWithCount": "Clothing ({count})",
         "others": "Other",
         "othersWithCount": "Other ({count})"
+      }
+    }
+  },
+  "adminMerchants": {
+    "title": "Merchants",
+    "subtitle": "Manage merchant accounts, subscriptions and staff",
+    "addMerchant": "Add merchant",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "status": "Status",
+      "subscription": "Subscription",
+      "staff": "Staff",
+      "locations": "Locations",
+      "joined": "Joined",
+      "actions": "Actions",
+      "noResults": "No results",
+      "toggleColumns": "Columns",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
+    },
+    "userStatus": {
+      "ACTIVE": "Active",
+      "BANNED": "Banned",
+      "SUSPENDED": "Suspended"
+    },
+    "subStatus": {
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Canceled",
+      "SUSPENDED": "Suspended",
+      "none": "No subscription"
+    },
+    "stats": {
+      "total": "Total merchants",
+      "active": "Active accounts",
+      "subActive": "Active subscriptions",
+      "subPastDue": "Past due"
+    },
+    "search": "Search by name or email…",
+    "searchLabel": "Search",
+    "filterReset": "Reset filters",
+    "filterStatus": "Account status",
+    "filterSubStatus": "Subscription",
+    "filterAll": "All",
+    "empty": {
+      "title": "No merchants found",
+      "description": "Try adjusting your filters or add your first merchant."
+    },
+    "actions": {
+      "view": "View details",
+      "edit": "Edit",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "ban": "Ban account",
+      "delete": "Delete",
+      "copyId": "Copy ID",
+      "idCopied": "ID copied to clipboard"
+    },
+    "confirmBan": {
+      "title": "Ban this merchant?",
+      "description": "This will ban the account and cancel their subscription. This action can be reversed.",
+      "confirm": "Ban merchant",
+      "cancel": "Cancel"
+    },
+    "confirmDelete": {
+      "title": "Delete this merchant permanently?",
+      "description": "This will permanently delete the merchant account and all related data (staff, locations, sales, etc.). This action cannot be undone!",
+      "confirm": "Delete permanently",
+      "cancel": "Cancel"
+    },
+    "form": {
+      "title": "Add new merchant",
+      "subtitle": "Create a merchant account with system access",
+      "steps": {
+        "account": "Account",
+        "subscription": "Subscription",
+        "review": "Review"
+      },
+      "account": {
+        "heading": "Account information",
+        "subheading": "Set up the merchant's login credentials",
+        "name": "Full name",
+        "namePlaceholder": "Business owner name",
+        "email": "Email address",
+        "emailPlaceholder": "merchant@example.com",
+        "phone": "Phone number",
+        "phonePlaceholder": "+212 6XX XXX XXX",
+        "password": "Password",
+        "passwordPlaceholder": "Min. 8 characters",
+        "confirmPassword": "Confirm password",
+        "confirmPlaceholder": "Re-enter password",
+        "passwordMismatch": "Passwords do not match",
+        "generatePassword": "Generate",
+        "showPassword": "Show",
+        "hidePassword": "Hide",
+        "validation": {
+          "nameRequired": "Name is required (at least 2 characters).",
+          "nameMin": "Use at least 2 characters.",
+          "emailRequired": "Email is required.",
+          "emailInvalid": "Enter a valid email address.",
+          "phoneInvalid": "Use only digits, spaces, and + ( ) -.",
+          "passwordMin": "Use at least 8 characters.",
+          "passwordRequired": "Password is required (min. 8 characters).",
+          "passwordHint": "8+ characters recommended.",
+          "confirmMismatch": "Does not match the password above.",
+          "confirmRequired": "Re-enter the password to confirm."
+        }
+      },
+      "subscription": {
+        "heading": "Subscription setup",
+        "subheading": "Configure access and billing status",
+        "status": "Subscription status",
+        "endDate": "Expiry date (optional)",
+        "endDateHint": "Leave empty for indefinite access",
+        "endDatePlaceholder": "YYYY-MM-DD",
+        "pickDate": "Pick a date",
+        "clearDate": "Clear"
+      },
+      "review": {
+        "heading": "Review & confirm",
+        "subheading": "Check all details before creating the account",
+        "accountInfo": "Account",
+        "subscriptionInfo": "Subscription",
+        "noExpiry": "No expiry date"
+      },
+      "next": "Continue",
+      "back": "Back",
+      "submit": "Create merchant",
+      "submitting": "Creating account…",
+      "cancel": "Cancel",
+      "success": "Merchant account created successfully",
+      "errors": {
+        "emailExists": "This email address is already in use",
+        "unauthorized": "Session expired or not signed in. Please sign in again.",
+        "forbidden": "You do not have permission to create merchant accounts (admin only).",
+        "unavailable": "Database is unavailable. Check that MySQL is running and try again.",
+        "validation": "Check the form fields and try again.",
+        "generic": "Failed to create merchant. Please try again."
+      }
+    },
+    "detail": {
+      "backToList": "Back to merchants",
+      "editButton": "Edit merchant",
+      "banButton": "Ban account",
+      "activateButton": "Activate account",
+      "tabs": {
+        "overview": "Overview",
+        "staff": "Staff",
+        "locations": "Locations",
+        "subscription": "Subscription"
+      },
+      "overview": {
+        "heading": "Account information",
+        "name": "Full name",
+        "email": "Email",
+        "phone": "Phone",
+        "status": "Account status",
+        "joined": "Member since",
+        "notProvided": "Not provided"
+      },
+      "staff": {
+        "heading": "Staff members",
+        "addStaff": "Add staff",
+        "name": "Name",
+        "email": "Email",
+        "status": "Status",
+        "joined": "Added on",
+        "actions": "Actions",
+        "empty": {
+          "title": "No staff members yet",
+          "description": "Add cashiers to give them access to this merchant's POS."
+        },
+        "addForm": {
+          "title": "Add staff member",
+          "name": "Full name",
+          "namePlaceholder": "Cashier name",
+          "email": "Email address",
+          "emailPlaceholder": "cashier@example.com",
+          "phone": "Phone number",
+          "phonePlaceholder": "+212 6XX XXX XXX",
+          "password": "Password",
+          "passwordPlaceholder": "Min. 8 characters",
+          "submit": "Add staff member",
+          "submitting": "Adding…",
+          "success": "Staff member added successfully",
+          "errors": {
+            "emailExists": "This email is already in use",
+            "generic": "Failed to add staff member"
+          }
+        },
+        "removeConfirm": {
+          "title": "Remove staff member?",
+          "description": "This will revoke their access to the POS system.",
+          "confirm": "Remove",
+          "cancel": "Cancel"
+        },
+        "statusToggle": {
+          "suspend": "Suspend",
+          "activate": "Activate"
+        }
+      },
+      "locations": {
+        "heading": "Store locations",
+        "name": "Location name",
+        "address": "Address",
+        "city": "City",
+        "status": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "empty": {
+          "title": "No locations yet",
+          "description": "Locations are created by the merchant in their dashboard."
+        }
+      },
+      "subscription": {
+        "heading": "Subscription details",
+        "status": "Status",
+        "startDate": "Start date",
+        "endDate": "Expiry date",
+        "noExpiry": "No expiry",
+        "noSubscription": "No subscription record found",
+        "updateStatus": "Update status",
+        "updateEndDate": "Update expiry",
+        "saveChanges": "Save changes",
+        "saving": "Saving…",
+        "success": "Subscription updated successfully",
+        "error": "Failed to update subscription"
+      },
+      "editForm": {
+        "title": "Edit merchant",
+        "name": "Full name",
+        "phone": "Phone number",
+        "status": "Account status",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "success": "Merchant updated successfully",
+        "error": "Failed to update merchant"
       }
     }
   },
