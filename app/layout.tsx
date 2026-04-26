@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import type { Viewport } from "next";
-import { cookies } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { DM_Sans, IBM_Plex_Sans_Arabic } from "next/font/google";
 
 import { ThemeProvider } from "@/components/theme-provider";
@@ -21,6 +21,8 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
 });
 
 const LOCALE_COOKIE = "NEXT_LOCALE";
+// Set by middleware on every request so we always have the real locale.
+const LOCALE_HEADER = "x-locale";
 
 function coerceLocale(value: string | undefined | null): Locale {
   if (value === "fr" || value === "en" || value === "ar") return value;
@@ -44,8 +46,15 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const cookieLocale = (await cookies()).get(LOCALE_COOKIE)?.value;
-  const locale = coerceLocale(cookieLocale);
+  const headersList = await headers();
+  const cookiesList = await cookies();
+
+  // Prefer the header set by middleware (based on URL path — always accurate).
+  // Fall back to cookie for the rare cases middleware doesn't run (e.g. static).
+  const rawLocale =
+    headersList.get(LOCALE_HEADER) ?? cookiesList.get(LOCALE_COOKIE)?.value;
+
+  const locale = coerceLocale(rawLocale);
 
   return (
     <html
@@ -67,4 +76,3 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     </html>
   );
 }
-

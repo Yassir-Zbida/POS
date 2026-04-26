@@ -4,6 +4,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 
 import { locales, type Locale } from "@/i18n/routing";
 import { Toaster } from "@/components/ui/sonner";
+import { HtmlLocaleSync } from "@/components/html-locale-sync";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -48,6 +49,8 @@ export default async function LocaleLayout({
 
   return (
     <>
+      {/* Keep <html lang dir> in sync on every client-side locale navigation */}
+      <HtmlLocaleSync locale={locale} />
       <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       <Toaster
         position={locale === "ar" ? "bottom-left" : "bottom-right"}
