@@ -5,6 +5,9 @@ import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
+import { sendEmail } from "@/lib/mailer";
+import { buildMerchantWelcomeEmail } from "@/lib/email-templates/merchant-welcome-email";
+import { getEmailFromByLocale, getLocaleFromRequest } from "@/lib/email-request-helpers";
 import {
   databaseUnavailableResponse,
   internalErrorResponse,
@@ -228,6 +231,26 @@ export async function POST(request: Request) {
       });
     } catch (e) {
       console.error("[POST /api/admin/merchants] writeAuditLog failed (merchant was created):", e);
+    }
+
+    // Send welcome email (do not block creation on SMTP failures)
+    try {
+      const locale = getLocaleFromRequest(request);
+      const emailContent = buildMerchantWelcomeEmail({
+        locale,
+        merchantName: merchant.name ?? "Merchant",
+        email: rest.email,
+        password: rest.password,
+      });
+      await sendEmail({
+        to: rest.email.toLowerCase(),
+        subject: emailContent.subject,
+        html: emailContent.html,
+        text: emailContent.text,
+        from: getEmailFromByLocale(locale),
+      });
+    } catch (e) {
+      console.error("[POST /api/admin/merchants] welcome email failed (merchant was created):", e);
     }
 
     const { subscriptions, ...m } = merchant;

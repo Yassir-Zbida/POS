@@ -198,7 +198,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
   const [showStaffPwd, setShowStaffPwd] = React.useState(false);
   const [staffLockPin, setStaffLockPin] = React.useState("");
   const [staffAdding, setStaffAdding] = React.useState(false);
-  const [staffErrors, setStaffErrors] = React.useState<Record<string, string>>({});
+  const [staffErrors, setStaffErrors] = React.useState<Record<string, string | undefined>>({});
 
   // Remove staff confirm
   const [removeStaffTarget, setRemoveStaffTarget] = React.useState<StaffMember | null>(null);

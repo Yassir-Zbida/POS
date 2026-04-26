@@ -4,6 +4,9 @@ import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
+import { sendEmail } from "@/lib/mailer";
+import { buildStaffWelcomeEmail } from "@/lib/email-templates/staff-welcome-email";
+import { getEmailFromByLocale, getLocaleFromRequest } from "@/lib/email-request-helpers";
 
 const addStaffSchema = z.object({
   name: z.string().min(2),
@@ -63,7 +66,7 @@ export async function POST(request: Request, { params }: RouteContext) {
 
   const merchant = await prisma.user.findUnique({
     where: { id, role: ROLES.MANAGER },
-    select: { id: true },
+    select: { id: true, name: true },
   });
   if (!merchant) {
     return NextResponse.json({ error: "Merchant not found" }, { status: 404 });
@@ -122,6 +125,28 @@ export async function POST(request: Request, { params }: RouteContext) {
     ipAddress: request.headers.get("x-forwarded-for"),
     userAgent: request.headers.get("user-agent"),
   });
+
+  // Send welcome email (do not block creation on SMTP failures)
+  try {
+    const locale = getLocaleFromRequest(request);
+    const emailContent = buildStaffWelcomeEmail({
+      locale,
+      staffName: staff.name ?? "Staff",
+      email: parsed.data.email,
+      password: parsed.data.password,
+      merchantName: merchant.name ?? undefined,
+      lockPin: parsed.data.lockPin,
+    });
+    await sendEmail({
+      to: parsed.data.email.toLowerCase(),
+      subject: emailContent.subject,
+      html: emailContent.html,
+      text: emailContent.text,
+      from: getEmailFromByLocale(locale),
+    });
+  } catch (e) {
+    console.error("[POST /api/admin/merchants/[id]/staff] welcome email failed (staff was created):", e);
+  }
 
   return NextResponse.json({ staff }, { status: 201 });
 }
