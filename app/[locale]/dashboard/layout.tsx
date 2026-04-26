@@ -22,6 +22,15 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { LockScreen } from "@/components/cashier/LockScreen";
 
 function titleKeyForDashboardPath(pathname: string) {
+  if (pathname.includes("/dashboard/admin/merchants/new")) return "adminMerchantsNew" as const;
+  if (
+    pathname.match(/\/dashboard\/admin\/merchants\/[^/]+/) &&
+    !pathname.includes("/merchants/new")
+  ) {
+    return "adminMerchantDetail" as const;
+  }
+  if (pathname.includes("/dashboard/admin/merchants")) return "adminMerchants" as const;
+  if (pathname.includes("/dashboard/admin")) return "admin" as const;
   if (pathname.includes("/dashboard/cashier/pos")) return "cashierPos" as const;
   if (pathname.includes("/dashboard/cashier")) return "cashier" as const;
   if (pathname.includes("/dashboard/sales")) return "dashboardSales" as const;

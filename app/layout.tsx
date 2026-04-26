@@ -61,6 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang={locale}
       dir={dirForLocale(locale)}
       className={`${dmSans.variable} ${ibmPlexArabic.variable}`}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <body>
