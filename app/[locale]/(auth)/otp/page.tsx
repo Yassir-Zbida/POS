@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import { OtpVerifyForm } from "@/components/otp-verify-form";
-import { LanguageSwitcherFooter } from "@/components/language-switcher-footer";
+import { LanguageSwitcherInline } from "@/components/language-switcher-footer";
 import { RedirectIfAuthenticated } from "@/components/redirect-if-authenticated";
 import { AuthLiquidBackground } from "@/components/auth-liquid-background";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -34,7 +34,10 @@ export default async function OtpPage({
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 overflow-y-auto bg-muted px-4 py-8 pb-24 sm:p-6 sm:pb-24 md:p-10">
       <AuthLiquidBackground />
-      <div className={`absolute top-[max(1rem,env(safe-area-inset-top,1rem))] z-20 ${locale === "ar" ? "left-[max(1rem,env(safe-area-inset-left,1rem))]" : "right-[max(1rem,env(safe-area-inset-right,1rem))]"}`}>
+      <div className={`absolute top-[max(1rem,env(safe-area-inset-top,1rem))] z-20 flex items-center gap-2 ${locale === "ar" ? "left-[max(1rem,env(safe-area-inset-left,1rem))]" : "right-[max(1rem,env(safe-area-inset-right,1rem))]"}`}>
+        <Suspense fallback={null}>
+          <LanguageSwitcherInline />
+        </Suspense>
         <ModeToggle />
       </div>
       <div className="relative z-10 flex w-full max-w-sm flex-col justify-center gap-6">
@@ -52,9 +55,6 @@ export default async function OtpPage({
           <OtpVerifyForm />
         </Suspense>
       </div>
-      <Suspense fallback={null}>
-        <LanguageSwitcherFooter />
-      </Suspense>
     </div>
   );
 }
