@@ -103,7 +103,7 @@ export function useUsersColumns({
                   {getInitials(u.name, u.email)}
                 </AvatarFallback>
               </Avatar>
-              <div className="min-w-0">
+              <div className="min-w-0 text-start">
                 <p className="text-sm font-medium leading-snug">{u.name ?? "—"}</p>
                 <p className="truncate text-[0.7rem] text-muted-foreground">{u.email}</p>
               </div>
@@ -123,6 +123,7 @@ export function useUsersColumns({
           const Icon = ROLE_ICON[role];
           return (
             <span
+              dir="ltr"
               className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${ROLE_COLOR[role]}`}
             >
               <Icon className="size-3" />
@@ -152,7 +153,7 @@ export function useUsersColumns({
           <DataTableColumnHeader column={column} title={t("table.joined")} />
         ),
         cell: ({ row }) => (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-start text-sm tabular-nums text-muted-foreground" dir="ltr">
             {formatDate(row.original.createdAt)}
           </span>
         ),
@@ -180,7 +181,7 @@ export function useUsersColumns({
                   <DropdownMenuItem
                     onClick={() => router.push(`/dashboard/admin/users/${user.id}`)}
                   >
-                    <Eye className="me-2 size-4" />
+                    <Eye className="size-4 shrink-0" />
                     {t("actions.view")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -189,7 +190,7 @@ export function useUsersColumns({
                       toast.success(t("actions.idCopied"));
                     }}
                   >
-                    <Copy className="me-2 size-4" />
+                    <Copy className="size-4 shrink-0" />
                     {t("actions.copyId")}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -198,7 +199,7 @@ export function useUsersColumns({
                       onClick={() => onActivate(user)}
                       className="text-emerald-600 focus:text-emerald-600"
                     >
-                      <CheckCircle2 className="me-2 size-4" />
+                      <CheckCircle2 className="size-4 shrink-0" />
                       {t("actions.activate")}
                     </DropdownMenuItem>
                   ) : (
@@ -206,7 +207,7 @@ export function useUsersColumns({
                       onClick={() => onOpenBan(user)}
                       className="text-destructive focus:text-destructive"
                     >
-                      <Ban className="me-2 size-4" />
+                      <Ban className="size-4 shrink-0" />
                       {t("actions.ban")}
                     </DropdownMenuItem>
                   )}
@@ -214,7 +215,7 @@ export function useUsersColumns({
                     onClick={() => onOpenDelete(user)}
                     className="text-destructive focus:text-destructive"
                   >
-                    <Trash2 className="me-2 size-4" />
+                    <Trash2 className="size-4 shrink-0" />
                     {t("actions.delete")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>

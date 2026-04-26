@@ -151,7 +151,7 @@ export function UsersDataTable({
             <div className="w-full min-w-0 space-y-1.5 md:min-w-[200px] md:max-w-sm md:flex-1">
               <Label
                 htmlFor="users-search"
-                className="text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
+                className="text-start text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
               >
                 {t("searchLabel")}
               </Label>
@@ -192,7 +192,7 @@ export function UsersDataTable({
             <div className="grid w-full grid-cols-2 gap-3 md:w-auto md:min-w-0 md:max-w-2xl">
               <div className="min-w-0 space-y-1.5">
                 <Label
-                  className="text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
+                  className="text-start text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
                   htmlFor="users-role-filter"
                 >
                   {t("filterRole")}
@@ -206,7 +206,6 @@ export function UsersDataTable({
                     id="users-role-filter"
                     className={cn(
                       "h-9 w-full min-w-0 shadow-sm sm:min-w-[9.5rem] md:min-w-[10rem]",
-                      "focus-visible:ring-0 focus-visible:ring-offset-0",
                       "focus:border-border data-[state=open]:border-border"
                     )}
                   >
@@ -223,7 +222,7 @@ export function UsersDataTable({
 
               <div className="min-w-0 space-y-1.5">
                 <Label
-                  className="text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
+                  className="text-start text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground"
                   htmlFor="users-status-filter"
                 >
                   {t("filterStatus")}
@@ -237,7 +236,6 @@ export function UsersDataTable({
                     id="users-status-filter"
                     className={cn(
                       "h-9 w-full min-w-0 shadow-sm sm:min-w-[9.5rem] md:min-w-[10.5rem]",
-                      "focus-visible:ring-0 focus-visible:ring-offset-0",
                       "focus:border-border data-[state=open]:border-border"
                     )}
                   >
@@ -377,12 +375,12 @@ export function UsersDataTable({
         <>
           <Separator className="bg-border/50" />
           <div className="flex items-center justify-between bg-white px-3 py-2.5 dark:bg-card sm:px-4">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-start text-xs text-muted-foreground tabular-nums" dir="ltr">
               {(pagination.page - 1) * pagination.limit + 1}–
               {Math.min(pagination.page * pagination.limit, pagination.total)} /{" "}
               {pagination.total}
             </p>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" dir="ltr">
               <Button
                 type="button"
                 variant="ghost"

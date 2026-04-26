@@ -195,12 +195,22 @@ export function ResetPasswordForm({
                 type="submit"
                 className="w-full"
                 disabled={pending || (password ? !isValidPassword : false)}
+                dir="ltr"
               >
-                <span>{pending ? t("newSubmitPending") : t("newSubmit")}</span>
                 {locale === "ar" ? (
-                  <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                  <>
+                    <ArrowLeft className="me-2 size-4" aria-hidden="true" />
+                    <span>
+                      {pending ? t("newSubmitPending") : t("newSubmit")}
+                    </span>
+                  </>
                 ) : (
-                  <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                  <>
+                    <span>
+                      {pending ? t("newSubmitPending") : t("newSubmit")}
+                    </span>
+                    <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                  </>
                 )}
               </Button>
             </div>

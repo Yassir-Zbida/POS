@@ -120,8 +120,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            dir={isRtl ? "rtl" : "ltr"}
-            className={`w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg ${isRtl ? "text-right" : "text-left"}`}
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg text-start"
             side={isMobile ? "bottom" : isRtl ? "left" : "right"}
             align={isRtl ? "start" : "end"}
             sideOffset={4}
@@ -135,7 +134,7 @@ export function NavUser({
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                <div className={`grid flex-1 text-sm leading-tight ${isRtl ? "text-right" : "text-left"}`}>
+                <div className="grid flex-1 text-start text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
@@ -145,8 +144,8 @@ export function NavUser({
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
-                    <Sparkles />
+                  <DropdownMenuItem>
+                    <Sparkles className="size-4 shrink-0" />
                     {t("upgradePro")}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -154,29 +153,28 @@ export function NavUser({
             )}
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
-                <BadgeCheck />
+              <DropdownMenuItem>
+                <BadgeCheck className="size-4 shrink-0" />
                 {t("account")}
               </DropdownMenuItem>
               {!isAdmin && (
-                <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
-                  <CreditCard />
+                <DropdownMenuItem>
+                  <CreditCard className="size-4 shrink-0" />
                   {t("billing")}
                 </DropdownMenuItem>
               )}
-              <DropdownMenuItem className={isRtl ? "flex-row-reverse justify-end text-right" : ""}>
-                <Bell />
+              <DropdownMenuItem>
+                <Bell className="size-4 shrink-0" />
                 {t("notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className={isRtl ? "flex-row-reverse justify-end text-right" : ""}
               onSelect={(e) => e.preventDefault()}
               onClick={onLogout}
               disabled={pendingLogout}
             >
-              <LogOut />
+              <LogOut className="size-4 shrink-0" />
               {pendingLogout ? t("loggingOut") : t("logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>

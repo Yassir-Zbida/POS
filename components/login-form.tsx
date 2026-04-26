@@ -305,12 +305,26 @@ export function LoginForm({
                         {t("rememberMe")}
                       </Label>
                     </div>
-                    <Button type="submit" className="w-full" disabled={pending}>
-                      <span>{pending ? t("loginPending") : t("loginButton")}</span>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={pending}
+                      dir="ltr"
+                    >
                       {locale === "ar" ? (
-                        <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                        <>
+                          <ArrowLeft className="me-2 size-4" aria-hidden="true" />
+                          <span>
+                            {pending ? t("loginPending") : t("loginButton")}
+                          </span>
+                        </>
                       ) : (
-                        <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                        <>
+                          <span>
+                            {pending ? t("loginPending") : t("loginButton")}
+                          </span>
+                          <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                        </>
                       )}
                     </Button>
                   </div>
@@ -350,12 +364,22 @@ export function LoginForm({
                     type="submit"
                     className="w-full"
                     disabled={pending || code.length < OTP_LENGTH}
+                    dir="ltr"
                   >
-                    <span>{pending ? tOtp("verifyPending") : tOtp("signIn")}</span>
                     {locale === "ar" ? (
-                      <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                      <>
+                        <ArrowLeft className="me-2 size-4" aria-hidden="true" />
+                        <span>
+                          {pending ? tOtp("verifyPending") : tOtp("signIn")}
+                        </span>
+                      </>
                     ) : (
-                      <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                      <>
+                        <span>
+                          {pending ? tOtp("verifyPending") : tOtp("signIn")}
+                        </span>
+                        <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                      </>
                     )}
                   </Button>
 

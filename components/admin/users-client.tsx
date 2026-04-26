@@ -160,7 +160,7 @@ export function UsersClient() {
     <div className="space-y-4 md:space-y-5">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
+        <div className="min-w-0 text-start">
           <h1 className="text-base font-semibold leading-none tracking-tight sm:text-lg">
             {t("title")}
           </h1>
@@ -172,12 +172,12 @@ export function UsersClient() {
 
       {/* Stats — single scrollable row */}
       <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
-        <div className="flex min-w-max divide-x divide-border/70">
+        <div className="flex min-w-max [&>div]:not(:first-child):border-s [&>div]:not(:first-child):border-border/70">
           {loading && !stats
             ? Array.from({ length: 7 }).map((_, i) => (
-                <div key={i} className="flex flex-1 items-center gap-3 px-5 py-5">
+                <div key={i} className="flex flex-1 items-center gap-3 px-5 py-5 text-start">
                   <Skeleton className="size-8 shrink-0 rounded-lg" />
-                  <div className="space-y-1.5">
+                  <div className="min-w-0 space-y-1.5">
                     <Skeleton className="h-5 w-8" />
                     <Skeleton className="h-2.5 w-16" />
                   </div>
@@ -189,7 +189,7 @@ export function UsersClient() {
                 return (
                   <div
                     key={def.key}
-                    className="flex flex-1 items-center gap-3 px-5 py-5"
+                    className="flex flex-1 items-center gap-3 px-5 py-5 text-start"
                   >
                     <div
                       className={cn(
@@ -199,7 +199,7 @@ export function UsersClient() {
                     >
                       <Icon className={cn("size-4", def.em)} />
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 text-start">
                       <p className="text-xl font-bold tabular-nums leading-none">
                         {v}
                       </p>

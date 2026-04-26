@@ -246,12 +246,26 @@ export function OtpVerifyForm({
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={pendingSend}>
-                    <span>{pendingSend ? t("sendPending") : t("sendCode")}</span>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={pendingSend}
+                    dir="ltr"
+                  >
                     {locale === "ar" ? (
-                      <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                      <>
+                        <ArrowLeft className="me-2 size-4" aria-hidden="true" />
+                        <span>
+                          {pendingSend ? t("sendPending") : t("sendCode")}
+                        </span>
+                      </>
                     ) : (
-                      <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                      <>
+                        <span>
+                          {pendingSend ? t("sendPending") : t("sendCode")}
+                        </span>
+                        <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                      </>
                     )}
                   </Button>
                   <div className="text-center text-sm">
@@ -314,12 +328,22 @@ export function OtpVerifyForm({
                     type="submit"
                     className="w-full"
                     disabled={pendingVerify || code.length < OTP_LENGTH}
+                    dir="ltr"
                   >
-                    <span>{pendingVerify ? t("verifyPending") : t("signIn")}</span>
                     {locale === "ar" ? (
-                      <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                      <>
+                        <ArrowLeft className="me-2 size-4" aria-hidden="true" />
+                        <span>
+                          {pendingVerify ? t("verifyPending") : t("signIn")}
+                        </span>
+                      </>
                     ) : (
-                      <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                      <>
+                        <span>
+                          {pendingVerify ? t("verifyPending") : t("signIn")}
+                        </span>
+                        <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                      </>
                     )}
                   </Button>
 

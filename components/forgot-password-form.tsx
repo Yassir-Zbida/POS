@@ -75,12 +75,21 @@ export function ForgotPasswordForm({
                   required
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={pending}>
-                <span>{pending ? t("submitPending") : t("submit")}</span>
+              <Button type="submit" className="w-full" disabled={pending} dir="ltr">
                 {locale === "ar" ? (
-                  <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                  <>
+                    <ArrowLeft className="me-2 size-4" aria-hidden="true" />
+                    <span>
+                      {pending ? t("submitPending") : t("submit")}
+                    </span>
+                  </>
                 ) : (
-                  <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                  <>
+                    <span>
+                      {pending ? t("submitPending") : t("submit")}
+                    </span>
+                    <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                  </>
                 )}
               </Button>
               <div className="text-center text-sm">

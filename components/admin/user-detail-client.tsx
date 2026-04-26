@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -246,9 +247,9 @@ function InfoRow({
       <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">
         <Icon className="size-4 text-muted-foreground" />
       </div>
-      <div className="flex-1">
+      <div className="min-w-0 flex-1 text-start">
         <p className="text-xs text-muted-foreground">{label}</p>
-        {children ?? <p className="text-sm font-medium">{value ?? "—"}</p>}
+        {children ?? <p className="text-sm font-medium break-words">{value ?? "—"}</p>}
       </div>
     </div>
   );
@@ -256,6 +257,21 @@ function InfoRow({
 
 export function UserDetailClient({ userId }: { userId: string }) {
   const t = useTranslations("adminUsers");
+  const locale = useLocale();
+  const params = useParams() as { locale?: string | string[] };
+  const rawLocale = params?.locale;
+  const paramLocale =
+    typeof rawLocale === "string" ? rawLocale : Array.isArray(rawLocale) ? rawLocale[0] : null;
+  const isRtl =
+    paramLocale === "ar" ||
+    (paramLocale != null && paramLocale.startsWith("ar-")) ||
+    locale === "ar" ||
+    (typeof locale === "string" && locale.startsWith("ar-"));
+  const pageDir: "rtl" | "ltr" = isRtl ? "rtl" : "ltr";
+  const pageDirProps: React.ComponentProps<"div"> = {
+    dir: pageDir,
+    style: { direction: pageDir },
+  };
 
   const [user, setUser] = React.useState<UserDetail | null>(null);
   const [loading, setLoading] = React.useState(true);
@@ -361,7 +377,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
         body: JSON.stringify({ status: "BANNED" }),
       });
       if (!res.ok) throw new Error();
-      toast.success(t("confirmBan.confirm") + " ✓");
+      toast.success(t("confirmBan.confirm"));
       setBanOpen(false);
       fetchUser();
     } catch {
@@ -379,7 +395,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
         body: JSON.stringify({ status: "ACTIVE" }),
       });
       if (!res.ok) throw new Error();
-      toast.success(t("detail.activateButton") + " ✓");
+      toast.success(t("detail.activateButton"));
       fetchUser();
     } catch {
       toast.error("Failed to activate");
@@ -391,7 +407,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
     try {
       const res = await fetchWithAuth(`/api/admin/users/${userId}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
-      toast.success(t("confirmDelete.confirm") + " ✓");
+      toast.success(t("confirmDelete.confirm"));
       window.location.href = window.location.href.replace(/\/[^/]+$/, "");
     } catch {
       toast.error("Failed to delete user");
@@ -402,7 +418,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6" {...pageDirProps}>
         <div className="flex items-center gap-4">
           <Skeleton className="size-14 rounded-xl" />
           <div className="space-y-2">
@@ -418,11 +434,11 @@ export function UserDetailClient({ userId }: { userId: string }) {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
+      <div className="flex flex-col items-center justify-center py-16 text-center" {...pageDirProps}>
         <p className="text-sm text-muted-foreground">User not found</p>
         <Button asChild variant="outline" size="sm" className="mt-4 gap-2">
-          <Link href="/dashboard/admin/users">
-            <ArrowLeft className="size-4" />
+          <Link href="/dashboard/admin/users" className="inline-flex items-center gap-2">
+            <ArrowLeft className="size-4 shrink-0" />
             {t("detail.backToList")}
           </Link>
         </Button>
@@ -433,7 +449,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
   const RoleIcon = ROLE_ICON[user.role];
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-full space-y-6 text-start" {...pageDirProps}>
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
@@ -442,13 +458,14 @@ export function UserDetailClient({ userId }: { userId: string }) {
               {getInitials(user.name, user.email)}
             </AvatarFallback>
           </Avatar>
-          <div>
+          <div className="min-w-0 text-start">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-xl font-semibold">{user.name ?? user.email}</h1>
               <Badge variant={STATUS_VARIANT[user.status]}>
                 {t(`userStatus.${user.status}`)}
               </Badge>
               <span
+                dir="ltr"
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${ROLE_COLOR[user.role]}`}
               >
                 <RoleIcon className="size-3" />
@@ -459,21 +476,13 @@ export function UserDetailClient({ userId }: { userId: string }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button asChild variant="outline" size="icon" className="size-9 shrink-0 rounded-md">
-            <Link href="/dashboard/admin/users">
-              <ArrowLeft className="size-4" />
-            </Link>
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2" onClick={() => setEditOpen(true)}>
-            <Edit className="size-4" />
-            {t("detail.editButton")}
-          </Button>
+        <div className="flex flex-wrap items-center gap-2">
           {user.status !== "BANNED" ? (
             <Button
               variant="destructive"
               size="sm"
               className="gap-2"
+              dir="ltr"
               onClick={() => setBanOpen(true)}
             >
               <Ban className="size-4" />
@@ -484,12 +493,17 @@ export function UserDetailClient({ userId }: { userId: string }) {
               variant="outline"
               size="sm"
               className="gap-2 text-emerald-600"
+              dir="ltr"
               onClick={handleActivate}
             >
               <CheckCircle2 className="size-4" />
               {t("detail.activateButton")}
             </Button>
           )}
+          <Button variant="outline" size="sm" className="gap-2" dir="ltr" onClick={() => setEditOpen(true)}>
+            <Edit className="size-4" />
+            {t("detail.editButton")}
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" className="size-9">
@@ -506,39 +520,47 @@ export function UserDetailClient({ userId }: { userId: string }) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Button asChild variant="outline" size="icon" className="size-9 shrink-0 rounded-md">
+            <Link href="/dashboard/admin/users" aria-label={t("detail.backToList")}>
+              <ArrowLeft className="size-4 shrink-0" />
+            </Link>
+          </Button>
         </div>
       </div>
 
       {/* Tabs */}
       <Tabs
         defaultValue="overview"
-        className="space-y-4"
+        className="w-full max-w-full space-y-4"
+        dir={pageDir}
         onValueChange={(v) => {
           if (v === "activity" && !activityFetched) {
             fetchActivity(activityPage);
           }
         }}
       >
-        <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:inline-flex">
-          <TabsTrigger value="overview" className="gap-1.5">
+        <div className="flex w-full max-w-full items-center justify-start">
+          <TabsList className="inline-flex h-auto min-h-10 w-auto max-w-full flex-wrap items-center !justify-start gap-0.5 sm:flex-nowrap">
+            <TabsTrigger value="overview" className="gap-1.5 [&>svg]:shrink-0">
             <User className="size-4" />
             <span className="hidden sm:inline">{t("detail.tabs.overview")}</span>
-          </TabsTrigger>
-          <TabsTrigger value="activity" className="gap-1.5">
+            </TabsTrigger>
+            <TabsTrigger value="activity" className="gap-1.5 [&>svg]:shrink-0">
             <Activity className="size-4" />
             <span className="hidden sm:inline">{t("detail.tabs.activity")}</span>
-          </TabsTrigger>
-          <TabsTrigger value="relations" className="gap-1.5">
+            </TabsTrigger>
+            <TabsTrigger value="relations" className="gap-1.5 [&>svg]:shrink-0">
             <Users className="size-4" />
             <span className="hidden sm:inline">{t("detail.tabs.relations")}</span>
-          </TabsTrigger>
-        </TabsList>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* ── OVERVIEW ── */}
         <TabsContent value="overview" className="space-y-4">
-          <Card>
+          <Card className="text-start">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">{t("detail.overview.heading")}</CardTitle>
+              <CardTitle className="text-start text-base">{t("detail.overview.heading")}</CardTitle>
             </CardHeader>
             <CardContent className="divide-y px-4 py-0">
               <InfoRow icon={User} label={t("detail.overview.name")} value={user.name} />
@@ -550,6 +572,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
               />
               <InfoRow icon={RoleIcon} label={t("detail.overview.role")}>
                 <span
+                  dir="ltr"
                   className={`mt-0.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${ROLE_COLOR[user.role]}`}
                 >
                   <RoleIcon className="size-3" />
@@ -828,13 +851,17 @@ export function UserDetailClient({ userId }: { userId: string }) {
                   </CardHeader>
                   <CardContent className="space-y-2 px-4 pb-4">
                     <div className="flex items-center justify-between rounded-lg bg-muted/40 p-3">
-                      <span className="text-sm text-muted-foreground">Status</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t("detail.relations.subscriptionStatus")}
+                      </span>
                       <Badge variant={SUB_STATUS_VARIANT[user.subscription.status]}>
-                        {user.subscription.status}
+                        {t(`subStatus.${user.subscription.status}`)}
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between rounded-lg bg-muted/40 p-3">
-                      <span className="text-sm text-muted-foreground">Started</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t("detail.relations.subscriptionStarted")}
+                      </span>
                       <span className="text-sm font-medium">
                         {formatDate(user.subscription.startedAt)}
                       </span>
@@ -850,7 +877,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
                     <div className="pt-1">
                       <Button asChild variant="outline" size="sm" className="w-full">
                         <Link href={`/dashboard/admin/merchants/${user.id}`}>
-                          View full merchant profile
+                          {t("detail.relations.viewMerchantProfile")}
                         </Link>
                       </Button>
                     </div>
@@ -869,15 +896,19 @@ export function UserDetailClient({ userId }: { userId: string }) {
                 <CardContent className="p-0">
                   {user.cashiers.length === 0 ? (
                     <p className="px-4 py-6 text-center text-sm text-muted-foreground">
-                      No cashiers
+                      {t("detail.relations.emptyCashiers")}
                     </p>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-muted/40 hover:bg-muted/40">
-                          <TableHead className="ps-4">Name</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="pe-4 text-end">Joined</TableHead>
+                          <TableHead className="ps-4">
+                            {t("detail.relations.table.name")}
+                          </TableHead>
+                          <TableHead>{t("detail.relations.table.status")}</TableHead>
+                          <TableHead className="pe-4 text-end">
+                            {t("detail.relations.table.joined")}
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -923,15 +954,19 @@ export function UserDetailClient({ userId }: { userId: string }) {
                 <CardContent className="p-0">
                   {user.managedLocations.length === 0 ? (
                     <p className="px-4 py-6 text-center text-sm text-muted-foreground">
-                      No locations
+                      {t("detail.relations.emptyLocations")}
                     </p>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-muted/40 hover:bg-muted/40">
-                          <TableHead className="ps-4">Location</TableHead>
-                          <TableHead>City</TableHead>
-                          <TableHead className="pe-4 text-end">Status</TableHead>
+                          <TableHead className="ps-4">
+                            {t("detail.relations.table.location")}
+                          </TableHead>
+                          <TableHead>{t("detail.relations.table.city")}</TableHead>
+                          <TableHead className="pe-4 text-end">
+                            {t("detail.relations.table.status")}
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
