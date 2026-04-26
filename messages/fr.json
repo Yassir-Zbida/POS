@@ -340,5 +340,16 @@
         "othersWithCount": "Autre ({count})"
       }
     }
+  },
+  "lockScreen": {
+    "locked": "Caisse verrouillée",
+    "wrongPin": "PIN incorrect",
+    "attemptsLeft": "{count} tentative restante",
+    "attemptsLeftPlural": "{count} tentatives restantes",
+    "tooManyAttempts": "Trop de tentatives — réessayez dans {minutes} min",
+    "networkError": "Erreur réseau, réessayez",
+    "switchAccount": "Connexion avec un autre compte",
+    "deleteDigit": "Supprimer le dernier chiffre",
+    "digit": "Chiffre {key}"
   }
 }

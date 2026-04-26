@@ -340,5 +340,16 @@
         "othersWithCount": "أخرى ({count})"
       }
     }
+  },
+  "lockScreen": {
+    "locked": "الكاشير مقفل",
+    "wrongPin": "رمز PIN خاطئ",
+    "attemptsLeft": "محاولة متبقية {count}",
+    "attemptsLeftPlural": "محاولات متبقية {count}",
+    "tooManyAttempts": "محاولات كثيرة — أعد المحاولة خلال {minutes} دقيقة",
+    "networkError": "خطأ في الشبكة، حاول مرة أخرى",
+    "switchAccount": "تسجيل الدخول بحساب آخر",
+    "deleteDigit": "حذف الرقم الأخير",
+    "digit": "الرقم {key}"
   }
 }

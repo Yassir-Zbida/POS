@@ -342,5 +342,16 @@
         "othersWithCount": "Other ({count})"
       }
     }
+  },
+  "lockScreen": {
+    "locked": "Cash register locked",
+    "wrongPin": "Wrong PIN",
+    "attemptsLeft": "{count} attempt left",
+    "attemptsLeftPlural": "{count} attempts left",
+    "tooManyAttempts": "Too many attempts — retry in {minutes} min",
+    "networkError": "Network error, please retry",
+    "switchAccount": "Sign in with another account",
+    "deleteDigit": "Delete last digit",
+    "digit": "Digit {key}"
   }
 }
