@@ -65,10 +65,13 @@ export async function POST(request: Request) {
           text: emailContent.text,
           from: getEmailFromByLocale(locale),
         });
-      } catch {
+      } catch (mailErr) {
         await prisma.otpChallenge.delete({ where: { id: challenge.id } });
+        const detail = process.env.NODE_ENV !== "production" && mailErr instanceof Error
+          ? ` (${mailErr.message})`
+          : "";
         return NextResponse.json(
-          { error: "Email could not be sent. Configure SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, MAIL_FROM." },
+          { error: `Email could not be sent. Configure SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, MAIL_FROM.${detail}` },
           { status: 503 },
         );
       }
