@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/sidebar";
 import { usePathname } from "@/i18n/navigation";
 import { useSettingsStore } from "@/store/use-settings-store";
+import { useSessionStore } from "@/store/sessionStore";
+import { LockScreen } from "@/components/cashier/LockScreen";
 
 function titleKeyForDashboardPath(pathname: string) {
   if (pathname.includes("/dashboard/cashier/pos")) return "cashierPos" as const;
@@ -39,6 +41,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const t = useTranslations("meta.titles");
   const pageKey = titleKeyForDashboardPath(pathname);
   const sidebarWidth = useSettingsStore((s) => s.sidebarWidth);
+  const isLocked = useSessionStore((s) => s.isLocked);
 
   return (
     <RoleGuard>
@@ -78,6 +81,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <div className="flex flex-1 flex-col p-3 sm:p-4 md:p-6">{children}</div>
         </SidebarInset>
       </SidebarProvider>
+
+      {/* Lock screen — rendered at dashboard level so it survives any
+          client-side navigation within /dashboard/** */}
+      {isLocked && <LockScreen />}
     </RoleGuard>
   );
 }
