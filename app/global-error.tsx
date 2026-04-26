@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Globe, ChevronDown, Moon, Sun } from "lucide-react";
+import { Globe, ChevronDown } from "lucide-react";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,14 +17,21 @@ import {
 
 type Lang = "fr" | "en" | "ar";
 
-const COPY: Record<Lang, { title: string; description: string; reload: string; reference: string; themeLight: string; themeDark: string; langs: Record<Lang, string> }> = {
+const COPY: Record<
+  Lang,
+  {
+    title: string;
+    description: string;
+    reload: string;
+    reference: string;
+    langs: Record<Lang, string>;
+  }
+> = {
   fr: {
     title: "Erreur inattendue",
     description: "Un problème critique est survenu. Veuillez recharger la page.",
     reload: "Recharger",
     reference: "Référence :",
-    themeLight: "Clair",
-    themeDark: "Sombre",
     langs: { fr: "Français", en: "English", ar: "العربية" },
   },
   en: {
@@ -31,8 +39,6 @@ const COPY: Record<Lang, { title: string; description: string; reload: string; r
     description: "A critical error occurred. Please reload the page.",
     reload: "Reload",
     reference: "Reference:",
-    themeLight: "Light",
-    themeDark: "Dark",
     langs: { fr: "Français", en: "English", ar: "العربية" },
   },
   ar: {
@@ -40,8 +46,6 @@ const COPY: Record<Lang, { title: string; description: string; reload: string; r
     description: "حدثت مشكلة حرجة. يرجى إعادة تحميل الصفحة.",
     reload: "إعادة تحميل",
     reference: "المرجع:",
-    themeLight: "فاتح",
-    themeDark: "داكن",
     langs: { fr: "Français", en: "English", ar: "العربية" },
   },
 };
@@ -58,6 +62,15 @@ function readLang(): Lang {
   return "en";
 }
 
+function switchToLocale(nextLocale: Lang) {
+  const url = new URL(window.location.href);
+  const segs = url.pathname.split("/").filter(Boolean);
+  const rest =
+    segs[0] === "fr" || segs[0] === "en" || segs[0] === "ar" ? segs.slice(1) : segs;
+  url.pathname = `/${nextLocale}${rest.length ? `/${rest.join("/")}` : ""}`;
+  window.location.replace(url.toString());
+}
+
 function InnerGlobalError({
   error,
   reset,
@@ -66,20 +79,12 @@ function InnerGlobalError({
   reset: () => void;
 }) {
   const [lang, setLang] = React.useState<Lang>("en");
-  const [isDark, setIsDark] = React.useState(false);
 
   React.useEffect(() => {
     setLang(readLang());
-    setIsDark(document.documentElement.classList.contains("dark"));
     // eslint-disable-next-line no-console
     console.error(error);
   }, [error]);
-
-  function toggleTheme() {
-    const next = !isDark;
-    setIsDark(next);
-    document.documentElement.classList.toggle("dark", next);
-  }
 
   const c = COPY[lang];
   const isRtl = lang === "ar";
@@ -89,24 +94,46 @@ function InnerGlobalError({
       dir={isRtl ? "rtl" : "ltr"}
       className="relative flex min-h-svh flex-col items-center justify-center gap-6 overflow-y-auto bg-muted px-4 py-8 pb-24 sm:p-6 sm:pb-24 md:p-10"
     >
-      {/* Mode toggle */}
+      {/* Language switcher + dark mode — same placement as auth pages */}
       <div
-        className={`absolute top-[max(1rem,env(safe-area-inset-top,1rem))] z-20 ${
+        className={`absolute top-[max(1rem,env(safe-area-inset-top,1rem))] z-20 flex items-center gap-2 ${
           isRtl
             ? "left-[max(1rem,env(safe-area-inset-left,1rem))]"
             : "right-[max(1rem,env(safe-area-inset-right,1rem))]"
         }`}
       >
-        <Button
-          variant="outline"
-          size="icon"
-          className="relative size-8 overflow-hidden"
-          aria-label={isDark ? c.themeLight : c.themeDark}
-          onClick={toggleTheme}
-        >
-          <Sun className="size-4 scale-100 rotate-0 transition-all duration-500 ease-in-out dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute size-4 scale-0 rotate-90 transition-all duration-500 ease-in-out dark:scale-100 dark:rotate-0" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-8 rounded-md border-border/70 bg-background/80 px-2 text-sm font-medium shadow-sm backdrop-blur hover:bg-background focus-visible:ring-0 focus-visible:ring-offset-0"
+            >
+              <span className="flex items-center gap-1">
+                <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
+                <span className="min-w-6 text-center tabular-nums">{SHORT[lang]}</span>
+                <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
+              </span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="min-w-44">
+            <DropdownMenuRadioGroup
+              value={lang}
+              onValueChange={(v) => {
+                const next = v as Lang;
+                setLang(next);
+                switchToLocale(next);
+              }}
+            >
+              {LOCALES.map((l) => (
+                <DropdownMenuRadioItem key={l} value={l}>
+                  {c.langs[l]}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <ModeToggle className="focus-visible:ring-0 focus-visible:ring-offset-0" />
       </div>
 
       {/* Content */}
@@ -143,37 +170,6 @@ function InnerGlobalError({
         </Button>
       </div>
 
-      {/* Language switcher — fixed bottom-left */}
-      <div className="fixed bottom-6 left-6 right-6 z-50 flex items-center justify-start">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              type="button"
-              variant="outline"
-              className="h-10 rounded-full border-border/70 bg-background/80 px-3 font-medium shadow-sm backdrop-blur hover:bg-background"
-            >
-              <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
-              <span className="min-w-6 text-center tabular-nums">{SHORT[lang]}</span>
-              <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="min-w-44">
-            <DropdownMenuRadioGroup
-              value={lang}
-              onValueChange={(v) => {
-                setLang(v as Lang);
-                window.location.href = `/${v}`;
-              }}
-            >
-              {LOCALES.map((l) => (
-                <DropdownMenuRadioItem key={l} value={l}>
-                  {c.langs[l]}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
     </div>
   );
 }

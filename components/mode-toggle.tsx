@@ -5,8 +5,9 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-export function ModeToggle() {
+export function ModeToggle({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
@@ -20,7 +21,7 @@ export function ModeToggle() {
     <Button
       variant="outline"
       size="icon"
-      className="relative size-8 overflow-hidden"
+      className={cn("relative size-8 overflow-hidden", className)}
       aria-label="Toggle theme"
       onClick={toggle}
       disabled={!mounted}

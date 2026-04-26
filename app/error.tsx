@@ -50,6 +50,15 @@ function inferLang(pathname: string): Lang {
   return "en";
 }
 
+function switchToLocale(nextLocale: Lang) {
+  const url = new URL(window.location.href);
+  const segs = url.pathname.split("/").filter(Boolean);
+  const rest =
+    segs[0] === "fr" || segs[0] === "en" || segs[0] === "ar" ? segs.slice(1) : segs;
+  url.pathname = `/${nextLocale}${rest.length ? `/${rest.join("/")}` : ""}`;
+  window.location.replace(url.toString());
+}
+
 export default function RootError({
   error,
   reset,
@@ -72,15 +81,46 @@ export default function RootError({
     <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 overflow-y-auto bg-muted px-4 py-8 pb-24 sm:p-6 sm:pb-24 md:p-10">
       <AuthLiquidBackground />
 
-      {/* Mode toggle — top-right (ltr) or top-left (rtl) */}
+      {/* Language switcher + dark mode — same placement as auth pages */}
       <div
-        className={`absolute top-[max(1rem,env(safe-area-inset-top,1rem))] z-20 ${
+        className={`absolute top-[max(1rem,env(safe-area-inset-top,1rem))] z-20 flex items-center gap-2 ${
           isRtl
             ? "left-[max(1rem,env(safe-area-inset-left,1rem))]"
             : "right-[max(1rem,env(safe-area-inset-right,1rem))]"
         }`}
       >
-        <ModeToggle />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-8 rounded-md border-border/70 bg-background/80 px-2 text-sm font-medium shadow-sm backdrop-blur hover:bg-background focus-visible:ring-0 focus-visible:ring-offset-0"
+            >
+              <span className="flex items-center gap-1">
+                <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
+                <span className="min-w-6 text-center tabular-nums">{SHORT[lang]}</span>
+                <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
+              </span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="min-w-44">
+            <DropdownMenuRadioGroup
+              value={lang}
+              onValueChange={(v) => {
+                const next = v as Lang;
+                setLang(next);
+                switchToLocale(next);
+              }}
+            >
+              {LOCALES.map((l) => (
+                <DropdownMenuRadioItem key={l} value={l}>
+                  {c.langs[l]}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <ModeToggle className="focus-visible:ring-0 focus-visible:ring-offset-0" />
       </div>
 
       {/* Content */}
@@ -110,37 +150,6 @@ export default function RootError({
         </Button>
       </div>
 
-      {/* Language switcher — fixed bottom-left, same visual as auth */}
-      <div className="fixed bottom-6 left-6 right-6 z-50 flex items-center justify-start">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              type="button"
-              variant="outline"
-              className="h-10 rounded-full border-border/70 bg-background/80 px-3 font-medium shadow-sm backdrop-blur hover:bg-background"
-            >
-              <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
-              <span className="min-w-6 text-center tabular-nums">{SHORT[lang]}</span>
-              <ChevronDown className="size-4 text-muted-foreground" aria-hidden="true" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="min-w-44">
-            <DropdownMenuRadioGroup
-              value={lang}
-              onValueChange={(v) => {
-                setLang(v as Lang);
-                window.location.href = `/${v}`;
-              }}
-            >
-              {LOCALES.map((l) => (
-                <DropdownMenuRadioItem key={l} value={l}>
-                  {c.langs[l]}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
     </div>
   );
 }

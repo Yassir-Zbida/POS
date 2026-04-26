@@ -227,6 +227,28 @@
       "viewReports": "عرض التقارير"
     }
   },
+  "adminSidebar": {
+    "overviewGroup": "نظرة عامة",
+    "platformGroup": "المنصة",
+    "billingGroup": "الفوترة",
+    "monitoringGroup": "المراقبة",
+    "systemGroup": "النظام",
+    "supportGroup": "الدعم",
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "analytics": "التحليلات",
+      "merchants": "التجار",
+      "users": "المستخدمون",
+      "subscriptions": "الاشتراكات",
+      "auditLogs": "سجلات التدقيق",
+      "systemHealth": "صحة النظام",
+      "revenue": "الإيرادات",
+      "invoices": "الفواتير",
+      "settings": "الإعدادات",
+      "tickets": "تذاكر الدعم",
+      "docs": "التوثيق"
+    }
+  },
   "sidebar": {
     "navGroup": "القائمة",
     "settingsGroup": "النظام",

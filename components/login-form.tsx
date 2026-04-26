@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label"
 import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
 import { useAuthStore } from "@/store/use-auth-store"
+import { useSessionStore } from "@/store/sessionStore"
 import { useLocale } from "next-intl"
 import type { AuthRole } from "@/types/auth"
 import { AUTH_ROLES } from "@/types/auth"
@@ -40,6 +41,7 @@ export function LoginForm({
   const [redirecting, setRedirecting] = React.useState(false)
   const [showPassword, setShowPassword] = React.useState(false)
   const setSession = useAuthStore((s) => s.setSession)
+  const unlock = useSessionStore((s) => s.unlock)
 
   // 2FA state
   const [otpRequired, setOtpRequired] = React.useState(false)
@@ -203,6 +205,9 @@ export function LoginForm({
       refreshToken: data.refreshToken,
       user: { ...data.user, role },
     })
+    if (role === AUTH_ROLES.ADMIN || role === AUTH_ROLES.MANAGER) {
+      unlock()
+    }
     setRedirecting(true)
     router.push(dashboardHomeForRole(role))
   }

@@ -227,6 +227,28 @@
       "viewReports": "View reports"
     }
   },
+  "adminSidebar": {
+    "overviewGroup": "Overview",
+    "platformGroup": "Platform",
+    "billingGroup": "Billing",
+    "monitoringGroup": "Monitoring",
+    "systemGroup": "System",
+    "supportGroup": "Support",
+    "nav": {
+      "dashboard": "Dashboard",
+      "analytics": "Analytics",
+      "merchants": "Merchants",
+      "users": "Users",
+      "subscriptions": "Subscriptions",
+      "auditLogs": "Audit logs",
+      "systemHealth": "System health",
+      "revenue": "Revenue",
+      "invoices": "Invoices",
+      "settings": "Settings",
+      "tickets": "Support tickets",
+      "docs": "Documentation"
+    }
+  },
   "sidebar": {
     "navGroup": "Menu",
     "settingsGroup": "System",

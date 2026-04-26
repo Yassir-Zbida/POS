@@ -18,6 +18,7 @@ import {
 import { usePathname } from "@/i18n/navigation";
 import { useSettingsStore } from "@/store/use-settings-store";
 import { useSessionStore } from "@/store/sessionStore";
+import { useAuthStore } from "@/store/use-auth-store";
 import { LockScreen } from "@/components/cashier/LockScreen";
 
 function titleKeyForDashboardPath(pathname: string) {
@@ -42,6 +43,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pageKey = titleKeyForDashboardPath(pathname);
   const sidebarWidth = useSettingsStore((s) => s.sidebarWidth);
   const isLocked = useSessionStore((s) => s.isLocked);
+  const userRole = useAuthStore((s) => s.user?.role);
+  const showLockScreen = isLocked && userRole === "CASHIER";
 
   return (
     <RoleGuard>
@@ -82,9 +85,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </SidebarInset>
       </SidebarProvider>
 
-      {/* Lock screen — rendered at dashboard level so it survives any
-          client-side navigation within /dashboard/** */}
-      {isLocked && <LockScreen />}
+      {/* Lock screen — only for cashier role; admin and manager bypass it */}
+      {showLockScreen && <LockScreen />}
     </RoleGuard>
   );
 }

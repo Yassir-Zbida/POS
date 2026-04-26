@@ -227,6 +227,28 @@
       "viewReports": "Voir les rapports"
     }
   },
+  "adminSidebar": {
+    "overviewGroup": "Vue d'ensemble",
+    "platformGroup": "Plateforme",
+    "billingGroup": "Facturation",
+    "monitoringGroup": "Supervision",
+    "systemGroup": "Système",
+    "supportGroup": "Support",
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "analytics": "Analytique",
+      "merchants": "Marchands",
+      "users": "Utilisateurs",
+      "subscriptions": "Abonnements",
+      "auditLogs": "Journaux d'audit",
+      "systemHealth": "État du système",
+      "revenue": "Revenus",
+      "invoices": "Factures",
+      "settings": "Paramètres",
+      "tickets": "Tickets de support",
+      "docs": "Documentation"
+    }
+  },
   "sidebar": {
     "navGroup": "Menu",
     "settingsGroup": "Système",
