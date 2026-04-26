@@ -298,6 +298,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     : { name: "Hssabaty POS", email: "support@hssabaty.com", avatar: "" };
 
   function isActive(href: string) {
+    // For top-level dashboard routes, require exact match to prevent
+    // showing both dashboard and sub-pages as active
+    if (href === "/dashboard/admin" || href === "/dashboard/cashier") {
+      return pathname === href;
+    }
+    // For all other routes, match exact or child routes
     return pathname === href || pathname.startsWith(href + "/");
   }
 
