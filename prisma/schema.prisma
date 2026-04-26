@@ -120,6 +120,8 @@ model User {
   phone               String?
   passwordHash        String?
   pinHash             String?
+  pinAttempts         Int                  @default(0)
+  pinLockedUntil      DateTime?
   role                UserRole             @default(CASHIER)
   status              UserStatus           @default(ACTIVE)
   otpEnabled          Boolean              @default(false)
