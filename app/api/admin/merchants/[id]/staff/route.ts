@@ -10,6 +10,7 @@ const addStaffSchema = z.object({
   email: z.string().email(),
   phone: z.string().optional(),
   password: z.string().min(8),
+  lockPin: z.string().regex(/^\d{4}$/).optional(),
 });
 
 type RouteContext = { params: Promise<{ id: string }> };
@@ -91,6 +92,13 @@ export async function POST(request: Request, { params }: RouteContext) {
       name: parsed.data.name,
       phone: parsed.data.phone,
       passwordHash: await hashPassword(parsed.data.password),
+      ...(parsed.data.lockPin
+        ? {
+            pinHash: await hashPassword(parsed.data.lockPin),
+            pinAttempts: 0,
+            pinLockedUntil: null,
+          }
+        : {}),
       role: ROLES.CASHIER,
       status: "ACTIVE",
       ownerManagerId: id,

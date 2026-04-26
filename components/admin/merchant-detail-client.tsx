@@ -8,7 +8,7 @@ import {
   User,
   Mail,
   Phone,
-  Calendar,
+  Calendar as CalendarIcon,
   Shield,
   Users,
   MapPin,
@@ -20,22 +20,28 @@ import {
   Loader2,
   MoreHorizontal,
   Lock,
+  KeyRound,
   Eye,
   EyeOff,
   CalendarClock,
   ShieldCheck,
   Building2,
+  Wand2,
 } from "lucide-react";
 
 import { useAuthStore } from "@/store/use-auth-store";
 import { fetchWithAuth } from "@/lib/fetch-with-auth";
+import { cn } from "@/lib/utils";
+import { formatLongDate, formatYmd, parseYmd } from "@/lib/merchant-form-dates";
 import { Link } from "@/i18n/navigation";
+import { generateMerchantPassword } from "@/lib/generate-merchant-password";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -54,6 +60,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -189,6 +196,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
   const [staffPhone, setStaffPhone] = React.useState("");
   const [staffPassword, setStaffPassword] = React.useState("");
   const [showStaffPwd, setShowStaffPwd] = React.useState(false);
+  const [staffLockPin, setStaffLockPin] = React.useState("");
   const [staffAdding, setStaffAdding] = React.useState(false);
   const [staffErrors, setStaffErrors] = React.useState<Record<string, string>>({});
 
@@ -200,6 +208,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
   const [subStatus, setSubStatus] = React.useState<SubscriptionStatus>("ACTIVE");
   const [subEndDate, setSubEndDate] = React.useState("");
   const [subSaving, setSubSaving] = React.useState(false);
+  const [subEndOpen, setSubEndOpen] = React.useState(false);
 
   const fetchMerchant = React.useCallback(async () => {
     if (!accessToken && !refreshToken) return;
@@ -298,6 +307,8 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
     if (!staffEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(staffEmail))
       newErrors.email = "Valid email required";
     if (!staffPassword || staffPassword.length < 8) newErrors.password = "Min. 8 characters";
+    if (staffLockPin.trim() && !/^\d{4}$/.test(staffLockPin.trim()))
+      newErrors.lockPin = "PIN must be 4 digits";
     if (Object.keys(newErrors).length > 0) {
       setStaffErrors(newErrors);
       return;
@@ -315,6 +326,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
           email: staffEmail,
           phone: staffPhone || undefined,
           password: staffPassword,
+          lockPin: staffLockPin.trim() ? staffLockPin.trim() : undefined,
         }),
       });
       if (res.status === 409) {
@@ -328,6 +340,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
       setStaffEmail("");
       setStaffPhone("");
       setStaffPassword("");
+      setStaffLockPin("");
       setStaffErrors({});
       fetchMerchant();
     } catch {
@@ -335,6 +348,15 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
     } finally {
       setStaffAdding(false);
     }
+  }
+
+  function generateStaffPassword() {
+    const pwd = generateMerchantPassword(16);
+    setStaffPassword(pwd);
+    setStaffErrors((prev) => ({ ...prev, password: undefined }));
+    toast.message(t("form.account.generatePassword"), {
+      description: t("form.account.validation.passwordHint"),
+    });
   }
 
   async function handleRemoveStaff() {
@@ -371,6 +393,11 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
         }
       );
       if (!res.ok) throw new Error();
+      toast.success(
+        (newStatus === "ACTIVE"
+          ? t("detail.staff.statusToggle.activate")
+          : t("detail.staff.statusToggle.suspend"))
+      );
       fetchMerchant();
     } catch {
       toast.error("Failed to update staff status");
@@ -381,6 +408,21 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
     if (!accessToken && !refreshToken) return;
     setSubSaving(true);
     try {
+      if (subEndDate) {
+        const picked = parseYmd(subEndDate);
+        if (!picked) {
+          toast.error(t("detail.subscription.invalidEndDate"));
+          return;
+        }
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        picked.setHours(0, 0, 0, 0);
+        if (picked < today) {
+          toast.error(t("detail.subscription.invalidEndDate"));
+          return;
+        }
+      }
+
       const res = await fetchWithAuth(`/api/admin/merchants/${merchantId}`, {
         method: "PUT",
         headers: {
@@ -436,43 +478,41 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
   return (
     <div className="space-y-6">
       {/* Back + Header */}
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <Button asChild variant="ghost" size="icon" className="mt-0.5 size-9 shrink-0">
-            <Link href="/dashboard/admin/merchants">
-              <ArrowLeft className="size-4" />
-            </Link>
-          </Button>
-          <div className="flex items-center gap-3">
-            <Avatar className="size-14 border-2">
-              <AvatarFallback className="bg-primary/10 text-base font-bold text-primary">
-                {getInitials(merchant.name, merchant.email)}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-xl font-semibold">
-                  {merchant.name ?? merchant.email}
-                </h1>
-                <Badge variant={USER_STATUS_VARIANT[merchant.status]}>
-                  {t(`userStatus.${merchant.status}`)}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <Avatar className="size-14 border-2">
+            <AvatarFallback className="bg-primary/10 text-base font-bold text-primary">
+              {getInitials(merchant.name, merchant.email)}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl font-semibold">
+                {merchant.name ?? merchant.email}
+              </h1>
+              <Badge variant={USER_STATUS_VARIANT[merchant.status]}>
+                {t(`userStatus.${merchant.status}`)}
+              </Badge>
+              {merchant.subscription && (
+                <Badge
+                  variant={SUB_STATUS_VARIANT[merchant.subscription.status]}
+                  className="gap-1"
+                >
+                  <ShieldCheck className="size-3" />
+                  {t(`subStatus.${merchant.subscription.status}`)}
                 </Badge>
-                {merchant.subscription && (
-                  <Badge
-                    variant={SUB_STATUS_VARIANT[merchant.subscription.status]}
-                    className="gap-1"
-                  >
-                    <ShieldCheck className="size-3" />
-                    {t(`subStatus.${merchant.subscription.status}`)}
-                  </Badge>
-                )}
-              </div>
-              <p className="mt-0.5 text-sm text-muted-foreground">{merchant.email}</p>
+              )}
             </div>
+            <p className="mt-0.5 text-sm text-muted-foreground">{merchant.email}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          <Button asChild variant="outline" size="icon" className="size-9 shrink-0 rounded-md">
+            <Link href="/dashboard/admin/merchants">
+              <ArrowLeft className="size-4" />
+            </Link>
+          </Button>
           <Button variant="outline" size="sm" className="gap-2" onClick={() => setEditOpen(true)}>
             <Edit className="size-4" />
             {t("detail.editButton")}
@@ -547,54 +587,12 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                 value={merchant.phone ?? t("detail.overview.notProvided")}
               />
               <InfoRow
-                icon={Calendar}
+                icon={CalendarIcon}
                 label={t("detail.overview.joined")}
                 value={formatDate(merchant.createdAt)}
               />
             </CardContent>
           </Card>
-
-          {/* Quick stats */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            <Card>
-              <CardContent className="p-4">
-                <div className="mb-3 inline-flex rounded-lg bg-blue-500/10 p-2">
-                  <Users className="size-5 text-blue-500" />
-                </div>
-                <p className="text-2xl font-bold">{merchant.cashiers.length}</p>
-                <p className="text-xs text-muted-foreground">{t("table.staff")}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="mb-3 inline-flex rounded-lg bg-violet-500/10 p-2">
-                  <MapPin className="size-5 text-violet-500" />
-                </div>
-                <p className="text-2xl font-bold">{merchant.managedLocations.length}</p>
-                <p className="text-xs text-muted-foreground">{t("table.locations")}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="mb-3 inline-flex rounded-lg bg-emerald-500/10 p-2">
-                  <ShieldCheck className="size-5 text-emerald-500" />
-                </div>
-                <Badge
-                  variant={
-                    merchant.subscription
-                      ? SUB_STATUS_VARIANT[merchant.subscription.status]
-                      : "outline"
-                  }
-                  className="text-xs"
-                >
-                  {merchant.subscription
-                    ? t(`subStatus.${merchant.subscription.status}`)
-                    : t("subStatus.none")}
-                </Badge>
-                <p className="mt-1 text-xs text-muted-foreground">{t("table.subscription")}</p>
-              </CardContent>
-            </Card>
-          </div>
         </TabsContent>
 
         {/* Staff tab */}
@@ -830,7 +828,13 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                       value={subStatus}
                       onValueChange={(v) => setSubStatus(v as SubscriptionStatus)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger
+                        className={cn(
+                          "focus:outline-none focus:ring-0 focus:ring-offset-0",
+                          "focus-visible:ring-0 focus-visible:ring-offset-0",
+                          "data-[state=open]:ring-0 data-[state=open]:ring-offset-0"
+                        )}
+                      >
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -844,15 +848,60 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                   </div>
                   <div className="space-y-1.5">
                     <Label>{t("detail.subscription.endDate")}</Label>
-                    <div className="relative">
-                      <CalendarClock className="absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
-                        type="date"
-                        value={subEndDate}
-                        onChange={(e) => setSubEndDate(e.target.value)}
-                        className="ps-9"
-                      />
-                    </div>
+                    <Popover open={subEndOpen} onOpenChange={setSubEndOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start gap-2 font-normal",
+                            "h-10 px-3",
+                            "focus-visible:ring-0 focus-visible:ring-offset-0",
+                            !subEndDate && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarClock className="size-4 text-muted-foreground" />
+                          {subEndDate
+                            ? formatLongDate(parseYmd(subEndDate) ?? new Date(), "fr")
+                            : t("detail.subscription.endDate")}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={subEndDate ? parseYmd(subEndDate) : undefined}
+                          disabled={(date) => {
+                            const d = new Date(date);
+                            d.setHours(0, 0, 0, 0);
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            return d < today;
+                          }}
+                          onSelect={(d) => {
+                            if (!d) {
+                              setSubEndDate("");
+                              return;
+                            }
+                            setSubEndDate(formatYmd(d));
+                            setSubEndOpen(false);
+                          }}
+                          initialFocus
+                        />
+                        <div className="flex items-center justify-end gap-2 border-t p-2">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setSubEndDate("");
+                              setSubEndOpen(false);
+                            }}
+                          >
+                            {t("form.cancel")}
+                          </Button>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
                   </div>
                   <Button
                     className="w-full gap-2"
@@ -902,7 +951,13 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                 value={editStatus}
                 onValueChange={(v) => setEditStatus(v as UserStatus)}
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  className={cn(
+                    "focus:outline-none focus:ring-0 focus:ring-offset-0",
+                    "focus-visible:ring-0 focus-visible:ring-offset-0",
+                    "data-[state=open]:ring-0 data-[state=open]:ring-offset-0"
+                  )}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -937,6 +992,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
             setStaffEmail("");
             setStaffPhone("");
             setStaffPassword("");
+            setStaffLockPin("");
             setStaffErrors({});
           }
         }}
@@ -999,19 +1055,54 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                   placeholder={t("detail.staff.addForm.passwordPlaceholder")}
                   value={staffPassword}
                   onChange={(e) => setStaffPassword(e.target.value)}
-                  className="ps-9 pe-9"
+                  className="ps-9 pe-[4.5rem]"
                 />
-                <button
+                <Button
                   type="button"
-                  tabIndex={-1}
+                  variant="ghost"
+                  size="icon"
+                  onClick={generateStaffPassword}
+                  className="absolute end-9 top-1/2 size-8 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  aria-label={t("form.account.generatePassword")}
+                >
+                  <Wand2 className="size-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setShowStaffPwd((v) => !v)}
-                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="absolute end-1 top-1/2 size-8 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  aria-label={
+                    showStaffPwd ? t("form.account.hidePassword") : t("form.account.showPassword")
+                  }
                 >
                   {showStaffPwd ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                </button>
+                </Button>
               </div>
               {staffErrors.password && (
                 <p className="text-xs text-destructive">{staffErrors.password}</p>
+              )}
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>{t("detail.staff.addForm.lockPin")}</Label>
+              <div className="relative">
+                <KeyRound className="absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  inputMode="numeric"
+                  pattern="\d*"
+                  maxLength={4}
+                  placeholder={t("detail.staff.addForm.lockPinPlaceholder")}
+                  value={staffLockPin}
+                  onChange={(e) =>
+                    setStaffLockPin(e.target.value.replace(/[^\d]/g, "").slice(0, 4))
+                  }
+                  className="ps-9"
+                />
+              </div>
+              {staffErrors.lockPin && (
+                <p className="text-xs text-destructive">{staffErrors.lockPin}</p>
               )}
             </div>
           </div>

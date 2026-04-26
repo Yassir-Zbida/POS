@@ -549,6 +549,10 @@
           "phonePlaceholder": "+212 6XX XXX XXX",
           "password": "Password",
           "passwordPlaceholder": "Min. 8 characters",
+          "generatePassword": "Generate password",
+          "generatePasswordHint": "A strong password was generated.",
+          "lockPin": "Lock screen PIN (optional)",
+          "lockPinPlaceholder": "4 digits",
           "submit": "Add staff member",
           "submitting": "Adding…",
           "success": "Staff member added successfully",
@@ -593,7 +597,8 @@
         "saveChanges": "Save changes",
         "saving": "Saving…",
         "success": "Subscription updated successfully",
-        "error": "Failed to update subscription"
+        "error": "Failed to update subscription",
+        "invalidEndDate": "Expiry date must be today or later"
       },
       "editForm": {
         "title": "Edit merchant",

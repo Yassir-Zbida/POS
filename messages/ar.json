@@ -547,6 +547,10 @@
           "phonePlaceholder": "+212 6XX XXX XXX",
           "password": "كلمة المرور",
           "passwordPlaceholder": "8 أحرف على الأقل",
+          "generatePassword": "إنشاء كلمة مرور",
+          "generatePasswordHint": "تم إنشاء كلمة مرور قوية.",
+          "lockPin": "رمز PIN لشاشة القفل (اختياري)",
+          "lockPinPlaceholder": "4 أرقام",
           "submit": "إضافة الموظف",
           "submitting": "جارٍ الإضافة…",
           "success": "تمت إضافة الموظف بنجاح",
@@ -591,7 +595,8 @@
         "saveChanges": "حفظ التغييرات",
         "saving": "جارٍ الحفظ…",
         "success": "تم تحديث الاشتراك بنجاح",
-        "error": "فشل تحديث الاشتراك"
+        "error": "فشل تحديث الاشتراك",
+        "invalidEndDate": "يجب أن يكون تاريخ الانتهاء اليوم أو بعده"
       },
       "editForm": {
         "title": "تعديل التاجر",
