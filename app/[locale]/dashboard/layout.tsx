@@ -30,6 +30,13 @@ function titleKeyForDashboardPath(pathname: string) {
     return "adminMerchantDetail" as const;
   }
   if (pathname.includes("/dashboard/admin/merchants")) return "adminMerchants" as const;
+  if (
+    pathname.match(/\/dashboard\/admin\/users\/[^/]+/) &&
+    !pathname.includes("/users/new")
+  ) {
+    return "adminUserDetail" as const;
+  }
+  if (pathname.includes("/dashboard/admin/users")) return "adminUsers" as const;
   if (pathname.includes("/dashboard/admin")) return "admin" as const;
   if (pathname.includes("/dashboard/cashier/pos")) return "cashierPos" as const;
   if (pathname.includes("/dashboard/cashier")) return "cashier" as const;

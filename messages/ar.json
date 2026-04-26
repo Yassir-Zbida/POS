@@ -20,6 +20,8 @@
       "adminMerchants": "التجار",
       "adminMerchantsNew": "تاجر جديد",
       "adminMerchantDetail": "التاجر",
+      "adminUsers": "المستخدمون",
+      "adminUserDetail": "المستخدم",
       "cashier": "الكاشير",
       "cashierPos": "نقطة البيع",
       "pos": "نقطة البيع",
@@ -607,6 +609,134 @@
         "saving": "جارٍ الحفظ…",
         "success": "تم تحديث التاجر بنجاح",
         "error": "فشل التحديث"
+      }
+    }
+  },
+  "adminUsers": {
+    "title": "المستخدمون",
+    "subtitle": "إدارة جميع مستخدمي المنصة — المسؤولون والتجار والكاشيرون",
+    "table": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "status": "الحالة",
+      "joined": "تاريخ الانضمام",
+      "actions": "الإجراءات",
+      "noResults": "لا توجد نتائج",
+      "toggleColumns": "الأعمدة",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية"
+    },
+    "roles": {
+      "ADMIN": "مسؤول",
+      "MANAGER": "تاجر",
+      "CASHIER": "كاشير"
+    },
+    "userStatus": {
+      "ACTIVE": "نشط",
+      "BANNED": "محظور",
+      "SUSPENDED": "موقوف"
+    },
+    "stats": {
+      "total": "إجمالي المستخدمين",
+      "active": "نشط",
+      "banned": "محظور",
+      "suspended": "موقوف",
+      "admins": "المسؤولون",
+      "managers": "التجار",
+      "cashiers": "الكاشيرون"
+    },
+    "search": "البحث بالاسم أو البريد الإلكتروني…",
+    "searchLabel": "بحث",
+    "filterRole": "الدور",
+    "filterStatus": "الحالة",
+    "filterAll": "الكل",
+    "filterReset": "إعادة ضبط",
+    "empty": {
+      "title": "لا يوجد مستخدمون",
+      "description": "عدّل الفلاتر أو أضف أول مستخدم."
+    },
+    "actions": {
+      "view": "عرض التفاصيل",
+      "edit": "تعديل",
+      "suspend": "إيقاف",
+      "activate": "تفعيل",
+      "ban": "حظر الحساب",
+      "delete": "حذف",
+      "copyId": "نسخ المعرف",
+      "idCopied": "تم نسخ المعرّف"
+    },
+    "confirmBan": {
+      "title": "حظر هذا المستخدم؟",
+      "description": "سيتم حظر المستخدم من الوصول إلى المنصة. يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حظر المستخدم",
+      "cancel": "إلغاء"
+    },
+    "confirmDelete": {
+      "title": "حذف هذا المستخدم نهائيًا؟",
+      "description": "سيتم حذف الحساب نهائيًا وجميع البيانات المرتبطة. لا يمكن التراجع عن هذا الإجراء!",
+      "confirm": "حذف نهائي",
+      "cancel": "إلغاء"
+    },
+    "detail": {
+      "backToList": "العودة إلى المستخدمين",
+      "editButton": "تعديل",
+      "banButton": "حظر الحساب",
+      "activateButton": "تفعيل الحساب",
+      "deleteButton": "حذف الحساب",
+      "tabs": {
+        "overview": "نظرة عامة",
+        "activity": "النشاط",
+        "relations": "الارتباطات"
+      },
+      "overview": {
+        "heading": "معلومات الحساب",
+        "name": "الاسم الكامل",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "role": "الدور",
+        "status": "حالة الحساب",
+        "joined": "عضو منذ",
+        "lastUpdated": "آخر تحديث",
+        "twoFactor": "التحقق بخطوتين",
+        "enabled": "مفعّل",
+        "disabled": "معطّل",
+        "failedLogins": "محاولات تسجيل دخول فاشلة",
+        "lockedUntil": "محظور حتى",
+        "notLocked": "غير محظور",
+        "notProvided": "غير محدد"
+      },
+      "activity": {
+        "heading": "سجل النشاط",
+        "description": "آخر أحداث تسجيل الدخول مع عناوين IP ومعلومات الجهاز",
+        "ip": "عنوان IP",
+        "device": "الجهاز / المتصفح",
+        "action": "الحدث",
+        "time": "التاريخ والوقت",
+        "empty": {
+          "title": "لا يوجد نشاط بعد",
+          "description": "لم يتم العثور على أي أحداث لهذا المستخدم."
+        }
+      },
+      "relations": {
+        "heading": "الحسابات المرتبطة",
+        "manager": "التاجر المالك",
+        "location": "الفرع المعيّن",
+        "cashiers": "حسابات الكاشيرين",
+        "locations": "فروع المتجر",
+        "subscription": "الاشتراك",
+        "none": "لا توجد حسابات مرتبطة"
+      },
+      "editForm": {
+        "title": "تعديل ملف المستخدم",
+        "name": "الاسم الكامل",
+        "phone": "رقم الهاتف",
+        "status": "حالة الحساب",
+        "save": "حفظ التغييرات",
+        "saving": "جارٍ الحفظ…",
+        "success": "تم تحديث المستخدم بنجاح",
+        "error": "فشل التحديث",
+        "cancel": "إلغاء"
       }
     }
   },

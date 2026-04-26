@@ -20,6 +20,8 @@
       "adminMerchants": "Merchants",
       "adminMerchantsNew": "Add merchant",
       "adminMerchantDetail": "Merchant",
+      "adminUsers": "Users",
+      "adminUserDetail": "User",
       "cashier": "Cashier",
       "cashierPos": "POS",
       "pos": "POS",
@@ -609,6 +611,134 @@
         "saving": "Saving…",
         "success": "Merchant updated successfully",
         "error": "Failed to update merchant"
+      }
+    }
+  },
+  "adminUsers": {
+    "title": "Users",
+    "subtitle": "Manage all platform users — admins, merchants, and cashiers",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined",
+      "actions": "Actions",
+      "noResults": "No results found",
+      "toggleColumns": "Columns",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
+    },
+    "roles": {
+      "ADMIN": "Admin",
+      "MANAGER": "Merchant",
+      "CASHIER": "Cashier"
+    },
+    "userStatus": {
+      "ACTIVE": "Active",
+      "BANNED": "Banned",
+      "SUSPENDED": "Suspended"
+    },
+    "stats": {
+      "total": "Total users",
+      "active": "Active",
+      "banned": "Banned",
+      "suspended": "Suspended",
+      "admins": "Admins",
+      "managers": "Merchants",
+      "cashiers": "Cashiers"
+    },
+    "search": "Search by name or email…",
+    "searchLabel": "Search",
+    "filterRole": "Role",
+    "filterStatus": "Status",
+    "filterAll": "All",
+    "filterReset": "Reset filters",
+    "empty": {
+      "title": "No users found",
+      "description": "Try adjusting your filters."
+    },
+    "actions": {
+      "view": "View details",
+      "edit": "Edit",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "ban": "Ban account",
+      "delete": "Delete",
+      "copyId": "Copy ID",
+      "idCopied": "ID copied to clipboard"
+    },
+    "confirmBan": {
+      "title": "Ban this user?",
+      "description": "The user will be banned from accessing the platform. This action can be reversed.",
+      "confirm": "Ban user",
+      "cancel": "Cancel"
+    },
+    "confirmDelete": {
+      "title": "Delete this user permanently?",
+      "description": "This will permanently delete the user account and all related data. This action cannot be undone!",
+      "confirm": "Delete permanently",
+      "cancel": "Cancel"
+    },
+    "detail": {
+      "backToList": "Back to users",
+      "editButton": "Edit",
+      "banButton": "Ban account",
+      "activateButton": "Activate account",
+      "deleteButton": "Delete account",
+      "tabs": {
+        "overview": "Overview",
+        "activity": "Activity",
+        "relations": "Relations"
+      },
+      "overview": {
+        "heading": "Account information",
+        "name": "Full name",
+        "email": "Email",
+        "phone": "Phone",
+        "role": "Role",
+        "status": "Account status",
+        "joined": "Member since",
+        "lastUpdated": "Last updated",
+        "twoFactor": "Two-factor auth",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "failedLogins": "Failed login attempts",
+        "lockedUntil": "Account locked until",
+        "notLocked": "Not locked",
+        "notProvided": "Not provided"
+      },
+      "activity": {
+        "heading": "Login activity",
+        "description": "Recent login events with IP addresses and device info",
+        "ip": "IP address",
+        "device": "Device / Browser",
+        "action": "Event",
+        "time": "Date & time",
+        "empty": {
+          "title": "No activity yet",
+          "description": "No login events found for this user."
+        }
+      },
+      "relations": {
+        "heading": "Related accounts",
+        "manager": "Owner merchant",
+        "location": "Assigned location",
+        "cashiers": "Cashier accounts",
+        "locations": "Store locations",
+        "subscription": "Subscription",
+        "none": "No related accounts"
+      },
+      "editForm": {
+        "title": "Edit user profile",
+        "name": "Full name",
+        "phone": "Phone number",
+        "status": "Account status",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "success": "User updated successfully",
+        "error": "Failed to update user",
+        "cancel": "Cancel"
       }
     }
   },
