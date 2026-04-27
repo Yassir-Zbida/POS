@@ -11,6 +11,7 @@ import { ArrowLeft, ArrowRight, CalendarIcon, Eye, EyeOff, Loader2, Wand2 } from
 import { useAuthStore } from "@/store/use-auth-store";
 import { fetchWithAuth } from "@/lib/fetch-with-auth";
 import { generateMerchantPassword } from "@/lib/generate-merchant-password";
+import { merchantCreateAccountSchema, zodIssuesToFieldMap } from "@/lib/validations/admin-forms";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,42 +63,24 @@ const inputQuiet = cn(
 
 const passwordWithActionsRight = "min-h-11 pl-3 pe-[4.5rem] sm:pe-[4.75rem]";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_RE = /^[+()\d\s-]{0,32}$/;
-
 function accountErrors(
   d: FormData,
   t: (key: string) => string
 ): Partial<Record<keyof FormData, string>> {
+  const parsed = merchantCreateAccountSchema.safeParse({
+    name: d.name,
+    email: d.email,
+    phone: d.phone,
+    password: d.password,
+    confirmPassword: d.confirmPassword,
+  });
+  if (parsed.success) return {};
+  const map = zodIssuesToFieldMap(parsed.error);
   const e: Partial<Record<keyof FormData, string>> = {};
-  const name = d.name.trim();
-  if (name.length === 0) e.name = t("form.account.validation.nameRequired");
-  else if (name.length < 2) e.name = t("form.account.validation.nameMin");
-
-  const em = d.email.trim();
-  if (em.length === 0) e.email = t("form.account.validation.emailRequired");
-  else if (!EMAIL_RE.test(em)) e.email = t("form.account.validation.emailInvalid");
-
-  if (d.phone.trim().length > 0 && !PHONE_RE.test(d.phone.trim())) {
-    e.phone = t("form.account.validation.phoneInvalid");
+  for (const key of Object.keys(map) as (keyof FormData)[]) {
+    const code = map[key as string];
+    e[key] = t(`form.account.validation.${code}`);
   }
-
-  if (d.password.length === 0) {
-    e.password = t("form.account.validation.passwordRequired");
-  } else if (d.password.length < 8) {
-    e.password = t("form.account.validation.passwordMin");
-  }
-
-  if (d.password.length >= 8) {
-    if (d.confirmPassword.length === 0) {
-      e.confirmPassword = t("form.account.validation.confirmRequired");
-    } else if (d.password !== d.confirmPassword) {
-      e.confirmPassword = t("form.account.validation.confirmMismatch");
-    }
-  } else if (d.confirmPassword.length > 0) {
-    e.confirmPassword = t("form.account.validation.confirmMismatch");
-  }
-
   return e;
 }
 

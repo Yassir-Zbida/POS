@@ -36,6 +36,11 @@ import { cn } from "@/lib/utils";
 import { formatLongDate, formatYmd, parseYmd } from "@/lib/merchant-form-dates";
 import { Link } from "@/i18n/navigation";
 import { generateMerchantPassword } from "@/lib/generate-merchant-password";
+import {
+  addStaffFormSchema,
+  merchantEditFormSchema,
+  zodIssuesToFieldMap,
+} from "@/lib/validations/admin-forms";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -215,6 +220,7 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
   const [editPhone, setEditPhone] = React.useState("");
   const [editStatus, setEditStatus] = React.useState<UserStatus>("ACTIVE");
   const [editSaving, setEditSaving] = React.useState(false);
+  const [editErrors, setEditErrors] = React.useState<Record<string, string>>({});
 
   // Ban confirm
   const [banOpen, setBanOpen] = React.useState(false);
@@ -271,6 +277,20 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
   async function handleEditSave() {
     if (!accessToken && !refreshToken) return;
+    const parsed = merchantEditFormSchema.safeParse({
+      name: editName,
+      phone: editPhone,
+    });
+    if (!parsed.success) {
+      const map = zodIssuesToFieldMap(parsed.error);
+      const next: Record<string, string> = {};
+      for (const [k, code] of Object.entries(map)) {
+        next[k] = t(`detail.editForm.validation.${code}`);
+      }
+      setEditErrors(next);
+      return;
+    }
+    setEditErrors({});
     setEditSaving(true);
     try {
       const res = await fetchWithAuth(`/api/admin/merchants/${merchantId}`, {
@@ -279,8 +299,8 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: editName,
-          phone: editPhone || null,
+          name: parsed.data.name,
+          phone: parsed.data.phone.trim() === "" ? null : parsed.data.phone.trim(),
           status: editStatus,
         }),
       });
@@ -333,15 +353,20 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
 
   async function handleAddStaff() {
     if (!accessToken && !refreshToken) return;
-    const newErrors: Record<string, string> = {};
-    if (!staffName.trim() || staffName.trim().length < 2) newErrors.name = "Name required";
-    if (!staffEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(staffEmail))
-      newErrors.email = "Valid email required";
-    if (!staffPassword || staffPassword.length < 8) newErrors.password = "Min. 8 characters";
-    if (staffLockPin.trim() && !/^\d{4}$/.test(staffLockPin.trim()))
-      newErrors.lockPin = "PIN must be 4 digits";
-    if (Object.keys(newErrors).length > 0) {
-      setStaffErrors(newErrors);
+    const parsed = addStaffFormSchema.safeParse({
+      name: staffName,
+      email: staffEmail,
+      phone: staffPhone,
+      password: staffPassword,
+      lockPin: staffLockPin,
+    });
+    if (!parsed.success) {
+      const map = zodIssuesToFieldMap(parsed.error);
+      const next: Record<string, string> = {};
+      for (const [k, code] of Object.entries(map)) {
+        next[k] = t(`detail.staff.addForm.validation.${code}`);
+      }
+      setStaffErrors(next);
       return;
     }
 
@@ -353,11 +378,11 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: staffName,
-          email: staffEmail,
-          phone: staffPhone || undefined,
-          password: staffPassword,
-          lockPin: staffLockPin.trim() ? staffLockPin.trim() : undefined,
+          name: parsed.data.name,
+          email: parsed.data.email,
+          phone: parsed.data.phone.trim() === "" ? undefined : parsed.data.phone.trim(),
+          password: parsed.data.password,
+          lockPin: parsed.data.lockPin.trim() === "" ? undefined : parsed.data.lockPin.trim(),
         }),
       });
       if (res.status === 409) {
@@ -959,7 +984,13 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
       </Tabs>
 
       {/* Edit merchant dialog */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+      <Dialog
+        open={editOpen}
+        onOpenChange={(open) => {
+          setEditOpen(open);
+          if (!open) setEditErrors({});
+        }}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader className="pe-8">
             <DialogTitle>{t("detail.editForm.title")}</DialogTitle>
@@ -969,9 +1000,20 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
               <Label>{t("detail.editForm.name")}</Label>
               <Input
                 value={editName}
-                onChange={(e) => setEditName(e.target.value)}
+                onChange={(e) => {
+                  setEditName(e.target.value);
+                  setEditErrors((p) => {
+                    if (!p.name) return p;
+                    const { name: _, ...rest } = p;
+                    return rest;
+                  });
+                }}
                 placeholder="Name"
+                aria-invalid={Boolean(editErrors.name)}
               />
+              {editErrors.name ? (
+                <p className="text-xs text-destructive">{editErrors.name}</p>
+              ) : null}
             </div>
             <div className="space-y-1.5">
               <Label>{t("detail.editForm.phone")}</Label>
@@ -979,11 +1021,22 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                 <Phone className="absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={editPhone}
-                  onChange={(e) => setEditPhone(e.target.value)}
+                  onChange={(e) => {
+                    setEditPhone(e.target.value);
+                    setEditErrors((p) => {
+                      if (!p.phone) return p;
+                      const { phone: _, ...rest } = p;
+                      return rest;
+                    });
+                  }}
                   className="ps-9"
                   placeholder="+212..."
+                  aria-invalid={Boolean(editErrors.phone)}
                 />
               </div>
+              {editErrors.phone ? (
+                <p className="text-xs text-destructive">{editErrors.phone}</p>
+              ) : null}
             </div>
             <div className="space-y-1.5">
               <Label>{t("detail.editForm.status")}</Label>
@@ -1051,7 +1104,15 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                 <Input
                   placeholder={t("detail.staff.addForm.namePlaceholder")}
                   value={staffName}
-                  onChange={(e) => setStaffName(e.target.value)}
+                  onChange={(e) => {
+                    setStaffName(e.target.value);
+                    setStaffErrors((p) => {
+                      if (!p.name) return p;
+                      const { name: _, ...rest } = p;
+                      return rest;
+                    });
+                  }}
+                  aria-invalid={Boolean(staffErrors.name)}
                 />
                 {staffErrors.name && (
                   <p className="text-xs text-destructive">{staffErrors.name}</p>
@@ -1064,10 +1125,21 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                   <Input
                     placeholder={t("detail.staff.addForm.phonePlaceholder")}
                     value={staffPhone}
-                    onChange={(e) => setStaffPhone(e.target.value)}
+                    onChange={(e) => {
+                      setStaffPhone(e.target.value);
+                      setStaffErrors((p) => {
+                        if (!p.phone) return p;
+                        const { phone: _, ...rest } = p;
+                        return rest;
+                      });
+                    }}
                     className="ps-9"
+                    aria-invalid={Boolean(staffErrors.phone)}
                   />
                 </div>
+                {staffErrors.phone ? (
+                  <p className="text-xs text-destructive">{staffErrors.phone}</p>
+                ) : null}
               </div>
             </div>
             <div className="space-y-1.5">
@@ -1078,8 +1150,16 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                   type="email"
                   placeholder={t("detail.staff.addForm.emailPlaceholder")}
                   value={staffEmail}
-                  onChange={(e) => setStaffEmail(e.target.value)}
+                  onChange={(e) => {
+                    setStaffEmail(e.target.value);
+                    setStaffErrors((p) => {
+                      if (!p.email) return p;
+                      const { email: _, ...rest } = p;
+                      return rest;
+                    });
+                  }}
                   className="ps-9"
+                  aria-invalid={Boolean(staffErrors.email)}
                 />
               </div>
               {staffErrors.email && (
@@ -1094,8 +1174,16 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                   type={showStaffPwd ? "text" : "password"}
                   placeholder={t("detail.staff.addForm.passwordPlaceholder")}
                   value={staffPassword}
-                  onChange={(e) => setStaffPassword(e.target.value)}
+                  onChange={(e) => {
+                    setStaffPassword(e.target.value);
+                    setStaffErrors((p) => {
+                      if (!p.password) return p;
+                      const { password: _, ...rest } = p;
+                      return rest;
+                    });
+                  }}
                   className="ps-9 pe-[4.5rem]"
+                  aria-invalid={Boolean(staffErrors.password)}
                 />
                 <Button
                   type="button"
@@ -1135,10 +1223,16 @@ export function MerchantDetailClient({ merchantId }: { merchantId: string }) {
                   maxLength={4}
                   placeholder={t("detail.staff.addForm.lockPinPlaceholder")}
                   value={staffLockPin}
-                  onChange={(e) =>
-                    setStaffLockPin(e.target.value.replace(/[^\d]/g, "").slice(0, 4))
-                  }
+                  onChange={(e) => {
+                    setStaffLockPin(e.target.value.replace(/[^\d]/g, "").slice(0, 4));
+                    setStaffErrors((p) => {
+                      if (!p.lockPin) return p;
+                      const { lockPin: _, ...rest } = p;
+                      return rest;
+                    });
+                  }}
                   className="ps-9"
+                  aria-invalid={Boolean(staffErrors.lockPin)}
                 />
               </div>
               {staffErrors.lockPin && (

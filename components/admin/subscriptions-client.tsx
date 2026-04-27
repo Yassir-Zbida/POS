@@ -114,6 +114,7 @@ export function SubscriptionsClient() {
   const [manageEndDate, setManageEndDate] = React.useState<Date | undefined>(undefined);
   const [calendarOpen, setCalendarOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
+  const [manageDateError, setManageDateError] = React.useState("");
 
   React.useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 400);
@@ -160,10 +161,22 @@ export function SubscriptionsClient() {
   function handleCloseManage() {
     setManageTarget(null);
     setCalendarOpen(false);
+    setManageDateError("");
   }
 
   async function handleSave() {
     if (!manageTarget) return;
+    setManageDateError("");
+    if (manageEndDate) {
+      const day = new Date(manageEndDate);
+      day.setHours(0, 0, 0, 0);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (day < today) {
+        setManageDateError(t("manageDialog.invalidEndDate"));
+        return;
+      }
+    }
     setSaving(true);
     try {
       const body: { status?: SubscriptionStatus; endedAt?: string | null } = {};
@@ -464,6 +477,7 @@ export function SubscriptionsClient() {
                         selected={manageEndDate}
                         onSelect={(d) => {
                           setManageEndDate(d);
+                          setManageDateError("");
                           setCalendarOpen(false);
                         }}
                         disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
@@ -477,13 +491,19 @@ export function SubscriptionsClient() {
                       variant="ghost"
                       size="icon"
                       className="size-9 shrink-0 text-muted-foreground hover:text-foreground"
-                      onClick={() => setManageEndDate(undefined)}
+                      onClick={() => {
+                        setManageEndDate(undefined);
+                        setManageDateError("");
+                      }}
                       aria-label={t("manageDialog.clearDate")}
                     >
                       <X className="size-4" />
                     </Button>
                   )}
                 </div>
+                {manageDateError ? (
+                  <p className="text-xs text-destructive">{manageDateError}</p>
+                ) : null}
               </div>
             </div>
           )}

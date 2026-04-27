@@ -35,6 +35,7 @@ import {
 } from "lucide-react";
 
 import { fetchWithAuth } from "@/lib/fetch-with-auth";
+import { adminUserEditFormSchema, zodIssuesToFieldMap } from "@/lib/validations/admin-forms";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -294,6 +295,7 @@ export function UserDetailClient({ userId }: { userId: string }) {
   const [editPhone, setEditPhone] = React.useState("");
   const [editStatus, setEditStatus] = React.useState<UserStatus>("ACTIVE");
   const [editSaving, setEditSaving] = React.useState(false);
+  const [editErrors, setEditErrors] = React.useState<Record<string, string>>({});
 
   // Ban dialog
   const [banOpen, setBanOpen] = React.useState(false);
@@ -346,14 +348,28 @@ export function UserDetailClient({ userId }: { userId: string }) {
   }, [fetchUser]);
 
   async function handleEditSave() {
+    const parsed = adminUserEditFormSchema.safeParse({
+      name: editName,
+      phone: editPhone,
+    });
+    if (!parsed.success) {
+      const map = zodIssuesToFieldMap(parsed.error);
+      const next: Record<string, string> = {};
+      for (const [k, code] of Object.entries(map)) {
+        next[k] = t(`detail.editForm.validation.${code}`);
+      }
+      setEditErrors(next);
+      return;
+    }
+    setEditErrors({});
     setEditSaving(true);
     try {
       const res = await fetchWithAuth(`/api/admin/users/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: editName || null,
-          phone: editPhone || null,
+          name: parsed.data.name.trim() === "" ? null : parsed.data.name.trim(),
+          phone: parsed.data.phone.trim() === "" ? null : parsed.data.phone.trim(),
           status: editStatus,
         }),
       });
@@ -1010,7 +1026,13 @@ export function UserDetailClient({ userId }: { userId: string }) {
       </Tabs>
 
       {/* ── Edit dialog ── */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+      <Dialog
+        open={editOpen}
+        onOpenChange={(open) => {
+          setEditOpen(open);
+          if (!open) setEditErrors({});
+        }}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{t("detail.editForm.title")}</DialogTitle>
@@ -1022,11 +1044,22 @@ export function UserDetailClient({ userId }: { userId: string }) {
                 <User className="absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
+                  onChange={(e) => {
+                    setEditName(e.target.value);
+                    setEditErrors((p) => {
+                      if (!p.name) return p;
+                      const { name: _, ...rest } = p;
+                      return rest;
+                    });
+                  }}
                   placeholder="Full name"
                   className="ps-9"
+                  aria-invalid={Boolean(editErrors.name)}
                 />
               </div>
+              {editErrors.name ? (
+                <p className="text-xs text-destructive">{editErrors.name}</p>
+              ) : null}
             </div>
             <div className="space-y-1.5">
               <Label>{t("detail.editForm.phone")}</Label>
@@ -1034,11 +1067,22 @@ export function UserDetailClient({ userId }: { userId: string }) {
                 <Phone className="absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={editPhone}
-                  onChange={(e) => setEditPhone(e.target.value)}
+                  onChange={(e) => {
+                    setEditPhone(e.target.value);
+                    setEditErrors((p) => {
+                      if (!p.phone) return p;
+                      const { phone: _, ...rest } = p;
+                      return rest;
+                    });
+                  }}
                   className="ps-9"
                   placeholder="+212..."
+                  aria-invalid={Boolean(editErrors.phone)}
                 />
               </div>
+              {editErrors.phone ? (
+                <p className="text-xs text-destructive">{editErrors.phone}</p>
+              ) : null}
             </div>
             <div className="space-y-1.5">
               <Label>{t("detail.editForm.status")}</Label>

@@ -561,6 +561,13 @@
           "errors": {
             "emailExists": "Cet e-mail est déjà utilisé",
             "generic": "Échec de l'ajout du membre du personnel"
+          },
+          "validation": {
+            "nameMin": "Au moins 2 caractères.",
+            "emailInvalid": "Saisissez une adresse e-mail valide.",
+            "passwordMin": "Au moins 8 caractères.",
+            "phoneInvalid": "Utilisez uniquement des chiffres, espaces et + ( ) -.",
+            "lockPinInvalid": "Le code PIN doit comporter exactement 4 chiffres."
           }
         },
         "removeConfirm": {
@@ -610,7 +617,11 @@
         "save": "Enregistrer",
         "saving": "Enregistrement…",
         "success": "Marchand mis à jour avec succès",
-        "error": "Échec de la mise à jour"
+        "error": "Échec de la mise à jour",
+        "validation": {
+          "nameMin": "Au moins 2 caractères.",
+          "phoneInvalid": "Utilisez uniquement des chiffres, espaces et + ( ) -."
+        }
       }
     }
   },
@@ -756,7 +767,11 @@
         "saving": "Enregistrement…",
         "success": "Utilisateur mis à jour",
         "error": "Échec de la mise à jour",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "validation": {
+          "nameMin": "Au moins 2 caractères si vous renseignez un nom.",
+          "phoneInvalid": "Utilisez uniquement des chiffres, espaces et + ( ) -."
+        }
       }
     }
   },
@@ -823,7 +838,8 @@
       "saving": "Enregistrement…",
       "cancel": "Annuler",
       "success": "Abonnement mis à jour avec succès",
-      "error": "Échec de la mise à jour de l'abonnement"
+      "error": "Échec de la mise à jour de l'abonnement",
+      "invalidEndDate": "La date d'expiration doit être aujourd'hui ou après."
     }
   },
   "adminSystemHealth": {

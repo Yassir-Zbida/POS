@@ -563,6 +563,13 @@
           "errors": {
             "emailExists": "This email is already in use",
             "generic": "Failed to add staff member"
+          },
+          "validation": {
+            "nameMin": "Use at least 2 characters.",
+            "emailInvalid": "Enter a valid email address.",
+            "passwordMin": "Use at least 8 characters.",
+            "phoneInvalid": "Use only digits, spaces, and + ( ) -.",
+            "lockPinInvalid": "PIN must be exactly 4 digits."
           }
         },
         "removeConfirm": {
@@ -612,7 +619,11 @@
         "save": "Save changes",
         "saving": "Saving…",
         "success": "Merchant updated successfully",
-        "error": "Failed to update merchant"
+        "error": "Failed to update merchant",
+        "validation": {
+          "nameMin": "Use at least 2 characters.",
+          "phoneInvalid": "Use only digits, spaces, and + ( ) -."
+        }
       }
     }
   },
@@ -758,7 +769,11 @@
         "saving": "Saving…",
         "success": "User updated successfully",
         "error": "Failed to update user",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "validation": {
+          "nameMin": "Use at least 2 characters if you enter a name.",
+          "phoneInvalid": "Use only digits, spaces, and + ( ) -."
+        }
       }
     }
   },
@@ -825,7 +840,8 @@
       "saving": "Saving…",
       "cancel": "Cancel",
       "success": "Subscription updated successfully",
-      "error": "Failed to update subscription"
+      "error": "Failed to update subscription",
+      "invalidEndDate": "Expiry date must be today or later."
     }
   },
   "adminSystemHealth": {
