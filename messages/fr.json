@@ -22,6 +22,7 @@
       "adminUsers": "Utilisateurs",
       "adminUserDetail": "Utilisateur",
       "adminSubscriptions": "Abonnements",
+      "adminSystemHealth": "Santé du système",
       "adminMerchantDetail": "Marchand",
       "cashier": "Caissier",
       "cashierPos": "POS",
@@ -823,6 +824,85 @@
       "cancel": "Annuler",
       "success": "Abonnement mis à jour avec succès",
       "error": "Échec de la mise à jour de l'abonnement"
+    }
+  },
+  "adminSystemHealth": {
+    "title": "Santé du système",
+    "subtitle": "Surveillance en temps réel — services, runtime, mémoire et base de données",
+    "fetchError": "Échec du chargement des données de santé du système",
+    "refresh": "Actualiser",
+    "refreshing": "Actualisation…",
+    "lastUpdated": "Dernière mise à jour",
+    "autoRefresh": "Actualisation auto toutes les 30s",
+    "environment": "Environnement",
+    "nodeVersion": "Node.js",
+    "uptime": "Uptime du processus",
+    "pid": "PID",
+    "statusBanner": {
+      "allOk": "Tous les systèmes sont opérationnels",
+      "degraded": "Système dégradé",
+      "processUptime": "Uptime du processus",
+      "osUptime": "Uptime du système"
+    },
+    "services": {
+      "title": "Services",
+      "database": "Base de données",
+      "api": "Serveur API",
+      "latency": "{ms}ms"
+    },
+    "status": {
+      "ok": "Sain",
+      "error": "Dégradé",
+      "warning": "Avertissement"
+    },
+    "memory": {
+      "title": "Mémoire du processus",
+      "heapUsed": "Heap utilisé",
+      "heapTotal": "Heap total",
+      "rss": "RSS (résidant)",
+      "external": "Externe",
+      "arrayBuffers": "Tampons tableau"
+    },
+    "system": {
+      "title": "Infos système",
+      "hostname": "Nom d'hôte",
+      "platform": "Plateforme OS",
+      "arch": "Architecture",
+      "cpuModel": "Modèle CPU",
+      "cpuCores": "Cœurs CPU",
+      "osUptime": "Uptime OS"
+    },
+    "load": {
+      "title": "Charge CPU moyenne",
+      "avg1m": "1 min",
+      "avg5m": "5 min",
+      "avg15m": "15 min",
+      "hint": "Charge > nb cœurs indique une saturation"
+    },
+    "sysMem": {
+      "title": "Mémoire système",
+      "total": "RAM totale",
+      "used": "Utilisée",
+      "free": "Libre"
+    },
+    "process": {
+      "title": "Processus",
+      "pid": "ID de processus",
+      "cpuUser": "Temps CPU utilisateur",
+      "cpuSystem": "Temps CPU système"
+    },
+    "dbTables": {
+      "title": "Tables de la base de données",
+      "table": "Table",
+      "count": "Lignes",
+      "users": "Utilisateurs",
+      "subscriptions": "Abonnements",
+      "sales": "Ventes",
+      "products": "Produits",
+      "locations": "Emplacements",
+      "auditLogs": "Logs d'audit",
+      "customers": "Clients",
+      "suppliers": "Fournisseurs"
     }
   },
   "lockScreen": {

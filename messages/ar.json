@@ -23,6 +23,7 @@
       "adminUsers": "المستخدمون",
       "adminUserDetail": "المستخدم",
       "adminSubscriptions": "الاشتراكات",
+      "adminSystemHealth": "صحة النظام",
       "cashier": "الكاشير",
       "cashierPos": "نقطة البيع",
       "pos": "نقطة البيع",
@@ -823,6 +824,85 @@
       "cancel": "إلغاء",
       "success": "تم تحديث الاشتراك بنجاح",
       "error": "فشل تحديث الاشتراك"
+    }
+  },
+  "adminSystemHealth": {
+    "title": "صحة النظام",
+    "subtitle": "مراقبة البنية التحتية الفورية — الخدمات والبيئة والذاكرة وقاعدة البيانات",
+    "fetchError": "فشل تحميل بيانات صحة النظام",
+    "refresh": "تحديث",
+    "refreshing": "جارٍ التحديث…",
+    "lastUpdated": "آخر تحديث",
+    "autoRefresh": "تحديث تلقائي كل 30 ثانية",
+    "environment": "البيئة",
+    "nodeVersion": "Node.js",
+    "uptime": "وقت تشغيل العملية",
+    "pid": "معرّف العملية",
+    "statusBanner": {
+      "allOk": "جميع الأنظمة تعمل",
+      "degraded": "النظام متدهور",
+      "processUptime": "وقت تشغيل العملية",
+      "osUptime": "وقت تشغيل نظام التشغيل"
+    },
+    "services": {
+      "title": "الخدمات",
+      "database": "قاعدة البيانات",
+      "api": "خادم API",
+      "latency": "{ms} مللي ثانية"
+    },
+    "status": {
+      "ok": "سليم",
+      "error": "معطوب",
+      "warning": "تحذير"
+    },
+    "memory": {
+      "title": "ذاكرة العملية",
+      "heapUsed": "الكومة المستخدمة",
+      "heapTotal": "إجمالي الكومة",
+      "rss": "RSS (مقيم)",
+      "external": "خارجي",
+      "arrayBuffers": "مصفوفات الذاكرة"
+    },
+    "system": {
+      "title": "معلومات النظام",
+      "hostname": "اسم المضيف",
+      "platform": "منصة نظام التشغيل",
+      "arch": "المعمارية",
+      "cpuModel": "طراز المعالج",
+      "cpuCores": "أنوية المعالج",
+      "osUptime": "وقت تشغيل النظام"
+    },
+    "load": {
+      "title": "متوسط حمل المعالج",
+      "avg1m": "1 دقيقة",
+      "avg5m": "5 دقائق",
+      "avg15m": "15 دقيقة",
+      "hint": "الحمل > عدد الأنوية يعني الإشباع"
+    },
+    "sysMem": {
+      "title": "ذاكرة النظام",
+      "total": "إجمالي الذاكرة",
+      "used": "مستخدم",
+      "free": "حر"
+    },
+    "process": {
+      "title": "العملية",
+      "pid": "معرّف العملية",
+      "cpuUser": "وقت CPU للمستخدم",
+      "cpuSystem": "وقت CPU للنظام"
+    },
+    "dbTables": {
+      "title": "جداول قاعدة البيانات",
+      "table": "الجدول",
+      "count": "الصفوف",
+      "users": "المستخدمون",
+      "subscriptions": "الاشتراكات",
+      "sales": "المبيعات",
+      "products": "المنتجات",
+      "locations": "المواقع",
+      "auditLogs": "سجلات التدقيق",
+      "customers": "العملاء",
+      "suppliers": "الموردون"
     }
   },
   "lockScreen": {

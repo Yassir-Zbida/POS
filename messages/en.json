@@ -23,6 +23,7 @@
       "adminUsers": "Users",
       "adminUserDetail": "User",
       "adminSubscriptions": "Subscriptions",
+      "adminSystemHealth": "System health",
       "cashier": "Cashier",
       "cashierPos": "POS",
       "pos": "POS",
@@ -825,6 +826,85 @@
       "cancel": "Cancel",
       "success": "Subscription updated successfully",
       "error": "Failed to update subscription"
+    }
+  },
+  "adminSystemHealth": {
+    "title": "System Health",
+    "subtitle": "Real-time infrastructure monitoring — services, runtime, memory and database",
+    "fetchError": "Failed to load system health data",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "lastUpdated": "Last updated",
+    "autoRefresh": "Auto-refresh every 30s",
+    "environment": "Environment",
+    "nodeVersion": "Node.js",
+    "uptime": "Process uptime",
+    "pid": "PID",
+    "statusBanner": {
+      "allOk": "All systems operational",
+      "degraded": "System degraded",
+      "processUptime": "Process uptime",
+      "osUptime": "OS uptime"
+    },
+    "services": {
+      "title": "Services",
+      "database": "Database",
+      "api": "API Server",
+      "latency": "{ms}ms"
+    },
+    "status": {
+      "ok": "Healthy",
+      "error": "Degraded",
+      "warning": "Warning"
+    },
+    "memory": {
+      "title": "Process Memory",
+      "heapUsed": "Heap used",
+      "heapTotal": "Heap total",
+      "rss": "RSS (resident)",
+      "external": "External",
+      "arrayBuffers": "Array buffers"
+    },
+    "system": {
+      "title": "System Info",
+      "hostname": "Hostname",
+      "platform": "OS platform",
+      "arch": "Architecture",
+      "cpuModel": "CPU model",
+      "cpuCores": "CPU cores",
+      "osUptime": "OS uptime"
+    },
+    "load": {
+      "title": "CPU Load Average",
+      "avg1m": "1 min",
+      "avg5m": "5 min",
+      "avg15m": "15 min",
+      "hint": "Load > CPU count indicates saturation"
+    },
+    "sysMem": {
+      "title": "System Memory",
+      "total": "Total RAM",
+      "used": "Used",
+      "free": "Free"
+    },
+    "process": {
+      "title": "Process",
+      "pid": "Process ID",
+      "cpuUser": "CPU user time",
+      "cpuSystem": "CPU system time"
+    },
+    "dbTables": {
+      "title": "Database Tables",
+      "table": "Table",
+      "count": "Rows",
+      "users": "Users",
+      "subscriptions": "Subscriptions",
+      "sales": "Sales",
+      "products": "Products",
+      "locations": "Locations",
+      "auditLogs": "Audit logs",
+      "customers": "Customers",
+      "suppliers": "Suppliers"
     }
   },
   "lockScreen": {
