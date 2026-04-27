@@ -905,6 +905,104 @@
       "suppliers": "الموردون"
     }
   },
+  "auditLogs": {
+    "title": "سجلات التدقيق",
+    "subtitle": "سجل كامل للنشاط — كل إجراء واستدعاء API وخطأ عميل مُسجَّل عبر المنصة",
+    "fetchError": "فشل تحميل السجلات",
+    "statsError": "فشل تحميل الإحصائيات",
+    "refresh": "تحديث",
+    "refreshing": "جارٍ التحديث…",
+    "lastUpdated": "آخر تحديث",
+    "autoRefresh": "تحديث تلقائي كل 60 ثانية",
+    "exportCsv": "تصدير CSV",
+    "stats": {
+      "total": "إجمالي الأحداث",
+      "last24h": "آخر 24 ساعة",
+      "errors": "الأخطاء",
+      "errorsLast24h": "أخطاء اليوم",
+      "last7d": "آخر 7 أيام"
+    },
+    "chart": {
+      "title": "النشاط — آخر 14 يومًا",
+      "events": "أحداث",
+      "noData": "لا توجد بيانات نشاط"
+    },
+    "filters": {
+      "search": "ابحث في السجلات…",
+      "searchLabel": "بحث",
+      "action": "الإجراء",
+      "targetType": "النوع",
+      "actorId": "الفاعل",
+      "dateFrom": "من",
+      "dateTo": "إلى",
+      "allActions": "جميع الإجراءات",
+      "allTargets": "جميع الأهداف",
+      "allActors": "جميع المستخدمين",
+      "reset": "إعادة ضبط",
+      "apply": "تطبيق"
+    },
+    "table": {
+      "timestamp": "التوقيت",
+      "actor": "الفاعل",
+      "action": "الإجراء",
+      "target": "الهدف",
+      "ip": "عنوان IP",
+      "device": "الجهاز",
+      "noResults": "لم يُعثر على سجلات",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية",
+      "page": "صفحة {page} من {total}",
+      "toggleColumns": "الأعمدة"
+    },
+    "detail": {
+      "title": "تفاصيل الحدث",
+      "id": "معرّف الحدث",
+      "timestamp": "الطابع الزمني",
+      "actor": "الفاعل",
+      "actorRole": "الدور",
+      "action": "الإجراء",
+      "targetType": "نوع الهدف",
+      "targetId": "معرّف الهدف",
+      "ip": "عنوان IP",
+      "userAgent": "وكيل المستخدم",
+      "metadata": "بيانات إضافية",
+      "noMetadata": "لا توجد بيانات إضافية",
+      "close": "إغلاق"
+    },
+    "actions": {
+      "LOGIN": "تسجيل الدخول",
+      "LOGOUT": "تسجيل الخروج",
+      "LOGIN_FAILED": "فشل الدخول",
+      "CREATE": "إنشاء",
+      "UPDATE": "تحديث",
+      "DELETE": "حذف",
+      "REFUND": "استرداد",
+      "CLIENT_ERROR": "خطأ عميل",
+      "CLIENT_WARNING": "تحذير عميل",
+      "CLIENT_INFO": "معلومات عميل"
+    },
+    "levels": {
+      "error": "خطأ",
+      "warning": "تحذير",
+      "info": "معلومة"
+    },
+    "topActors": {
+      "title": "الأكثر نشاطًا",
+      "events": "{count} حدث"
+    },
+    "byAction": {
+      "title": "الأحداث حسب الإجراء"
+    },
+    "recentErrors": {
+      "title": "أخطاء حديثة",
+      "noErrors": "لا توجد أخطاء مسجّلة",
+      "viewAll": "عرض جميع الأخطاء"
+    },
+    "empty": {
+      "title": "لم يُعثر على سجلات",
+      "description": "حاول تعديل الفلاتر أو نطاق التاريخ."
+    }
+  },
   "lockScreen": {
     "locked": "الكاشير مقفل",
     "wrongPin": "رمز PIN خاطئ",

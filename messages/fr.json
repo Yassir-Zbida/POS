@@ -905,6 +905,104 @@
       "suppliers": "Fournisseurs"
     }
   },
+  "auditLogs": {
+    "title": "Journaux d'audit",
+    "subtitle": "Historique complet — chaque action, appel API et erreur client capturés sur la plateforme",
+    "fetchError": "Échec du chargement des journaux",
+    "statsError": "Échec du chargement des statistiques",
+    "refresh": "Actualiser",
+    "refreshing": "Actualisation…",
+    "lastUpdated": "Mis à jour",
+    "autoRefresh": "Auto-actualisation toutes les 60s",
+    "exportCsv": "Exporter CSV",
+    "stats": {
+      "total": "Total événements",
+      "last24h": "Dernières 24 h",
+      "errors": "Erreurs",
+      "errorsLast24h": "erreurs aujourd'hui",
+      "last7d": "7 derniers jours"
+    },
+    "chart": {
+      "title": "Activité — 14 derniers jours",
+      "events": "Événements",
+      "noData": "Aucune donnée d'activité"
+    },
+    "filters": {
+      "search": "Rechercher…",
+      "searchLabel": "Recherche",
+      "action": "Action",
+      "targetType": "Cible",
+      "actorId": "Acteur",
+      "dateFrom": "Du",
+      "dateTo": "Au",
+      "allActions": "Toutes les actions",
+      "allTargets": "Toutes les cibles",
+      "allActors": "Tous les acteurs",
+      "reset": "Réinitialiser",
+      "apply": "Appliquer"
+    },
+    "table": {
+      "timestamp": "Heure",
+      "actor": "Acteur",
+      "action": "Action",
+      "target": "Cible",
+      "ip": "Adresse IP",
+      "device": "Appareil",
+      "noResults": "Aucun journal trouvé",
+      "prevPage": "Page précédente",
+      "nextPage": "Page suivante",
+      "page": "Page {page} sur {total}",
+      "toggleColumns": "Colonnes"
+    },
+    "detail": {
+      "title": "Détails de l'événement",
+      "id": "ID événement",
+      "timestamp": "Horodatage",
+      "actor": "Acteur",
+      "actorRole": "Rôle",
+      "action": "Action",
+      "targetType": "Type de cible",
+      "targetId": "ID cible",
+      "ip": "Adresse IP",
+      "userAgent": "Agent utilisateur",
+      "metadata": "Métadonnées",
+      "noMetadata": "Aucune métadonnée",
+      "close": "Fermer"
+    },
+    "actions": {
+      "LOGIN": "Connexion",
+      "LOGOUT": "Déconnexion",
+      "LOGIN_FAILED": "Échec connexion",
+      "CREATE": "Créer",
+      "UPDATE": "Modifier",
+      "DELETE": "Supprimer",
+      "REFUND": "Remboursement",
+      "CLIENT_ERROR": "Erreur client",
+      "CLIENT_WARNING": "Avertissement client",
+      "CLIENT_INFO": "Info client"
+    },
+    "levels": {
+      "error": "Erreur",
+      "warning": "Avertissement",
+      "info": "Info"
+    },
+    "topActors": {
+      "title": "Utilisateurs les plus actifs",
+      "events": "{count} événements"
+    },
+    "byAction": {
+      "title": "Événements par action"
+    },
+    "recentErrors": {
+      "title": "Erreurs récentes",
+      "noErrors": "Aucune erreur enregistrée",
+      "viewAll": "Voir toutes les erreurs"
+    },
+    "empty": {
+      "title": "Aucun journal trouvé",
+      "description": "Essayez d'ajuster vos filtres ou la plage de dates."
+    }
+  },
   "lockScreen": {
     "locked": "Caisse verrouillée",
     "wrongPin": "PIN incorrect",

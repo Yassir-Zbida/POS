@@ -907,6 +907,104 @@
       "suppliers": "Suppliers"
     }
   },
+  "auditLogs": {
+    "title": "Audit logs",
+    "subtitle": "Full activity trail — every action, API call and client error captured across the platform",
+    "fetchError": "Failed to load audit logs",
+    "statsError": "Failed to load statistics",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "lastUpdated": "Updated",
+    "autoRefresh": "Auto-refresh every 60s",
+    "exportCsv": "Export CSV",
+    "stats": {
+      "total": "Total events",
+      "last24h": "Last 24 h",
+      "errors": "Errors",
+      "errorsLast24h": "errors today",
+      "last7d": "Last 7 days"
+    },
+    "chart": {
+      "title": "Activity — last 14 days",
+      "events": "Events",
+      "noData": "No activity data"
+    },
+    "filters": {
+      "search": "Search logs…",
+      "searchLabel": "Search",
+      "action": "Action",
+      "targetType": "Target",
+      "actorId": "Actor",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "allActions": "All actions",
+      "allTargets": "All targets",
+      "allActors": "All actors",
+      "reset": "Reset filters",
+      "apply": "Apply"
+    },
+    "table": {
+      "timestamp": "Time",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "ip": "IP address",
+      "device": "Device",
+      "noResults": "No logs found",
+      "prevPage": "Previous page",
+      "nextPage": "Next page",
+      "page": "Page {page} of {total}",
+      "toggleColumns": "Columns"
+    },
+    "detail": {
+      "title": "Event details",
+      "id": "Event ID",
+      "timestamp": "Timestamp",
+      "actor": "Actor",
+      "actorRole": "Role",
+      "action": "Action",
+      "targetType": "Target type",
+      "targetId": "Target ID",
+      "ip": "IP address",
+      "userAgent": "User agent",
+      "metadata": "Metadata",
+      "noMetadata": "No additional metadata",
+      "close": "Close"
+    },
+    "actions": {
+      "LOGIN": "Login",
+      "LOGOUT": "Logout",
+      "LOGIN_FAILED": "Login failed",
+      "CREATE": "Create",
+      "UPDATE": "Update",
+      "DELETE": "Delete",
+      "REFUND": "Refund",
+      "CLIENT_ERROR": "Client error",
+      "CLIENT_WARNING": "Client warning",
+      "CLIENT_INFO": "Client info"
+    },
+    "levels": {
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info"
+    },
+    "topActors": {
+      "title": "Most active users",
+      "events": "{count} events"
+    },
+    "byAction": {
+      "title": "Events by action"
+    },
+    "recentErrors": {
+      "title": "Recent errors",
+      "noErrors": "No errors recorded",
+      "viewAll": "View all errors"
+    },
+    "empty": {
+      "title": "No logs found",
+      "description": "Try adjusting your filters or date range."
+    }
+  },
   "lockScreen": {
     "locked": "Cash register locked",
     "wrongPin": "Wrong PIN",
