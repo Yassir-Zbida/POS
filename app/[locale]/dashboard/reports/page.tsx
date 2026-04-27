@@ -16,5 +16,5 @@ export async function generateMetadata({
 }
 
 export default function ReportsPage() {
-  return <h1 className="p-8 text-2xl font-semibold">Reports</h1>;
+  return <h1 className="text-xl font-semibold sm:text-2xl">Reports</h1>;
 }

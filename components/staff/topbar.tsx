@@ -38,53 +38,59 @@ export function StaffTopbar({ className }: { className?: string }) {
   return (
     <header
       className={cn(
-        "flex min-h-14 flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-background px-3 py-2 sm:px-4",
+        "sticky top-0 z-20 flex min-h-14 items-center justify-between gap-2 border-b border-border/60 bg-background/95 px-3 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:px-4",
         className,
       )}
     >
-      <div className="flex min-w-0 max-w-full flex-1 items-start gap-2 sm:max-w-[min(100%,32rem)]">
-        <SidebarTrigger className="mt-0.5 shrink-0" />
-        <Separator orientation="vertical" className="mt-1.5 h-6 hidden sm:block" />
+      {/* ── Left: trigger + title ── */}
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <SidebarTrigger className="shrink-0" />
+        <Separator orientation="vertical" className="h-6 hidden sm:block" />
         <div className="min-w-0 flex-1">
-          <h1 className="truncate text-lg font-bold tracking-tight sm:text-xl">{t(`titles.${titleKey}`)}</h1>
+          <h1 className="truncate text-base font-bold tracking-tight sm:text-xl">{t(`titles.${titleKey}`)}</h1>
           {user?.email ? (
-            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+            <p className="hidden truncate text-xs text-muted-foreground sm:block">{user.email}</p>
           ) : null}
         </div>
       </div>
 
-      <div className="flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto sm:flex-nowrap sm:gap-2.5">
-        <div className="order-last relative hidden w-full min-w-0 max-w-sm md:order-none md:flex">
-          <Search
-            className="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            readOnly
-            aria-readonly
-            className="h-9 rounded-2xl border-border/50 bg-muted/50 ps-9 text-xs shadow-sm"
-            placeholder={t("topbar.searchStub")}
-            tabIndex={-1}
-          />
-        </div>
+      {/* ── Center: search bar (md+) ── */}
+      <div className="relative hidden w-full min-w-0 max-w-xs md:flex lg:max-w-sm">
+        <Search
+          className="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          aria-hidden="true"
+        />
+        <Input
+          readOnly
+          aria-readonly
+          className="h-9 rounded-2xl border-border/50 bg-muted/50 ps-9 text-xs shadow-sm"
+          placeholder={t("topbar.searchStub")}
+          tabIndex={-1}
+        />
+      </div>
 
-        <div className="flex items-center gap-1.5 sm:ms-auto">
-          <Button type="button" variant="ghost" size="icon" className="rounded-xl" aria-label={t("topbar.search")}>
-            <Bell className="size-4" aria-hidden="true" />
-          </Button>
-          <Button type="button" variant="ghost" size="icon" className="rounded-xl" aria-label={t("titles.settings")}>
-            <Settings2 className="size-4" aria-hidden="true" />
-          </Button>
-        </div>
+      {/* ── Right: actions ── */}
+      <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
+        <Button type="button" variant="ghost" size="icon" className="rounded-xl" aria-label={t("topbar.search")}>
+          <Bell className="size-4" aria-hidden="true" />
+        </Button>
+        <Button type="button" variant="ghost" size="icon" className="hidden rounded-xl sm:inline-flex" aria-label={t("titles.settings")}>
+          <Settings2 className="size-4" aria-hidden="true" />
+        </Button>
 
         <Suspense fallback={null}>
           <StaffLanguageSwitcher />
         </Suspense>
         <ModeToggle />
 
-        <Button variant="outline" size="sm" className="rounded-xl border-border/70" onClick={() => clearSession()}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-xl border-border/70 px-2 sm:px-3"
+          onClick={() => clearSession()}
+        >
           <LogOut className="size-4" aria-hidden="true" />
-          {t("topbar.logout")}
+          <span className="ms-1 hidden sm:inline">{t("topbar.logout")}</span>
         </Button>
       </div>
     </header>

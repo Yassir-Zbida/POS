@@ -16,10 +16,19 @@
       "dashboardCategories": "Categories",
       "dashboardInventory": "Inventory",
       "dashboardCashRegister": "Cash register",
+      "admin": "Admin",
+      "adminMerchants": "Merchants",
+      "adminMerchantsNew": "Add merchant",
+      "adminMerchantDetail": "Merchant",
+      "adminUsers": "Users",
+      "adminUserDetail": "User",
+      "adminSubscriptions": "Subscriptions",
+      "adminSystemHealth": "System health",
       "cashier": "Cashier",
       "cashierPos": "POS",
       "pos": "POS",
-      "docs": "API docs"
+      "docs": "API docs",
+      "otp": "Email code sign-in"
     }
   },
   "home": {
@@ -45,13 +54,77 @@
     "and": "and our",
     "privacy": "Privacy Policy",
     "errors": {
-      "loginFailed": "Login failed"
+      "loginFailed": "Login failed",
+      "INVALID_CREDENTIALS": "Invalid email or password",
+      "ACCOUNT_LOCKED": "Account temporarily locked. Try again later.",
+      "ACCOUNT_INACTIVE": "This account is inactive. Contact support.",
+      "TOO_MANY_ATTEMPTS": "Too many attempts. Please try again later.",
+      "EMAIL_SEND_FAILED": "Could not send verification email. Please try again."
+    },
+    "otpLink": "Sign in with email code"
+  },
+  "auth2fa": {
+    "title": "Two-factor verification",
+    "subtitle": "We sent a 6-digit code to",
+    "codeSent": "Verification code sent to your email.",
+    "signIn": "Verify and sign in",
+    "verifyPending": "Signing in…",
+    "back": "Back to sign in",
+    "errors": {
+      "codeInvalid": "Enter the 6-digit code",
+      "verifyFailed": "Verification failed. Check the code and try again."
+    },
+    "settings": {
+      "title": "Two-factor authentication (2FA)",
+      "description": "When enabled, you will be asked to enter a 6-digit code sent to your email every time you sign in.",
+      "enable": "Enable 2FA",
+      "disable": "Disable 2FA",
+      "enabled": "2FA is enabled",
+      "disabled": "2FA is disabled",
+      "pending": "Saving…",
+      "successEnabled": "Two-factor authentication enabled.",
+      "successDisabled": "Two-factor authentication disabled.",
+      "error": "Failed to update 2FA setting."
+    }
+  },
+  "otp": {
+    "title": "Email code sign-in",
+    "subtitle": "We’ll email you a 6-digit code. No password needed for this flow.",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "sendCode": "Send verification code",
+    "sendPending": "Sending…",
+    "codeSent": "Check your inbox for the code.",
+    "codeTitle": "Enter verification code",
+    "codeSubtitle": "We sent a 6-digit code to",
+    "codeLabel": "Verification code",
+    "rememberMe": "Stay signed in longer on this device",
+    "signIn": "Verify and sign in",
+    "verifyPending": "Signing in…",
+    "useDifferentEmail": "Use a different email",
+    "backToLogin": "Back to password sign-in",
+    "errors": {
+      "emailRequired": "Enter your email",
+      "sendFailed": "Could not send code. Try again.",
+      "codeInvalid": "Enter the 6-digit code",
+      "verifyFailed": "Verification failed"
     }
   },
   "common": {
     "redirecting": "Redirecting…",
     "preparingDashboard": "Preparing your dashboard",
-    "loggedOut": "Logged out"
+    "loggedOut": "You have been signed out",
+    "loggingOut": "Signing out…",
+    "logout": "Sign out",
+    "upgradePro": "Upgrade to Pro",
+    "account": "Account",
+    "billing": "Billing",
+    "notifications": "Notifications",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
   },
   "resetPassword": {
     "title": "Reset password",
@@ -89,6 +162,23 @@
     },
     "errors": {
       "generic": "Something went wrong. Please try again."
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you’re looking for doesn’t exist or was moved."
+    },
+    "unexpected": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. You can try again or go back home.",
+      "reference": "Reference:"
+    },
+    "actions": {
+      "tryAgain": "Try again",
+      "home": "Go to home",
+      "dashboard": "Open dashboard",
+      "back": "Go back"
     }
   },
   "cashierHome": {
@@ -143,6 +233,28 @@
       "openSession": "Open cash session",
       "addProduct": "Add product",
       "viewReports": "View reports"
+    }
+  },
+  "adminSidebar": {
+    "overviewGroup": "Overview",
+    "platformGroup": "Platform",
+    "billingGroup": "Billing",
+    "monitoringGroup": "Monitoring",
+    "systemGroup": "System",
+    "supportGroup": "Support",
+    "nav": {
+      "dashboard": "Dashboard",
+      "analytics": "Analytics",
+      "merchants": "Merchants",
+      "users": "Users",
+      "subscriptions": "Subscriptions",
+      "auditLogs": "Audit logs",
+      "systemHealth": "System health",
+      "revenue": "Revenue",
+      "invoices": "Invoices",
+      "settings": "Settings",
+      "tickets": "Support tickets",
+      "docs": "Documentation"
     }
   },
   "sidebar": {
@@ -260,5 +372,648 @@
         "othersWithCount": "Other ({count})"
       }
     }
+  },
+  "adminMerchants": {
+    "title": "Merchants",
+    "subtitle": "Manage merchant accounts, subscriptions and staff",
+    "addMerchant": "Add merchant",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "status": "Status",
+      "subscription": "Subscription",
+      "staff": "Staff",
+      "locations": "Locations",
+      "joined": "Joined",
+      "actions": "Actions",
+      "noResults": "No results",
+      "toggleColumns": "Columns",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
+    },
+    "userStatus": {
+      "ACTIVE": "Active",
+      "BANNED": "Banned",
+      "SUSPENDED": "Suspended"
+    },
+    "subStatus": {
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Canceled",
+      "SUSPENDED": "Suspended",
+      "none": "No subscription"
+    },
+    "stats": {
+      "total": "Total merchants",
+      "active": "Active accounts",
+      "subActive": "Active subscriptions",
+      "subPastDue": "Past due"
+    },
+    "search": "Search by name or email…",
+    "searchLabel": "Search",
+    "filterReset": "Reset filters",
+    "filterStatus": "Account status",
+    "filterSubStatus": "Subscription",
+    "filterAll": "All",
+    "empty": {
+      "title": "No merchants found",
+      "description": "Try adjusting your filters or add your first merchant."
+    },
+    "actions": {
+      "view": "View details",
+      "edit": "Edit",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "ban": "Ban account",
+      "delete": "Delete",
+      "copyId": "Copy ID",
+      "idCopied": "ID copied to clipboard"
+    },
+    "confirmBan": {
+      "title": "Ban this merchant?",
+      "description": "This will ban the account and cancel their subscription. This action can be reversed.",
+      "confirm": "Ban merchant",
+      "cancel": "Cancel"
+    },
+    "confirmDelete": {
+      "title": "Delete this merchant permanently?",
+      "description": "This will permanently delete the merchant account and all related data (staff, locations, sales, etc.). This action cannot be undone!",
+      "confirm": "Delete permanently",
+      "cancel": "Cancel"
+    },
+    "form": {
+      "title": "Add new merchant",
+      "subtitle": "Create a merchant account with system access",
+      "steps": {
+        "account": "Account",
+        "subscription": "Subscription",
+        "review": "Review"
+      },
+      "account": {
+        "heading": "Account information",
+        "subheading": "Set up the merchant's login credentials",
+        "name": "Full name",
+        "namePlaceholder": "Business owner name",
+        "email": "Email address",
+        "emailPlaceholder": "merchant@example.com",
+        "phone": "Phone number",
+        "phonePlaceholder": "+212 6XX XXX XXX",
+        "password": "Password",
+        "passwordPlaceholder": "Min. 8 characters",
+        "confirmPassword": "Confirm password",
+        "confirmPlaceholder": "Re-enter password",
+        "passwordMismatch": "Passwords do not match",
+        "generatePassword": "Generate",
+        "showPassword": "Show",
+        "hidePassword": "Hide",
+        "validation": {
+          "nameRequired": "Name is required (at least 2 characters).",
+          "nameMin": "Use at least 2 characters.",
+          "emailRequired": "Email is required.",
+          "emailInvalid": "Enter a valid email address.",
+          "phoneInvalid": "Use only digits, spaces, and + ( ) -.",
+          "passwordMin": "Use at least 8 characters.",
+          "passwordRequired": "Password is required (min. 8 characters).",
+          "passwordHint": "8+ characters recommended.",
+          "confirmMismatch": "Does not match the password above.",
+          "confirmRequired": "Re-enter the password to confirm."
+        }
+      },
+      "subscription": {
+        "heading": "Subscription setup",
+        "subheading": "Configure access and billing status",
+        "status": "Subscription status",
+        "endDate": "Expiry date (optional)",
+        "endDateHint": "Leave empty for indefinite access",
+        "endDatePlaceholder": "YYYY-MM-DD",
+        "pickDate": "Pick a date",
+        "clearDate": "Clear"
+      },
+      "review": {
+        "heading": "Review & confirm",
+        "subheading": "Check all details before creating the account",
+        "accountInfo": "Account",
+        "subscriptionInfo": "Subscription",
+        "noExpiry": "No expiry date"
+      },
+      "next": "Continue",
+      "back": "Back",
+      "submit": "Create merchant",
+      "submitting": "Creating account…",
+      "cancel": "Cancel",
+      "success": "Merchant account created successfully",
+      "errors": {
+        "emailExists": "This email address is already in use",
+        "unauthorized": "Session expired or not signed in. Please sign in again.",
+        "forbidden": "You do not have permission to create merchant accounts (admin only).",
+        "unavailable": "Database is unavailable. Check that MySQL is running and try again.",
+        "validation": "Check the form fields and try again.",
+        "generic": "Failed to create merchant. Please try again."
+      }
+    },
+    "detail": {
+      "backToList": "Back to merchants",
+      "editButton": "Edit merchant",
+      "banButton": "Ban account",
+      "activateButton": "Activate account",
+      "tabs": {
+        "overview": "Overview",
+        "staff": "Staff",
+        "locations": "Locations",
+        "subscription": "Subscription"
+      },
+      "overview": {
+        "heading": "Account information",
+        "name": "Full name",
+        "email": "Email",
+        "phone": "Phone",
+        "status": "Account status",
+        "joined": "Member since",
+        "notProvided": "Not provided"
+      },
+      "staff": {
+        "heading": "Staff members",
+        "addStaff": "Add staff",
+        "name": "Name",
+        "email": "Email",
+        "status": "Status",
+        "joined": "Added on",
+        "actions": "Actions",
+        "empty": {
+          "title": "No staff members yet",
+          "description": "Add cashiers to give them access to this merchant's POS."
+        },
+        "addForm": {
+          "title": "Add staff member",
+          "name": "Full name",
+          "namePlaceholder": "Cashier name",
+          "email": "Email address",
+          "emailPlaceholder": "cashier@example.com",
+          "phone": "Phone number",
+          "phonePlaceholder": "+212 6XX XXX XXX",
+          "password": "Password",
+          "passwordPlaceholder": "Min. 8 characters",
+          "generatePassword": "Generate password",
+          "generatePasswordHint": "A strong password was generated.",
+          "lockPin": "Lock screen PIN (optional)",
+          "lockPinPlaceholder": "4 digits",
+          "submit": "Add staff member",
+          "submitting": "Adding…",
+          "success": "Staff member added successfully",
+          "errors": {
+            "emailExists": "This email is already in use",
+            "generic": "Failed to add staff member"
+          }
+        },
+        "removeConfirm": {
+          "title": "Remove staff member?",
+          "description": "This will revoke their access to the POS system.",
+          "confirm": "Remove",
+          "cancel": "Cancel"
+        },
+        "statusToggle": {
+          "suspend": "Suspend",
+          "activate": "Activate"
+        }
+      },
+      "locations": {
+        "heading": "Store locations",
+        "name": "Location name",
+        "address": "Address",
+        "city": "City",
+        "status": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "empty": {
+          "title": "No locations yet",
+          "description": "Locations are created by the merchant in their dashboard."
+        }
+      },
+      "subscription": {
+        "heading": "Subscription details",
+        "status": "Status",
+        "startDate": "Start date",
+        "endDate": "Expiry date",
+        "noExpiry": "No expiry",
+        "noSubscription": "No subscription record found",
+        "updateStatus": "Update status",
+        "updateEndDate": "Update expiry",
+        "saveChanges": "Save changes",
+        "saving": "Saving…",
+        "success": "Subscription updated successfully",
+        "error": "Failed to update subscription",
+        "invalidEndDate": "Expiry date must be today or later"
+      },
+      "editForm": {
+        "title": "Edit merchant",
+        "name": "Full name",
+        "phone": "Phone number",
+        "status": "Account status",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "success": "Merchant updated successfully",
+        "error": "Failed to update merchant"
+      }
+    }
+  },
+  "adminUsers": {
+    "title": "Users",
+    "subtitle": "Manage all platform users — admins, merchants, and cashiers",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined",
+      "actions": "Actions",
+      "noResults": "No results found",
+      "toggleColumns": "Columns",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
+    },
+    "roles": {
+      "ADMIN": "Admin",
+      "MANAGER": "Merchant",
+      "CASHIER": "Cashier"
+    },
+    "userStatus": {
+      "ACTIVE": "Active",
+      "BANNED": "Banned",
+      "SUSPENDED": "Suspended"
+    },
+    "subStatus": {
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Canceled",
+      "SUSPENDED": "Suspended"
+    },
+    "stats": {
+      "total": "Total users",
+      "active": "Active",
+      "banned": "Banned",
+      "suspended": "Suspended",
+      "admins": "Admins",
+      "managers": "Merchants",
+      "cashiers": "Cashiers"
+    },
+    "search": "Search by name or email…",
+    "searchLabel": "Search",
+    "filterRole": "Role",
+    "filterStatus": "Status",
+    "filterAll": "All",
+    "filterReset": "Reset filters",
+    "empty": {
+      "title": "No users found",
+      "description": "Try adjusting your filters."
+    },
+    "actions": {
+      "view": "View details",
+      "edit": "Edit",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "ban": "Ban account",
+      "delete": "Delete",
+      "copyId": "Copy ID",
+      "idCopied": "ID copied to clipboard"
+    },
+    "confirmBan": {
+      "title": "Ban this user?",
+      "description": "The user will be banned from accessing the platform. This action can be reversed.",
+      "confirm": "Ban user",
+      "cancel": "Cancel"
+    },
+    "confirmDelete": {
+      "title": "Delete this user permanently?",
+      "description": "This will permanently delete the user account and all related data. This action cannot be undone!",
+      "confirm": "Delete permanently",
+      "cancel": "Cancel"
+    },
+    "detail": {
+      "backToList": "Back to users",
+      "editButton": "Edit",
+      "banButton": "Ban account",
+      "activateButton": "Activate account",
+      "deleteButton": "Delete account",
+      "tabs": {
+        "overview": "Overview",
+        "activity": "Activity",
+        "relations": "Relations"
+      },
+      "overview": {
+        "heading": "Account information",
+        "name": "Full name",
+        "email": "Email",
+        "phone": "Phone",
+        "role": "Role",
+        "status": "Account status",
+        "joined": "Member since",
+        "lastUpdated": "Last updated",
+        "twoFactor": "Two-factor auth",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "failedLogins": "Failed login attempts",
+        "lockedUntil": "Account locked until",
+        "notLocked": "Not locked",
+        "notProvided": "Not provided"
+      },
+      "activity": {
+        "heading": "Login activity",
+        "description": "Recent login events with IP addresses and device info",
+        "ip": "IP address",
+        "device": "Device / Browser",
+        "action": "Event",
+        "time": "Date & time",
+        "empty": {
+          "title": "No activity yet",
+          "description": "No login events found for this user."
+        }
+      },
+      "relations": {
+        "heading": "Related accounts",
+        "manager": "Owner merchant",
+        "location": "Assigned location",
+        "cashiers": "Cashier accounts",
+        "locations": "Store locations",
+        "subscription": "Subscription",
+        "none": "No related accounts",
+        "subscriptionStatus": "Status",
+        "subscriptionStarted": "Started",
+        "viewMerchantProfile": "View full merchant profile",
+        "emptyCashiers": "No cashiers",
+        "emptyLocations": "No locations",
+        "table": {
+          "name": "Name",
+          "status": "Status",
+          "joined": "Joined",
+          "location": "Location",
+          "city": "City"
+        }
+      },
+      "editForm": {
+        "title": "Edit user profile",
+        "name": "Full name",
+        "phone": "Phone number",
+        "status": "Account status",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "success": "User updated successfully",
+        "error": "Failed to update user",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "adminSubscriptions": {
+    "title": "Subscriptions",
+    "subtitle": "Monitor and manage merchant subscription status, billing and expiry dates",
+    "fetchError": "Failed to load subscriptions",
+    "stats": {
+      "total": "Total subscriptions",
+      "active": "Active",
+      "pastDue": "Past due",
+      "expiringSoon": "Expiring soon"
+    },
+    "table": {
+      "merchant": "Merchant",
+      "status": "Status",
+      "startDate": "Start date",
+      "expiry": "Expiry",
+      "lastUpdated": "Last updated",
+      "actions": "Actions",
+      "noResults": "No results",
+      "toggleColumns": "Columns",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Canceled",
+      "SUSPENDED": "Suspended"
+    },
+    "expiry": {
+      "noExpiry": "No expiry",
+      "expired": "Expired",
+      "daysLeft": "{count} days left",
+      "today": "Expires today"
+    },
+    "search": "Search by merchant name or email…",
+    "searchLabel": "Search",
+    "filterStatus": "Status",
+    "filterAll": "All",
+    "filterReset": "Reset filters",
+    "empty": {
+      "title": "No subscriptions found",
+      "description": "Try adjusting your filters."
+    },
+    "actions": {
+      "manage": "Manage",
+      "viewMerchant": "View merchant",
+      "copyId": "Copy ID",
+      "idCopied": "ID copied"
+    },
+    "manageDialog": {
+      "title": "Manage Subscription",
+      "description": "Update the subscription status and expiry date for this merchant.",
+      "status": "Subscription status",
+      "expiry": "Expiry date",
+      "expiryHint": "Leave empty for indefinite access",
+      "pickDate": "Pick a date",
+      "clearDate": "Clear date",
+      "startedOn": "Started",
+      "expiresOn": "Expires",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "success": "Subscription updated successfully",
+      "error": "Failed to update subscription"
+    }
+  },
+  "adminSystemHealth": {
+    "title": "System Health",
+    "subtitle": "Real-time infrastructure monitoring — services, runtime, memory and database",
+    "fetchError": "Failed to load system health data",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "lastUpdated": "Last updated",
+    "autoRefresh": "Auto-refresh every 30s",
+    "environment": "Environment",
+    "nodeVersion": "Node.js",
+    "uptime": "Process uptime",
+    "pid": "PID",
+    "statusBanner": {
+      "allOk": "All systems operational",
+      "degraded": "System degraded",
+      "processUptime": "Process uptime",
+      "osUptime": "OS uptime"
+    },
+    "services": {
+      "title": "Services",
+      "database": "Database",
+      "api": "API Server",
+      "latency": "{ms}ms"
+    },
+    "status": {
+      "ok": "Healthy",
+      "error": "Degraded",
+      "warning": "Warning"
+    },
+    "memory": {
+      "title": "Process Memory",
+      "heapUsed": "Heap used",
+      "heapTotal": "Heap total",
+      "rss": "RSS (resident)",
+      "external": "External",
+      "arrayBuffers": "Array buffers"
+    },
+    "system": {
+      "title": "System Info",
+      "hostname": "Hostname",
+      "platform": "OS platform",
+      "arch": "Architecture",
+      "cpuModel": "CPU model",
+      "cpuCores": "CPU cores",
+      "osUptime": "OS uptime"
+    },
+    "load": {
+      "title": "CPU Load Average",
+      "avg1m": "1 min",
+      "avg5m": "5 min",
+      "avg15m": "15 min",
+      "hint": "Load > CPU count indicates saturation"
+    },
+    "sysMem": {
+      "title": "System Memory",
+      "total": "Total RAM",
+      "used": "Used",
+      "free": "Free"
+    },
+    "process": {
+      "title": "Process",
+      "pid": "Process ID",
+      "cpuUser": "CPU user time",
+      "cpuSystem": "CPU system time"
+    },
+    "dbTables": {
+      "title": "Database Tables",
+      "table": "Table",
+      "count": "Rows",
+      "users": "Users",
+      "subscriptions": "Subscriptions",
+      "sales": "Sales",
+      "products": "Products",
+      "locations": "Locations",
+      "auditLogs": "Audit logs",
+      "customers": "Customers",
+      "suppliers": "Suppliers"
+    }
+  },
+  "auditLogs": {
+    "title": "Audit logs",
+    "subtitle": "Full activity trail — every action, API call and client error captured across the platform",
+    "fetchError": "Failed to load audit logs",
+    "statsError": "Failed to load statistics",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "lastUpdated": "Updated",
+    "autoRefresh": "Auto-refresh every 60s",
+    "exportCsv": "Export CSV",
+    "stats": {
+      "total": "Total events",
+      "last24h": "Last 24 h",
+      "errors": "Errors",
+      "errorsLast24h": "errors today",
+      "last7d": "Last 7 days"
+    },
+    "chart": {
+      "title": "Activity — last 14 days",
+      "events": "Events",
+      "noData": "No activity data"
+    },
+    "filters": {
+      "search": "Search logs…",
+      "searchLabel": "Search",
+      "action": "Action",
+      "targetType": "Target",
+      "actorId": "Actor",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "allActions": "All actions",
+      "allTargets": "All targets",
+      "allActors": "All actors",
+      "reset": "Reset filters",
+      "apply": "Apply"
+    },
+    "table": {
+      "timestamp": "Time",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "ip": "IP address",
+      "device": "Device",
+      "noResults": "No logs found",
+      "prevPage": "Previous page",
+      "nextPage": "Next page",
+      "page": "Page {page} of {total}",
+      "toggleColumns": "Columns"
+    },
+    "detail": {
+      "title": "Event details",
+      "id": "Event ID",
+      "timestamp": "Timestamp",
+      "actor": "Actor",
+      "actorRole": "Role",
+      "action": "Action",
+      "targetType": "Target type",
+      "targetId": "Target ID",
+      "ip": "IP address",
+      "userAgent": "User agent",
+      "metadata": "Metadata",
+      "noMetadata": "No additional metadata",
+      "close": "Close"
+    },
+    "actions": {
+      "LOGIN": "Login",
+      "LOGOUT": "Logout",
+      "LOGIN_FAILED": "Login failed",
+      "CREATE": "Create",
+      "UPDATE": "Update",
+      "DELETE": "Delete",
+      "REFUND": "Refund",
+      "CLIENT_ERROR": "Client error",
+      "CLIENT_WARNING": "Client warning",
+      "CLIENT_INFO": "Client info"
+    },
+    "levels": {
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info"
+    },
+    "topActors": {
+      "title": "Most active users",
+      "events": "{count} events"
+    },
+    "byAction": {
+      "title": "Events by action"
+    },
+    "recentErrors": {
+      "title": "Recent errors",
+      "noErrors": "No errors recorded",
+      "viewAll": "View all errors"
+    },
+    "empty": {
+      "title": "No logs found",
+      "description": "Try adjusting your filters or date range."
+    }
+  },
+  "lockScreen": {
+    "locked": "Cash register locked",
+    "wrongPin": "Wrong PIN",
+    "attemptsLeft": "{count} attempt left",
+    "attemptsLeftPlural": "{count} attempts left",
+    "tooManyAttempts": "Too many attempts — retry in {minutes} min",
+    "networkError": "Network error, please retry",
+    "switchAccount": "Sign in with another account",
+    "deleteDigit": "Delete last digit",
+    "digit": "Digit {key}"
   }
 }

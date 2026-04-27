@@ -6,24 +6,8 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { RESET_TOKEN_TTL_MINUTES, generateResetToken, getAppUrl, hashResetToken } from "@/lib/reset-password";
 import { sendEmail } from "@/lib/mailer";
 import { buildResetPasswordEmail } from "@/lib/email-templates/reset-password";
+import { getEmailFromByLocale, getLocaleFromRequest } from "@/lib/email-request-helpers";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
-
-function getFromByLocale(locale: string) {
-  const smtpUser = process.env.SMTP_USER ?? "no-reply@pos.hssabaty.com";
-  if (locale === "ar") return `حساباتي <${smtpUser}>`;
-  return `Hssabaty <${smtpUser}>`;
-}
-
-function getLocaleFromRequest(request: Request) {
-  const headerLocale = request.headers.get("x-locale");
-  if (headerLocale) return headerLocale;
-
-  const cookie = request.headers.get("cookie") ?? "";
-  const match = cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]+)/);
-  if (match?.[1]) return decodeURIComponent(match[1]);
-
-  return "en";
-}
 
 export async function POST(request: Request) {
   try {
@@ -75,7 +59,7 @@ export async function POST(request: Request) {
         subject: emailContent.subject,
         html: emailContent.html,
         text: emailContent.text,
-        from: getFromByLocale(locale),
+        from: getEmailFromByLocale(locale),
       });
     } catch {
       // Do not leak email delivery details to the client.

@@ -16,6 +16,6 @@ export async function generateMetadata({
 }
 
 export default function ProductsPage() {
-  return <h1 className="p-8 text-2xl font-semibold">Products</h1>;
+  return <h1 className="text-xl font-semibold sm:text-2xl">Products</h1>;
 }
 

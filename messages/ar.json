@@ -16,10 +16,19 @@
       "dashboardCategories": "التصنيفات",
       "dashboardInventory": "المخزون",
       "dashboardCashRegister": "الصندوق",
+      "admin": "الإدارة",
+      "adminMerchants": "التجار",
+      "adminMerchantsNew": "تاجر جديد",
+      "adminMerchantDetail": "التاجر",
+      "adminUsers": "المستخدمون",
+      "adminUserDetail": "المستخدم",
+      "adminSubscriptions": "الاشتراكات",
+      "adminSystemHealth": "صحة النظام",
       "cashier": "الكاشير",
       "cashierPos": "نقطة البيع",
       "pos": "نقطة البيع",
-      "docs": "توثيق API"
+      "docs": "توثيق API",
+      "otp": "تسجيل الدخول برمز البريد"
     }
   },
   "home": {
@@ -45,13 +54,77 @@
     "and": "و",
     "privacy": "سياسة الخصوصية",
     "errors": {
-      "loginFailed": "فشل تسجيل الدخول"
+      "loginFailed": "فشل تسجيل الدخول",
+      "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+      "ACCOUNT_LOCKED": "تم تأمين الحساب مؤقتاً. حاول مرة أخرى لاحقاً.",
+      "ACCOUNT_INACTIVE": "هذا الحساب غير نشط. تواصل مع الدعم.",
+      "TOO_MANY_ATTEMPTS": "محاولات كثيرة جداً. حاول مرة أخرى لاحقاً.",
+      "EMAIL_SEND_FAILED": "تعذّر إرسال بريد التحقق. حاول مرة أخرى."
+    },
+    "otpLink": "تسجيل الدخول برمز البريد الإلكتروني"
+  },
+  "auth2fa": {
+    "title": "التحقق بخطوتين",
+    "subtitle": "أرسلنا رمزًا مكوّنًا من 6 أرقام إلى",
+    "codeSent": "تم إرسال رمز التحقق إلى بريدك الإلكتروني.",
+    "signIn": "تحقق وتسجيل الدخول",
+    "verifyPending": "جارٍ تسجيل الدخول…",
+    "back": "العودة لتسجيل الدخول",
+    "errors": {
+      "codeInvalid": "أدخل الرمز المكوّن من 6 أرقام",
+      "verifyFailed": "فشل التحقق. تحقق من الرمز وحاول مرة أخرى."
+    },
+    "settings": {
+      "title": "المصادقة الثنائية (2FA)",
+      "description": "عند التفعيل، سيُطلب منك إدخال رمز مكوّن من 6 أرقام يُرسَل إلى بريدك في كل مرة تسجّل فيها الدخول.",
+      "enable": "تفعيل 2FA",
+      "disable": "تعطيل 2FA",
+      "enabled": "المصادقة الثنائية مفعّلة",
+      "disabled": "المصادقة الثنائية معطّلة",
+      "pending": "جارٍ الحفظ…",
+      "successEnabled": "تم تفعيل المصادقة الثنائية.",
+      "successDisabled": "تم تعطيل المصادقة الثنائية.",
+      "error": "فشل تحديث إعداد المصادقة الثنائية."
+    }
+  },
+  "otp": {
+    "title": "تسجيل الدخول برمز البريد",
+    "subtitle": "سنرسل رمزًا مكوّنًا من 6 أرقام إلى بريدك. لا حاجة لكلمة المرور في هذه الطريقة.",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "name@example.com",
+    "sendCode": "إرسال رمز التحقق",
+    "sendPending": "جارٍ الإرسال…",
+    "codeSent": "تحقق من صندوق الوارد.",
+    "codeTitle": "أدخل رمز التحقق",
+    "codeSubtitle": "أرسلنا رمزًا مكوّنًا من 6 أرقام إلى",
+    "codeLabel": "رمز التحقق",
+    "rememberMe": "البقاء مسجّلًا لفترة أطول على هذا الجهاز",
+    "signIn": "تحقق وتسجيل الدخول",
+    "verifyPending": "جارٍ تسجيل الدخول…",
+    "useDifferentEmail": "استخدام بريد آخر",
+    "backToLogin": "العودة لتسجيل الدخول بكلمة المرور",
+    "errors": {
+      "emailRequired": "أدخل بريدك الإلكتروني",
+      "sendFailed": "تعذّر إرسال الرمز. حاول مرة أخرى.",
+      "codeInvalid": "أدخل الرمز المكوّن من 6 أرقام",
+      "verifyFailed": "فشل التحقق"
     }
   },
   "common": {
     "redirecting": "جارٍ التحويل…",
     "preparingDashboard": "جارٍ تجهيز لوحة التحكم",
-    "loggedOut": "تم تسجيل الخروج"
+    "loggedOut": "تم تسجيل خروجك بنجاح",
+    "loggingOut": "جارٍ تسجيل الخروج…",
+    "logout": "تسجيل الخروج",
+    "upgradePro": "الترقية إلى Pro",
+    "account": "الحساب",
+    "billing": "الفوترة",
+    "notifications": "الإشعارات",
+    "theme": {
+      "light": "فاتح",
+      "dark": "داكن",
+      "system": "النظام"
+    }
   },
   "resetPassword": {
     "title": "إعادة تعيين كلمة المرور",
@@ -89,6 +162,23 @@
     },
     "errors": {
       "generic": "حدث خطأ. حاول مرة أخرى."
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "الصفحة غير موجودة",
+      "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها."
+    },
+    "unexpected": {
+      "title": "حدث خطأ",
+      "description": "حدث خطأ غير متوقع. يمكنك المحاولة مرة أخرى أو العودة إلى الصفحة الرئيسية.",
+      "reference": "المرجع:"
+    },
+    "actions": {
+      "tryAgain": "حاول مرة أخرى",
+      "home": "الذهاب إلى الرئيسية",
+      "dashboard": "فتح لوحة التحكم",
+      "back": "رجوع"
     }
   },
   "cashierHome": {
@@ -143,6 +233,28 @@
       "openSession": "فتح جلسة صندوق",
       "addProduct": "إضافة منتج",
       "viewReports": "عرض التقارير"
+    }
+  },
+  "adminSidebar": {
+    "overviewGroup": "نظرة عامة",
+    "platformGroup": "المنصة",
+    "billingGroup": "الفوترة",
+    "monitoringGroup": "المراقبة",
+    "systemGroup": "النظام",
+    "supportGroup": "الدعم",
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "analytics": "التحليلات",
+      "merchants": "التجار",
+      "users": "المستخدمون",
+      "subscriptions": "الاشتراكات",
+      "auditLogs": "سجلات التدقيق",
+      "systemHealth": "صحة النظام",
+      "revenue": "الإيرادات",
+      "invoices": "الفواتير",
+      "settings": "الإعدادات",
+      "tickets": "تذاكر الدعم",
+      "docs": "التوثيق"
     }
   },
   "sidebar": {
@@ -258,5 +370,648 @@
         "othersWithCount": "أخرى ({count})"
       }
     }
+  },
+  "adminMerchants": {
+    "title": "التجار",
+    "subtitle": "إدارة حسابات التجار والاشتراكات والموظفين",
+    "addMerchant": "إضافة تاجر",
+    "table": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "status": "الحالة",
+      "subscription": "الاشتراك",
+      "staff": "الموظفون",
+      "locations": "الفروع",
+      "joined": "تاريخ الانضمام",
+      "actions": "الإجراءات",
+      "noResults": "لا توجد نتائج",
+      "toggleColumns": "الأعمدة",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية"
+    },
+    "userStatus": {
+      "ACTIVE": "نشط",
+      "BANNED": "محظور",
+      "SUSPENDED": "موقوف"
+    },
+    "subStatus": {
+      "ACTIVE": "نشط",
+      "PAST_DUE": "متأخر",
+      "CANCELED": "ملغى",
+      "SUSPENDED": "موقوف",
+      "none": "لا يوجد اشتراك"
+    },
+    "stats": {
+      "total": "إجمالي التجار",
+      "active": "الحسابات النشطة",
+      "subActive": "الاشتراكات النشطة",
+      "subPastDue": "اشتراكات متأخرة"
+    },
+    "search": "البحث بالاسم أو البريد الإلكتروني…",
+    "searchLabel": "بحث",
+    "filterReset": "إعادة ضبط عوامل التصفية",
+    "filterStatus": "حالة الحساب",
+    "filterSubStatus": "الاشتراك",
+    "filterAll": "الكل",
+    "empty": {
+      "title": "لا يوجد تجار",
+      "description": "عدّل الفلاتر أو أضف أول تاجر."
+    },
+    "actions": {
+      "view": "عرض التفاصيل",
+      "edit": "تعديل",
+      "suspend": "إيقاف",
+      "activate": "تفعيل",
+      "ban": "حظر الحساب",
+      "delete": "حذف",
+      "copyId": "نسخ المعرف",
+      "idCopied": "تم نسخ المعرّف"
+    },
+    "confirmBan": {
+      "title": "حظر هذا التاجر؟",
+      "description": "سيتم حظر الحساب وإلغاء الاشتراك. يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حظر التاجر",
+      "cancel": "إلغاء"
+    },
+    "confirmDelete": {
+      "title": "حذف هذا التاجر نهائيًا؟",
+      "description": "سيتم حذف حساب التاجر نهائيًا وجميع البيانات المرتبطة (الموظفين والمواقع والمبيعات وغيرها). لا يمكن التراجع عن هذا الإجراء!",
+      "confirm": "حذف نهائي",
+      "cancel": "إلغاء"
+    },
+    "form": {
+      "title": "إضافة تاجر جديد",
+      "subtitle": "إنشاء حساب تاجر مع صلاحية الوصول للنظام",
+      "steps": {
+        "account": "الحساب",
+        "subscription": "الاشتراك",
+        "review": "مراجعة"
+      },
+      "account": {
+        "heading": "معلومات الحساب",
+        "subheading": "إعداد بيانات تسجيل الدخول",
+        "name": "الاسم الكامل",
+        "namePlaceholder": "اسم صاحب العمل",
+        "email": "البريد الإلكتروني",
+        "emailPlaceholder": "merchant@example.com",
+        "phone": "رقم الهاتف",
+        "phonePlaceholder": "+212 6XX XXX XXX",
+        "password": "كلمة المرور",
+        "passwordPlaceholder": "8 أحرف على الأقل",
+        "confirmPassword": "تأكيد كلمة المرور",
+        "confirmPlaceholder": "أعد إدخال كلمة المرور",
+        "passwordMismatch": "كلمتا المرور غير متطابقتين",
+        "generatePassword": "توليد",
+        "showPassword": "إظهار",
+        "hidePassword": "إخفاء",
+        "validation": {
+          "nameRequired": "الاسم إلزامي (حرفان على الأقل).",
+          "nameMin": "استخدم حرفين على الأقل.",
+          "emailRequired": "البريد الإلكتروني إلزامي.",
+          "emailInvalid": "أدخل بريداً إلكترونياً صالحاً.",
+          "phoneInvalid": "استخدم أرقاماً ومسافات و + ( ) - فقط.",
+          "passwordMin": "استخدم 8 أحرف على الأقل.",
+          "passwordRequired": "كلمة المرور إلزامية (8 أحرف كحد أدنى).",
+          "passwordHint": "يُنصح بـ 8 أحرف أو أكثر.",
+          "confirmMismatch": "لا يطابق كلمة المرور أعلاه.",
+          "confirmRequired": "أعد إدخال كلمة المرور للتأكيد."
+        }
+      },
+      "subscription": {
+        "heading": "إعداد الاشتراك",
+        "subheading": "تحديد صلاحية الوصول وحالة الفوترة",
+        "status": "حالة الاشتراك",
+        "endDate": "تاريخ الانتهاء (اختياري)",
+        "endDateHint": "اتركه فارغاً للوصول غير المحدود",
+        "endDatePlaceholder": "YYYY-MM-DD",
+        "pickDate": "اختر تاريخاً",
+        "clearDate": "مسح"
+      },
+      "review": {
+        "heading": "مراجعة وتأكيد",
+        "subheading": "تحقق من جميع البيانات قبل إنشاء الحساب",
+        "accountInfo": "الحساب",
+        "subscriptionInfo": "الاشتراك",
+        "noExpiry": "بدون تاريخ انتهاء"
+      },
+      "next": "متابعة",
+      "back": "رجوع",
+      "submit": "إنشاء حساب التاجر",
+      "submitting": "جارٍ الإنشاء…",
+      "cancel": "إلغاء",
+      "success": "تم إنشاء حساب التاجر بنجاح",
+      "errors": {
+        "emailExists": "البريد الإلكتروني مستخدم بالفعل",
+        "unauthorized": "انتهت الجلسة أو أنك غير متصل. يرجى تسجيل الدخول مجدداً.",
+        "forbidden": "ليست لديك صلاحية إنشاء حسابات التجار (للمسؤولين فقط).",
+        "unavailable": "قاعدة البيانات غير متاحة. تأكد من تشغيل MySQL ثم أعد المحاولة.",
+        "validation": "تحقق من الحقول ثم أعد المحاولة.",
+        "generic": "فشل إنشاء التاجر. يرجى المحاولة مجدداً."
+      }
+    },
+    "detail": {
+      "backToList": "العودة إلى قائمة التجار",
+      "editButton": "تعديل",
+      "banButton": "حظر الحساب",
+      "activateButton": "تفعيل الحساب",
+      "tabs": {
+        "overview": "نظرة عامة",
+        "staff": "الموظفون",
+        "locations": "الفروع",
+        "subscription": "الاشتراك"
+      },
+      "overview": {
+        "heading": "معلومات الحساب",
+        "name": "الاسم الكامل",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "status": "حالة الحساب",
+        "joined": "عضو منذ",
+        "notProvided": "غير محدد"
+      },
+      "staff": {
+        "heading": "أعضاء الفريق",
+        "addStaff": "إضافة موظف",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "status": "الحالة",
+        "joined": "تاريخ الإضافة",
+        "actions": "الإجراءات",
+        "empty": {
+          "title": "لا يوجد موظفون",
+          "description": "أضف كاشيرين لمنحهم صلاحية الوصول إلى نقطة البيع."
+        },
+        "addForm": {
+          "title": "إضافة موظف",
+          "name": "الاسم الكامل",
+          "namePlaceholder": "اسم الكاشير",
+          "email": "البريد الإلكتروني",
+          "emailPlaceholder": "cashier@example.com",
+          "phone": "الهاتف",
+          "phonePlaceholder": "+212 6XX XXX XXX",
+          "password": "كلمة المرور",
+          "passwordPlaceholder": "8 أحرف على الأقل",
+          "generatePassword": "إنشاء كلمة مرور",
+          "generatePasswordHint": "تم إنشاء كلمة مرور قوية.",
+          "lockPin": "رمز PIN لشاشة القفل (اختياري)",
+          "lockPinPlaceholder": "4 أرقام",
+          "submit": "إضافة الموظف",
+          "submitting": "جارٍ الإضافة…",
+          "success": "تمت إضافة الموظف بنجاح",
+          "errors": {
+            "emailExists": "البريد الإلكتروني مستخدم بالفعل",
+            "generic": "فشل إضافة الموظف"
+          }
+        },
+        "removeConfirm": {
+          "title": "إزالة هذا الموظف؟",
+          "description": "سيتم إلغاء صلاحية وصوله إلى نقطة البيع.",
+          "confirm": "إزالة",
+          "cancel": "إلغاء"
+        },
+        "statusToggle": {
+          "suspend": "إيقاف",
+          "activate": "تفعيل"
+        }
+      },
+      "locations": {
+        "heading": "فروع المتجر",
+        "name": "اسم الفرع",
+        "address": "العنوان",
+        "city": "المدينة",
+        "status": "الحالة",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "empty": {
+          "title": "لا توجد فروع بعد",
+          "description": "يتم إنشاء الفروع من قبل التاجر في لوحة تحكمه."
+        }
+      },
+      "subscription": {
+        "heading": "تفاصيل الاشتراك",
+        "status": "الحالة",
+        "startDate": "تاريخ البدء",
+        "endDate": "تاريخ الانتهاء",
+        "noExpiry": "بدون انتهاء",
+        "noSubscription": "لم يتم العثور على سجل اشتراك",
+        "updateStatus": "تحديث الحالة",
+        "updateEndDate": "تحديث تاريخ الانتهاء",
+        "saveChanges": "حفظ التغييرات",
+        "saving": "جارٍ الحفظ…",
+        "success": "تم تحديث الاشتراك بنجاح",
+        "error": "فشل تحديث الاشتراك",
+        "invalidEndDate": "يجب أن يكون تاريخ الانتهاء اليوم أو بعده"
+      },
+      "editForm": {
+        "title": "تعديل التاجر",
+        "name": "الاسم الكامل",
+        "phone": "الهاتف",
+        "status": "حالة الحساب",
+        "save": "حفظ التغييرات",
+        "saving": "جارٍ الحفظ…",
+        "success": "تم تحديث التاجر بنجاح",
+        "error": "فشل التحديث"
+      }
+    }
+  },
+  "adminUsers": {
+    "title": "المستخدمون",
+    "subtitle": "إدارة جميع مستخدمي المنصة — المسؤولون والتجار والكاشيرون",
+    "table": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "status": "الحالة",
+      "joined": "تاريخ الانضمام",
+      "actions": "الإجراءات",
+      "noResults": "لا توجد نتائج",
+      "toggleColumns": "الأعمدة",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية"
+    },
+    "roles": {
+      "ADMIN": "مسؤول",
+      "MANAGER": "تاجر",
+      "CASHIER": "كاشير"
+    },
+    "userStatus": {
+      "ACTIVE": "نشط",
+      "BANNED": "محظور",
+      "SUSPENDED": "موقوف"
+    },
+    "subStatus": {
+      "ACTIVE": "نشط",
+      "PAST_DUE": "متأخر",
+      "CANCELED": "ملغي",
+      "SUSPENDED": "موقوف"
+    },
+    "stats": {
+      "total": "إجمالي المستخدمين",
+      "active": "نشط",
+      "banned": "محظور",
+      "suspended": "موقوف",
+      "admins": "المسؤولون",
+      "managers": "التجار",
+      "cashiers": "الكاشيرون"
+    },
+    "search": "البحث بالاسم أو البريد الإلكتروني…",
+    "searchLabel": "بحث",
+    "filterRole": "الدور",
+    "filterStatus": "الحالة",
+    "filterAll": "الكل",
+    "filterReset": "إعادة ضبط",
+    "empty": {
+      "title": "لا يوجد مستخدمون",
+      "description": "عدّل الفلاتر أو أضف أول مستخدم."
+    },
+    "actions": {
+      "view": "عرض التفاصيل",
+      "edit": "تعديل",
+      "suspend": "إيقاف",
+      "activate": "تفعيل",
+      "ban": "حظر الحساب",
+      "delete": "حذف",
+      "copyId": "نسخ المعرف",
+      "idCopied": "تم نسخ المعرّف"
+    },
+    "confirmBan": {
+      "title": "حظر هذا المستخدم؟",
+      "description": "سيتم حظر المستخدم من الوصول إلى المنصة. يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حظر المستخدم",
+      "cancel": "إلغاء"
+    },
+    "confirmDelete": {
+      "title": "حذف هذا المستخدم نهائيًا؟",
+      "description": "سيتم حذف الحساب نهائيًا وجميع البيانات المرتبطة. لا يمكن التراجع عن هذا الإجراء!",
+      "confirm": "حذف نهائي",
+      "cancel": "إلغاء"
+    },
+    "detail": {
+      "backToList": "العودة إلى المستخدمين",
+      "editButton": "تعديل",
+      "banButton": "حظر الحساب",
+      "activateButton": "تفعيل الحساب",
+      "deleteButton": "حذف الحساب",
+      "tabs": {
+        "overview": "نظرة عامة",
+        "activity": "النشاط",
+        "relations": "الارتباطات"
+      },
+      "overview": {
+        "heading": "معلومات الحساب",
+        "name": "الاسم الكامل",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "role": "الدور",
+        "status": "حالة الحساب",
+        "joined": "عضو منذ",
+        "lastUpdated": "آخر تحديث",
+        "twoFactor": "التحقق بخطوتين",
+        "enabled": "مفعّل",
+        "disabled": "معطّل",
+        "failedLogins": "محاولات تسجيل دخول فاشلة",
+        "lockedUntil": "محظور حتى",
+        "notLocked": "غير محظور",
+        "notProvided": "غير محدد"
+      },
+      "activity": {
+        "heading": "سجل النشاط",
+        "description": "آخر أحداث تسجيل الدخول مع عناوين IP ومعلومات الجهاز",
+        "ip": "عنوان IP",
+        "device": "الجهاز / المتصفح",
+        "action": "الحدث",
+        "time": "التاريخ والوقت",
+        "empty": {
+          "title": "لا يوجد نشاط بعد",
+          "description": "لم يتم العثور على أي أحداث لهذا المستخدم."
+        }
+      },
+      "relations": {
+        "heading": "الحسابات المرتبطة",
+        "manager": "التاجر المالك",
+        "location": "الفرع المعيّن",
+        "cashiers": "حسابات الكاشيرين",
+        "locations": "فروع المتجر",
+        "subscription": "الاشتراك",
+        "none": "لا توجد حسابات مرتبطة",
+        "subscriptionStatus": "الحالة",
+        "subscriptionStarted": "تاريخ البدء",
+        "viewMerchantProfile": "عرض ملف التاجر الكامل",
+        "emptyCashiers": "لا توجد حسابات كاشير",
+        "emptyLocations": "لا توجد فروع",
+        "table": {
+          "name": "الاسم",
+          "status": "الحالة",
+          "joined": "تاريخ الإضافة",
+          "location": "الفرع",
+          "city": "المدينة"
+        }
+      },
+      "editForm": {
+        "title": "تعديل ملف المستخدم",
+        "name": "الاسم الكامل",
+        "phone": "رقم الهاتف",
+        "status": "حالة الحساب",
+        "save": "حفظ التغييرات",
+        "saving": "جارٍ الحفظ…",
+        "success": "تم تحديث المستخدم بنجاح",
+        "error": "فشل التحديث",
+        "cancel": "إلغاء"
+      }
+    }
+  },
+  "adminSubscriptions": {
+    "title": "الاشتراكات",
+    "subtitle": "مراقبة وإدارة حالة اشتراكات التجار والفوترة وتواريخ الانتهاء",
+    "fetchError": "فشل تحميل الاشتراكات",
+    "stats": {
+      "total": "إجمالي الاشتراكات",
+      "active": "نشطة",
+      "pastDue": "متأخرة",
+      "expiringSoon": "تنتهي قريبًا"
+    },
+    "table": {
+      "merchant": "التاجر",
+      "status": "الحالة",
+      "startDate": "تاريخ البدء",
+      "expiry": "تاريخ الانتهاء",
+      "lastUpdated": "آخر تحديث",
+      "actions": "الإجراءات",
+      "noResults": "لا توجد نتائج",
+      "toggleColumns": "الأعمدة",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية"
+    },
+    "status": {
+      "ACTIVE": "نشط",
+      "PAST_DUE": "متأخر",
+      "CANCELED": "ملغى",
+      "SUSPENDED": "موقوف"
+    },
+    "expiry": {
+      "noExpiry": "بدون انتهاء",
+      "expired": "منتهي",
+      "daysLeft": "متبقٍ {count} يوم",
+      "today": "ينتهي اليوم"
+    },
+    "search": "البحث بالاسم أو البريد الإلكتروني…",
+    "searchLabel": "بحث",
+    "filterStatus": "الحالة",
+    "filterAll": "الكل",
+    "filterReset": "إعادة ضبط",
+    "empty": {
+      "title": "لا توجد اشتراكات",
+      "description": "عدّل الفلاتر وحاول مجدداً."
+    },
+    "actions": {
+      "manage": "إدارة",
+      "viewMerchant": "عرض التاجر",
+      "copyId": "نسخ المعرف",
+      "idCopied": "تم نسخ المعرّف"
+    },
+    "manageDialog": {
+      "title": "إدارة الاشتراك",
+      "description": "تحديث حالة الاشتراك وتاريخ الانتهاء لهذا التاجر.",
+      "status": "حالة الاشتراك",
+      "expiry": "تاريخ الانتهاء",
+      "expiryHint": "اتركه فارغاً للوصول غير المحدود",
+      "pickDate": "اختر تاريخاً",
+      "clearDate": "مسح التاريخ",
+      "startedOn": "بدأ في",
+      "expiresOn": "ينتهي في",
+      "save": "حفظ التغييرات",
+      "saving": "جارٍ الحفظ…",
+      "cancel": "إلغاء",
+      "success": "تم تحديث الاشتراك بنجاح",
+      "error": "فشل تحديث الاشتراك"
+    }
+  },
+  "adminSystemHealth": {
+    "title": "صحة النظام",
+    "subtitle": "مراقبة البنية التحتية الفورية — الخدمات والبيئة والذاكرة وقاعدة البيانات",
+    "fetchError": "فشل تحميل بيانات صحة النظام",
+    "refresh": "تحديث",
+    "refreshing": "جارٍ التحديث…",
+    "lastUpdated": "آخر تحديث",
+    "autoRefresh": "تحديث تلقائي كل 30 ثانية",
+    "environment": "البيئة",
+    "nodeVersion": "Node.js",
+    "uptime": "وقت تشغيل العملية",
+    "pid": "معرّف العملية",
+    "statusBanner": {
+      "allOk": "جميع الأنظمة تعمل",
+      "degraded": "النظام متدهور",
+      "processUptime": "وقت تشغيل العملية",
+      "osUptime": "وقت تشغيل نظام التشغيل"
+    },
+    "services": {
+      "title": "الخدمات",
+      "database": "قاعدة البيانات",
+      "api": "خادم API",
+      "latency": "{ms} مللي ثانية"
+    },
+    "status": {
+      "ok": "سليم",
+      "error": "معطوب",
+      "warning": "تحذير"
+    },
+    "memory": {
+      "title": "ذاكرة العملية",
+      "heapUsed": "الكومة المستخدمة",
+      "heapTotal": "إجمالي الكومة",
+      "rss": "RSS (مقيم)",
+      "external": "خارجي",
+      "arrayBuffers": "مصفوفات الذاكرة"
+    },
+    "system": {
+      "title": "معلومات النظام",
+      "hostname": "اسم المضيف",
+      "platform": "منصة نظام التشغيل",
+      "arch": "المعمارية",
+      "cpuModel": "طراز المعالج",
+      "cpuCores": "أنوية المعالج",
+      "osUptime": "وقت تشغيل النظام"
+    },
+    "load": {
+      "title": "متوسط حمل المعالج",
+      "avg1m": "1 دقيقة",
+      "avg5m": "5 دقائق",
+      "avg15m": "15 دقيقة",
+      "hint": "الحمل > عدد الأنوية يعني الإشباع"
+    },
+    "sysMem": {
+      "title": "ذاكرة النظام",
+      "total": "إجمالي الذاكرة",
+      "used": "مستخدم",
+      "free": "حر"
+    },
+    "process": {
+      "title": "العملية",
+      "pid": "معرّف العملية",
+      "cpuUser": "وقت CPU للمستخدم",
+      "cpuSystem": "وقت CPU للنظام"
+    },
+    "dbTables": {
+      "title": "جداول قاعدة البيانات",
+      "table": "الجدول",
+      "count": "الصفوف",
+      "users": "المستخدمون",
+      "subscriptions": "الاشتراكات",
+      "sales": "المبيعات",
+      "products": "المنتجات",
+      "locations": "المواقع",
+      "auditLogs": "سجلات التدقيق",
+      "customers": "العملاء",
+      "suppliers": "الموردون"
+    }
+  },
+  "auditLogs": {
+    "title": "سجلات التدقيق",
+    "subtitle": "سجل كامل للنشاط — كل إجراء واستدعاء API وخطأ عميل مُسجَّل عبر المنصة",
+    "fetchError": "فشل تحميل السجلات",
+    "statsError": "فشل تحميل الإحصائيات",
+    "refresh": "تحديث",
+    "refreshing": "جارٍ التحديث…",
+    "lastUpdated": "آخر تحديث",
+    "autoRefresh": "تحديث تلقائي كل 60 ثانية",
+    "exportCsv": "تصدير CSV",
+    "stats": {
+      "total": "إجمالي الأحداث",
+      "last24h": "آخر 24 ساعة",
+      "errors": "الأخطاء",
+      "errorsLast24h": "أخطاء اليوم",
+      "last7d": "آخر 7 أيام"
+    },
+    "chart": {
+      "title": "النشاط — آخر 14 يومًا",
+      "events": "أحداث",
+      "noData": "لا توجد بيانات نشاط"
+    },
+    "filters": {
+      "search": "ابحث في السجلات…",
+      "searchLabel": "بحث",
+      "action": "الإجراء",
+      "targetType": "النوع",
+      "actorId": "الفاعل",
+      "dateFrom": "من",
+      "dateTo": "إلى",
+      "allActions": "جميع الإجراءات",
+      "allTargets": "جميع الأهداف",
+      "allActors": "جميع المستخدمين",
+      "reset": "إعادة ضبط",
+      "apply": "تطبيق"
+    },
+    "table": {
+      "timestamp": "التوقيت",
+      "actor": "الفاعل",
+      "action": "الإجراء",
+      "target": "الهدف",
+      "ip": "عنوان IP",
+      "device": "الجهاز",
+      "noResults": "لم يُعثر على سجلات",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية",
+      "page": "صفحة {page} من {total}",
+      "toggleColumns": "الأعمدة"
+    },
+    "detail": {
+      "title": "تفاصيل الحدث",
+      "id": "معرّف الحدث",
+      "timestamp": "الطابع الزمني",
+      "actor": "الفاعل",
+      "actorRole": "الدور",
+      "action": "الإجراء",
+      "targetType": "نوع الهدف",
+      "targetId": "معرّف الهدف",
+      "ip": "عنوان IP",
+      "userAgent": "وكيل المستخدم",
+      "metadata": "بيانات إضافية",
+      "noMetadata": "لا توجد بيانات إضافية",
+      "close": "إغلاق"
+    },
+    "actions": {
+      "LOGIN": "تسجيل الدخول",
+      "LOGOUT": "تسجيل الخروج",
+      "LOGIN_FAILED": "فشل الدخول",
+      "CREATE": "إنشاء",
+      "UPDATE": "تحديث",
+      "DELETE": "حذف",
+      "REFUND": "استرداد",
+      "CLIENT_ERROR": "خطأ عميل",
+      "CLIENT_WARNING": "تحذير عميل",
+      "CLIENT_INFO": "معلومات عميل"
+    },
+    "levels": {
+      "error": "خطأ",
+      "warning": "تحذير",
+      "info": "معلومة"
+    },
+    "topActors": {
+      "title": "الأكثر نشاطًا",
+      "events": "{count} حدث"
+    },
+    "byAction": {
+      "title": "الأحداث حسب الإجراء"
+    },
+    "recentErrors": {
+      "title": "أخطاء حديثة",
+      "noErrors": "لا توجد أخطاء مسجّلة",
+      "viewAll": "عرض جميع الأخطاء"
+    },
+    "empty": {
+      "title": "لم يُعثر على سجلات",
+      "description": "حاول تعديل الفلاتر أو نطاق التاريخ."
+    }
+  },
+  "lockScreen": {
+    "locked": "الكاشير مقفل",
+    "wrongPin": "رمز PIN خاطئ",
+    "attemptsLeft": "محاولة متبقية {count}",
+    "attemptsLeftPlural": "محاولات متبقية {count}",
+    "tooManyAttempts": "محاولات كثيرة — أعد المحاولة خلال {minutes} دقيقة",
+    "networkError": "خطأ في الشبكة، حاول مرة أخرى",
+    "switchAccount": "تسجيل الدخول بحساب آخر",
+    "deleteDigit": "حذف الرقم الأخير",
+    "digit": "الرقم {key}"
   }
 }

@@ -163,10 +163,10 @@ export function CashierHomeDashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4 sm:gap-6">
       {/* ── Header ── */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
+        <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{t("title")}</h1>
         <Tabs value={period} onValueChange={(v) => setPeriod(v as Period)}>
           <TabsList>
             <TabsTrigger value="today">{t("periods.today")}</TabsTrigger>
@@ -177,7 +177,7 @@ export function CashierHomeDashboard() {
       </div>
 
       {/* ── KPI row ── */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 xl:grid-cols-6">
         <KpiCard
           icon={<BarChart3 className="size-4" />}
           label={t("kpi.revenue")}
@@ -221,7 +221,7 @@ export function CashierHomeDashboard() {
       </div>
 
       {/* ── Performance overview + Quick actions ── */}
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 lg:grid-cols-3">
         {/* Chart card */}
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-start justify-between gap-2 pb-2">
@@ -242,8 +242,8 @@ export function CashierHomeDashboard() {
             </div>
 
             {hasChartData ? (
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={chartData} barSize={28}>
+              <ResponsiveContainer width="100%" height={160} className="sm:[&]:!h-[200px]">
+                <BarChart data={chartData} barSize={22}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border" vertical={false} />
                   <XAxis
                     dataKey="label"
@@ -320,7 +320,7 @@ export function CashierHomeDashboard() {
       {/* ── Operations performance ── */}
       <div>
         <p className="mb-3 text-base font-semibold">{t("operations.title")}</p>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
           {/* Top products */}
           <Card className="xl:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -338,27 +338,29 @@ export function CashierHomeDashboard() {
               {TOP_PRODUCTS.length === 0 ? (
                 <EmptyState label={t("operations.noProducts")} />
               ) : (
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b text-xs text-muted-foreground">
-                      <th className="px-4 py-2 text-start font-medium">{t("operations.product")}</th>
-                      <th className="px-4 py-2 text-end font-medium">{t("operations.qty")}</th>
-                      <th className="px-4 py-2 text-end font-medium">{t("operations.revenue")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {TOP_PRODUCTS.map((p, i) => (
-                      <tr key={i} className="border-b last:border-0 hover:bg-muted/40 transition-colors">
-                        <td className="px-4 py-2.5">
-                          <p className="font-medium leading-none">{p.name}</p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">{p.category}</p>
-                        </td>
-                        <td className="px-4 py-2.5 text-end text-muted-foreground">{p.qty}</td>
-                        <td className="px-4 py-2.5 text-end font-semibold">{fmt(p.revenue)} dh</td>
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[340px] text-sm">
+                    <thead>
+                      <tr className="border-b text-xs text-muted-foreground">
+                        <th className="px-4 py-2 text-start font-medium">{t("operations.product")}</th>
+                        <th className="px-4 py-2 text-end font-medium">{t("operations.qty")}</th>
+                        <th className="px-4 py-2 text-end font-medium">{t("operations.revenue")}</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {TOP_PRODUCTS.map((p, i) => (
+                        <tr key={i} className="border-b last:border-0 hover:bg-muted/40 transition-colors">
+                          <td className="px-4 py-2.5">
+                            <p className="font-medium leading-none">{p.name}</p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">{p.category}</p>
+                          </td>
+                          <td className="px-4 py-2.5 text-end text-muted-foreground">{p.qty}</td>
+                          <td className="px-4 py-2.5 text-end font-semibold">{fmt(p.revenue)} dh</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -446,7 +448,8 @@ export function CashierHomeDashboard() {
           </p>
           <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs" asChild>
             <Link href="/dashboard/cashier/sales">
-              {t("operations.recentSales")} <ArrowRight className="size-3" />
+              <span className="hidden sm:inline">{t("operations.recentSales")}</span>
+              <ArrowRight className="size-3" />
             </Link>
           </Button>
         </CardHeader>
@@ -454,30 +457,32 @@ export function CashierHomeDashboard() {
           {RECENT_SALES.length === 0 ? (
             <EmptyState label={t("operations.noSales")} />
           ) : (
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b text-xs text-muted-foreground">
-                  <th className="px-4 py-2 text-start font-medium">#</th>
-                  <th className="px-4 py-2 text-start font-medium">{t("operations.cashier")}</th>
-                  <th className="px-4 py-2 text-start font-medium hidden sm:table-cell">{t("operations.date")}</th>
-                  <th className="px-4 py-2 text-start font-medium hidden md:table-cell">Méthode</th>
-                  <th className="px-4 py-2 text-end font-medium">{t("operations.amount")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {RECENT_SALES.map((s, i) => (
-                  <tr key={i} className="border-b last:border-0 hover:bg-muted/40 transition-colors">
-                    <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">{s.id}</td>
-                    <td className="px-4 py-2.5 font-medium">{s.cashier}</td>
-                    <td className="hidden px-4 py-2.5 text-muted-foreground sm:table-cell">{s.date}</td>
-                    <td className="hidden px-4 py-2.5 md:table-cell">
-                      <PaymentBadge method={s.method} label={PAYMENT_LABEL[s.method]} />
-                    </td>
-                    <td className="px-4 py-2.5 text-end font-semibold">{fmt(s.amount)} dh</td>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[360px] text-sm">
+                <thead>
+                  <tr className="border-b text-xs text-muted-foreground">
+                    <th className="px-4 py-2 text-start font-medium">#</th>
+                    <th className="px-4 py-2 text-start font-medium">{t("operations.cashier")}</th>
+                    <th className="px-4 py-2 text-start font-medium hidden sm:table-cell">{t("operations.date")}</th>
+                    <th className="px-4 py-2 text-start font-medium hidden md:table-cell">Méthode</th>
+                    <th className="px-4 py-2 text-end font-medium">{t("operations.amount")}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {RECENT_SALES.map((s, i) => (
+                    <tr key={i} className="border-b last:border-0 hover:bg-muted/40 transition-colors">
+                      <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">{s.id}</td>
+                      <td className="px-4 py-2.5 font-medium">{s.cashier}</td>
+                      <td className="hidden px-4 py-2.5 text-muted-foreground sm:table-cell">{s.date}</td>
+                      <td className="hidden px-4 py-2.5 md:table-cell">
+                        <PaymentBadge method={s.method} label={PAYMENT_LABEL[s.method]} />
+                      </td>
+                      <td className="px-4 py-2.5 text-end font-semibold">{fmt(s.amount)} dh</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </CardContent>
       </Card>
@@ -512,16 +517,16 @@ function KpiCard({
   urgent?: boolean;
 }) {
   return (
-    <Card className={cn("gap-3 p-4", urgent && "border-amber-300 dark:border-amber-700")}>
+    <Card className={cn("gap-2 p-3 sm:gap-3 sm:p-4", urgent && "border-amber-300 dark:border-amber-700")}>
       <div className="flex items-center justify-between">
-        <span className={cn("flex h-8 w-8 items-center justify-center rounded-lg", ACCENT_CLASSES[accent])}>
+        <span className={cn("flex h-7 w-7 items-center justify-center rounded-lg sm:h-8 sm:w-8", ACCENT_CLASSES[accent])}>
           {icon}
         </span>
         {trend}
       </div>
       <div>
         <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="mt-0.5 text-xl font-bold tracking-tight">{value}</p>
+        <p className="mt-0.5 truncate text-lg font-bold tracking-tight sm:text-xl">{value}</p>
       </div>
     </Card>
   );

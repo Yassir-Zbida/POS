@@ -2,16 +2,19 @@
 
 import * as React from "react";
 
+import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { useAuthPersistHydrated } from "@/hooks/use-auth-persist-hydrated";
 import { useAuthStore } from "@/store/use-auth-store";
 import { dashboardHomeForRole, isAllowedDashboardPath } from "@/lib/dashboard";
 import { AUTH_ROLES } from "@/types/auth";
+import { defaultLocale } from "@/i18n/routing";
 
 export function RoleGuard({ children }: { children: React.ReactNode }) {
   const persistReady = useAuthPersistHydrated();
   const router = useRouter();
   const pathname = usePathname();
+  const locale = useLocale();
 
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const user = useAuthStore((s) => s.user);
@@ -20,7 +23,9 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
     if (!persistReady) return;
 
     if (!isAuthenticated || !user) {
-      router.replace("/login");
+      const loginPath =
+        locale === defaultLocale ? "/login" : `/${locale}/login`;
+      window.location.assign(loginPath);
       return;
     }
 
@@ -29,7 +34,7 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
     if (!isAllowedDashboardPath(pathname, user.role)) {
       router.replace(dashboardHomeForRole(user.role));
     }
-  }, [isAuthenticated, pathname, persistReady, router, user]);
+  }, [isAuthenticated, locale, pathname, persistReady, router, user]);
 
   if (!persistReady) return null;
   if (!isAuthenticated || !user) return null;

@@ -85,14 +85,16 @@ export function PosLocationSwitcher() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground focus-visible:ring-0 focus-visible:ring-transparent"
             >
-              <Image
-                src="/assets/brand/favicon.svg"
-                alt="Hssabaty"
-                width={32}
-                height={32}
-                className="size-8 rounded-md object-cover"
-                priority
-              />
+              <div className="flex size-8 shrink-0 items-center justify-center">
+                <Image
+                  src="/assets/brand/favicon.svg"
+                  alt="Hssabaty"
+                  width={32}
+                  height={32}
+                  className="size-8 rounded-md object-cover group-data-[collapsible=icon]:size-6"
+                  priority
+                />
+              </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 {loading ? (
                   <>

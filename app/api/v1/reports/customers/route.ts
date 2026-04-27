@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
+import { rowsToCsv } from "@/lib/csv-export";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
-/** GET /api/v1/reports/customers */
+/** GET /api/v1/reports/customers ?format=csv */
 export async function GET(request: Request) {
   try {
     const auth = await requireAuth(request);
@@ -14,6 +15,7 @@ export async function GET(request: Request) {
     }
 
     const { searchParams } = new URL(request.url);
+    const format = searchParams.get("format") ?? "json";
     const from = searchParams.get("from") ? new Date(searchParams.get("from")!) : new Date(Date.now() - 30 * 86400000);
     const to = searchParams.get("to") ? new Date(searchParams.get("to")!) : new Date();
 
@@ -53,7 +55,7 @@ export async function GET(request: Request) {
     });
     const customerMap = new Map(customers.map((c) => [c.id, c]));
 
-    return NextResponse.json({
+    const payload = {
       period: { from, to },
       summary: {
         totalCustomers: totalStats._count,
@@ -67,7 +69,48 @@ export async function GET(request: Request) {
         visits: c._count,
       })),
       creditAging,
-    });
+    };
+
+    if (format === "csv") {
+      const rows: Record<string, unknown>[] = [];
+      rows.push({
+        section: "summary",
+        totalCustomers: payload.summary.totalCustomers,
+        totalOutstandingCredit: payload.summary.totalOutstandingCredit,
+        totalLoyaltyPoints: payload.summary.totalLoyaltyPoints,
+      });
+      for (const t of payload.topCustomers) {
+        rows.push({
+          section: "topCustomer",
+          customerId: t.customer.id,
+          name: t.customer.name,
+          phone: t.customer.phone ?? "",
+          totalSpent: t.totalSpent,
+          visits: t.visits,
+        });
+      }
+      for (const c of payload.creditAging) {
+        rows.push({
+          section: "credit",
+          customerId: c.id,
+          name: c.name,
+          phone: c.phone ?? "",
+          creditBalance: c.creditBalance,
+        });
+      }
+      const csv = rowsToCsv(
+        ["section", "totalCustomers", "totalOutstandingCredit", "totalLoyaltyPoints", "customerId", "name", "phone", "totalSpent", "visits", "creditBalance"],
+        rows,
+      );
+      return new Response(csv, {
+        headers: {
+          "Content-Type": "text/csv; charset=utf-8",
+          "Content-Disposition": `attachment; filename="customers-report.csv"`,
+        },
+      });
+    }
+
+    return NextResponse.json(payload);
   } catch (e) {
     if (isDatabaseConnectionError(e)) return databaseUnavailableResponse();
     return internalErrorResponse(e, "GET /api/v1/reports/customers");

@@ -12,6 +12,11 @@ services:
       - .:/app
       - /app/node_modules
       - /app/.next
+    # Load all variables from .env into the container.
+    # The `environment` block below takes precedence, so DATABASE_URL
+    # is correctly overridden to use the Docker-internal `mysql` hostname.
+    env_file:
+      - .env
     environment:
       NODE_ENV: development
       # Must use service hostname `mysql` inside the compose network (not 127.0.0.1).

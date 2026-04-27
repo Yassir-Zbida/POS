@@ -5,6 +5,10 @@ import { signAccessToken, signRefreshToken, verifyPassword, hashPassword } from 
 import { writeAuditLog } from "@/lib/audit";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
+import { generateOtpDigits, hashOtpCode, OTP_TTL_MS } from "@/lib/otp-challenge";
+import { sendEmail } from "@/lib/mailer";
+import { buildOtpEmail } from "@/lib/email-templates/otp-email";
+import { getEmailFromByLocale, getLocaleFromRequest } from "@/lib/email-request-helpers";
 
 export async function POST(request: Request) {
   try {
@@ -12,7 +16,7 @@ export async function POST(request: Request) {
     const rate = checkRateLimit(`auth-login:${ipAddress}`);
     if (rate.limited) {
       return NextResponse.json(
-        { error: "Too many login attempts. Please retry later." },
+        { error: "TOO_MANY_ATTEMPTS" },
         { status: 429, headers: { "Retry-After": String(Math.ceil((rate.resetAt - Date.now()) / 1000)) } },
       );
     }
@@ -26,7 +30,7 @@ export async function POST(request: Request) {
 
     const parsed = loginSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 400 });
+      return NextResponse.json({ error: "INVALID_CREDENTIALS" }, { status: 400 });
     }
 
     const { email, password, rememberMe } = parsed.data;
@@ -45,11 +49,11 @@ export async function POST(request: Request) {
     }
 
     if (!user || !user.passwordHash) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json({ error: "INVALID_CREDENTIALS" }, { status: 401 });
     }
 
     if (user.lockoutUntil && user.lockoutUntil > new Date()) {
-      return NextResponse.json({ error: "Account temporarily locked. Try again later." }, { status: 423 });
+      return NextResponse.json({ error: "ACCOUNT_LOCKED" }, { status: 423 });
     }
 
     const isValid = await verifyPassword(user.passwordHash, password);
@@ -73,12 +77,55 @@ export async function POST(request: Request) {
         ipAddress,
         userAgent: request.headers.get("user-agent"),
       });
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json({ error: "INVALID_CREDENTIALS" }, { status: 401 });
     }
 
     if (user.status !== "ACTIVE") {
-      return NextResponse.json({ error: `User status is ${user.status}` }, { status: 403 });
+      return NextResponse.json({ error: "ACCOUNT_INACTIVE" }, { status: 403 });
     }
+
+    // ── 2FA: if OTP is enabled, send a code and defer token issuance ──────────
+    if (user.otpEnabled) {
+      const code = generateOtpDigits();
+      const codeHash = hashOtpCode(code);
+      const expiresAt = new Date(Date.now() + OTP_TTL_MS);
+      const target = user.email.toLowerCase();
+
+      await prisma.otpChallenge.deleteMany({ where: { target, purpose: "LOGIN_2FA", consumedAt: null } });
+      const challenge = await prisma.otpChallenge.create({
+        data: { channel: "EMAIL", target, purpose: "LOGIN_2FA", codeHash, expiresAt },
+      });
+
+      const locale = getLocaleFromRequest(request);
+      const emailContent = buildOtpEmail({ locale, code, purpose: "LOGIN_2FA" });
+      try {
+        await sendEmail({
+          to: target,
+          subject: emailContent.subject,
+          html: emailContent.html,
+          text: emailContent.text,
+          from: getEmailFromByLocale(locale),
+        });
+      } catch {
+        await prisma.otpChallenge.delete({ where: { id: challenge.id } });
+        return NextResponse.json(
+          { error: "EMAIL_SEND_FAILED" },
+          { status: 503 },
+        );
+      }
+
+      await writeAuditLog({
+        actorUserId: user.id,
+        action: "AUTH_LOGIN_2FA_SENT",
+        targetType: "USER",
+        targetId: user.id,
+        ipAddress,
+        userAgent: request.headers.get("user-agent"),
+      });
+
+      return NextResponse.json({ otpRequired: true, email: user.email });
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     const payload = {
       sub: user.id,

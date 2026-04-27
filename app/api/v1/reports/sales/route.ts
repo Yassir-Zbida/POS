@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
+import { buildSalesReportData } from "@/lib/reports/sales-report-data";
+import { rowsToCsv } from "@/lib/csv-export";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 /** GET /api/v1/reports/sales
- * ?from= ?to= ?cashierId= ?locationId= ?groupBy=day|week|month
+ * ?from= ?to= ?cashierId= ?locationId= ?format=json|csv
  */
 export async function GET(request: Request) {
   try {
@@ -20,112 +22,44 @@ export async function GET(request: Request) {
     const to = searchParams.get("to") ? new Date(searchParams.get("to")!) : new Date();
     const cashierId = searchParams.get("cashierId") ?? undefined;
     const locationId = searchParams.get("locationId") ?? undefined;
+    const format = searchParams.get("format") ?? "json";
 
-    const where = {
-      status: { not: "REFUNDED" as const },
-      createdAt: { gte: from, lte: to },
-      ...(cashierId ? { cashierId } : {}),
-      ...(locationId ? { locationId } : {}),
-    };
+    const data = await buildSalesReportData(prisma, from, to, cashierId, locationId);
 
-    const [sales, paymentBreakdown, topProducts, cashierBreakdown, locationBreakdown] = await Promise.all([
-      // Aggregate totals
-      prisma.sale.aggregate({
-        where,
-        _sum: { totalAmount: true, discountAmt: true, vatAmt: true },
-        _count: true,
-        _avg: { totalAmount: true },
-      }),
+    if (format === "csv") {
+      const flat: Record<string, unknown>[] = [];
+      flat.push({
+        section: "summary",
+        totalRevenue: data.summary.totalRevenue,
+        totalTransactions: data.summary.totalTransactions,
+        avgBasket: data.summary.avgBasket,
+        totalDiscount: data.summary.totalDiscount,
+        totalVat: data.summary.totalVat,
+      });
+      for (const p of data.paymentBreakdown) {
+        flat.push({ section: "payment", method: p.method, total: p.total, count: p.count });
+      }
+      for (const t of data.topProducts) {
+        flat.push({
+          section: "topProduct",
+          productId: t.product.id,
+          nameFr: t.product.nameFr,
+          sku: t.product.sku,
+          totalQty: t.totalQty,
+          totalRevenue: t.totalRevenue,
+        });
+      }
+      const csv = rowsToCsv(["section", "method", "total", "count", "productId", "nameFr", "sku", "totalQty", "totalRevenue", "avgBasket", "totalDiscount", "totalVat", "totalTransactions"], flat);
+      return new Response(csv, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/csv; charset=utf-8",
+          "Content-Disposition": `attachment; filename="sales-report.csv"`,
+        },
+      });
+    }
 
-      // Payment method breakdown
-      prisma.sale.groupBy({
-        by: ["paymentMethod"],
-        where,
-        _sum: { totalAmount: true },
-        _count: true,
-      }),
-
-      // Top products
-      prisma.saleItem.groupBy({
-        by: ["productId"],
-        where: { sale: where },
-        _sum: { quantity: true, totalPrice: true },
-        _count: true,
-        orderBy: { _sum: { totalPrice: "desc" } },
-        take: 10,
-      }),
-
-      // Per-cashier breakdown
-      prisma.sale.groupBy({
-        by: ["cashierId"],
-        where,
-        _sum: { totalAmount: true },
-        _count: true,
-        orderBy: { _sum: { totalAmount: "desc" } },
-      }),
-
-      // Per-location breakdown
-      prisma.sale.groupBy({
-        by: ["locationId"],
-        where,
-        _sum: { totalAmount: true },
-        _count: true,
-        orderBy: { _sum: { totalAmount: "desc" } },
-      }),
-    ]);
-
-    // Enrich top products with names
-    const productIds = topProducts.map((t) => t.productId).filter(Boolean) as string[];
-    const products = await prisma.product.findMany({
-      where: { id: { in: productIds } },
-      select: { id: true, nameFr: true, sku: true },
-    });
-    const productMap = new Map(products.map((p) => [p.id, p]));
-
-    const cashierIds = cashierBreakdown.map((c) => c.cashierId).filter(Boolean) as string[];
-    const cashiers = await prisma.user.findMany({
-      where: { id: { in: cashierIds } },
-      select: { id: true, name: true },
-    });
-    const cashierMap = new Map(cashiers.map((c) => [c.id, c]));
-
-    const locationIds = locationBreakdown.map((l) => l.locationId).filter(Boolean) as string[];
-    const locations = await prisma.location.findMany({
-      where: { id: { in: locationIds } },
-      select: { id: true, name: true, city: true },
-    });
-    const locationMap = new Map(locations.map((l) => [l.id, l]));
-
-    return NextResponse.json({
-      period: { from, to },
-      summary: {
-        totalRevenue: sales._sum.totalAmount ?? 0,
-        totalTransactions: sales._count,
-        avgBasket: sales._avg.totalAmount ?? 0,
-        totalDiscount: sales._sum.discountAmt ?? 0,
-        totalVat: sales._sum.vatAmt ?? 0,
-      },
-      paymentBreakdown: paymentBreakdown.map((p) => ({
-        method: p.paymentMethod,
-        total: p._sum.totalAmount,
-        count: p._count,
-      })),
-      topProducts: topProducts.map((t) => ({
-        product: productMap.get(t.productId) ?? { id: t.productId, nameFr: "Unknown", sku: "" },
-        totalQty: t._sum.quantity,
-        totalRevenue: t._sum.totalPrice,
-      })),
-      cashierBreakdown: cashierBreakdown.map((c) => ({
-        cashier: cashierMap.get(c.cashierId ?? "") ?? { id: c.cashierId, name: "Unknown" },
-        totalRevenue: c._sum.totalAmount,
-        totalTransactions: c._count,
-      })),
-      locationBreakdown: locationBreakdown.map((l) => ({
-        location: locationMap.get(l.locationId ?? "") ?? { id: l.locationId, name: "Unknown", city: null },
-        totalRevenue: l._sum.totalAmount,
-        totalTransactions: l._count,
-      })),
-    });
+    return NextResponse.json(data);
   } catch (e) {
     if (isDatabaseConnectionError(e)) return databaseUnavailableResponse();
     return internalErrorResponse(e, "GET /api/v1/reports/sales");

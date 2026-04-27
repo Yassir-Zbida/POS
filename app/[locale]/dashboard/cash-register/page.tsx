@@ -16,6 +16,6 @@ export async function generateMetadata({
 }
 
 export default function CashRegisterPage() {
-  return <h1 className="p-8 text-2xl font-semibold">Cash Register</h1>;
+  return <h1 className="text-xl font-semibold sm:text-2xl">Cash Register</h1>;
 }
 

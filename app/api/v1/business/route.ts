@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
 import { writeAuditLog } from "@/lib/audit";
+import { loadBusinessSettings } from "@/lib/business-settings";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const businessSchema = z.object({
@@ -19,6 +19,8 @@ const businessSchema = z.object({
   currency: z.string().default("MAD").optional(),
   defaultVatRate: z.number().min(0).max(100).optional(),
   loyaltyPointsPerMad: z.number().min(0).optional(),
+  /** MAD discount per loyalty point redeemed at checkout (default 0.1 in sales route). */
+  loyaltyRedeemMadPerPoint: z.number().min(0).max(1000).optional(),
   receiptFooter: z.string().optional(),
   printerIp: z.string().optional(),
   printerType: z.enum(["USB", "LAN"]).optional(),
@@ -26,22 +28,7 @@ const businessSchema = z.object({
   sessionVarianceThreshold: z.number().min(0).optional(),
 });
 
-// We store business config as a single JSON record in a simple key-value table.
-// Since the schema doesn't have a BusinessSettings model yet, we use the AuditLog
-// metadata to store settings — but the correct approach is a dedicated table.
-// We implement this as a runtime config using a well-known AuditLog "BUSINESS_SETTINGS"
-// sentinel that holds the full config JSON as metadata.
-// This avoids a schema migration while keeping the feature functional.
 const SETTINGS_ACTION = "BUSINESS_SETTINGS";
-
-async function loadSettings() {
-  const record = await prisma.auditLog.findFirst({
-    where: { action: SETTINGS_ACTION },
-    orderBy: { createdAt: "desc" },
-    select: { metadata: true },
-  });
-  return (record?.metadata ?? {}) as Record<string, unknown>;
-}
 
 /** GET /api/v1/business — read store settings */
 export async function GET(request: Request) {
@@ -49,7 +36,7 @@ export async function GET(request: Request) {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
-    const settings = await loadSettings();
+    const settings = await loadBusinessSettings();
     return NextResponse.json({ settings });
   } catch (e) {
     if (isDatabaseConnectionError(e)) return databaseUnavailableResponse();
@@ -78,7 +65,7 @@ export async function PUT(request: Request) {
     }
 
     // Merge with existing settings
-    const existing = await loadSettings();
+    const existing = await loadBusinessSettings();
     const updated = { ...existing, ...parsed.data, updatedAt: new Date().toISOString() };
 
     await writeAuditLog({

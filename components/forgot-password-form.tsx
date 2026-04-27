@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
+import { authApiUrl } from "@/lib/auth-client"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 export function ForgotPasswordForm({
@@ -34,7 +35,7 @@ export function ForgotPasswordForm({
     const email = String(fd.get("email") ?? "")
     setPending(true)
     try {
-      const res = await fetch("/api/auth/forgot-password", {
+      const res = await fetch(authApiUrl("forgot-password"), {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-locale": locale },
         body: JSON.stringify({ email }),
@@ -74,12 +75,21 @@ export function ForgotPasswordForm({
                   required
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={pending}>
-                <span>{pending ? t("submitPending") : t("submit")}</span>
+              <Button type="submit" className="w-full" disabled={pending} dir="ltr">
                 {locale === "ar" ? (
-                  <ArrowLeft className="ms-2 size-4" aria-hidden="true" />
+                  <>
+                    <ArrowLeft className="me-2 size-4" aria-hidden="true" />
+                    <span>
+                      {pending ? t("submitPending") : t("submit")}
+                    </span>
+                  </>
                 ) : (
-                  <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                  <>
+                    <span>
+                      {pending ? t("submitPending") : t("submit")}
+                    </span>
+                    <ArrowRight className="ms-2 size-4" aria-hidden="true" />
+                  </>
                 )}
               </Button>
               <div className="text-center text-sm">

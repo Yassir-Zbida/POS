@@ -120,8 +120,11 @@ model User {
   phone               String?
   passwordHash        String?
   pinHash             String?
+  pinAttempts         Int                  @default(0)
+  pinLockedUntil      DateTime?
   role                UserRole             @default(CASHIER)
   status              UserStatus           @default(ACTIVE)
+  otpEnabled          Boolean              @default(false)
   failedLoginAttempts Int                  @default(0)
   lockoutUntil        DateTime?
   ownerManagerId      String?
@@ -176,6 +179,22 @@ model PasswordResetToken {
   createdAt DateTime  @default(now())
 
   @@index([userId])
+  @@index([expiresAt])
+}
+
+/// One-time codes for email/SMS verification (register, login step-up).
+model OtpChallenge {
+  id         String    @id @default(cuid())
+  channel    String
+  target     String
+  purpose    String
+  codeHash   String    @db.VarChar(128)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int       @default(0)
+  createdAt  DateTime  @default(now())
+
+  @@index([target, purpose, consumedAt])
   @@index([expiresAt])
 }
 

@@ -1,58 +1,43 @@
 "use client";
 
 import * as React from "react";
-import { Laptop, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-type ThemeChoice = "light" | "dark" | "system";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
+  const t = useTranslations("common.theme");
 
   React.useEffect(() => setMounted(true), []);
 
-  // Prevent hydration mismatch: `theme` is undefined until mounted.
-  if (!mounted) {
-    return (
-      <Button variant="outline" size="icon" aria-label="Toggle theme" disabled>
-        <Sun className="size-4" />
-      </Button>
-    );
+  function toggle() {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   }
 
-  const value = (theme ?? "system") as ThemeChoice;
+  const label = mounted
+    ? resolvedTheme === "dark"
+      ? t("light")
+      : t("dark")
+    : t("dark");
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" aria-label="Toggle theme">
-          {value === "dark" ? (
-            <Moon className="size-4" />
-          ) : value === "light" ? (
-            <Sun className="size-4" />
-          ) : (
-            <Laptop className="size-4" />
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuRadioGroup value={value} onValueChange={(v) => setTheme(v as ThemeChoice)}>
-          <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button
+      variant="outline"
+      size="sm"
+      className="gap-2 overflow-hidden"
+      onClick={toggle}
+      disabled={!mounted}
+      aria-label={label}
+    >
+      <span className="relative flex size-4 shrink-0">
+        <Sun className="absolute inset-0 size-4 scale-100 rotate-0 transition-all duration-500 ease-in-out dark:scale-0 dark:-rotate-90" />
+        <Moon className="absolute inset-0 size-4 scale-0 rotate-90 transition-all duration-500 ease-in-out dark:scale-100 dark:rotate-0" />
+      </span>
+      <span className="transition-none">{label}</span>
+    </Button>
   );
 }
-
