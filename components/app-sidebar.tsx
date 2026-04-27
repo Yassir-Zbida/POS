@@ -86,10 +86,6 @@ function AdminSidebarContent({
     { key: "systemHealth", href: "/dashboard/admin/system-health", icon: Activity },
   ];
 
-  const systemNav = [
-    { key: "settings", href: "/dashboard/settings", icon: Settings },
-  ];
-
   const supportNav = [
     { key: "tickets", href: "/dashboard/admin/support/tickets", icon: LifeBuoy },
   ];
@@ -132,8 +128,6 @@ function AdminSidebarContent({
       <NavGroup labelKey="billingGroup" items={billingNav} />
       <SidebarSeparator />
       <NavGroup labelKey="monitoringGroup" items={monitoringNav} />
-      <SidebarSeparator />
-      <NavGroup labelKey="systemGroup" items={systemNav} />
       <SidebarSeparator />
       <NavGroup labelKey="supportGroup" items={supportNav} />
     </>
