@@ -13,5 +13,6 @@ export async function GET(request: Request) {
     role: user.role,
     status: user.status,
     ownerManagerId: user.ownerManagerId,
+    mustChangePassword: user.mustChangePassword,
   });
 }

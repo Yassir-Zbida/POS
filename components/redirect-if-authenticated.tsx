@@ -6,6 +6,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useAuthPersistHydrated } from "@/hooks/use-auth-persist-hydrated";
 import { dashboardHomeForRole } from "@/lib/dashboard";
 import { useAuthStore } from "@/store/use-auth-store";
+import { AUTH_ROLES } from "@/types/auth";
 
 /** On the login (and similar) page, send users who already have a session to their dashboard. */
 export function RedirectIfAuthenticated() {
@@ -17,6 +18,10 @@ export function RedirectIfAuthenticated() {
   React.useEffect(() => {
     if (!persistReady) return;
     if (!isAuthenticated || !user) return;
+    if (user.role === AUTH_ROLES.MANAGER && user.mustChangePassword) {
+      router.replace("/first-login");
+      return;
+    }
     router.replace(dashboardHomeForRole(user.role));
   }, [isAuthenticated, persistReady, router, user]);
 

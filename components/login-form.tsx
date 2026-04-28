@@ -115,7 +115,13 @@ export function LoginForm({
         | {
             accessToken: string
             refreshToken: string
-            user: { id: string; email: string; role: string; status: string }
+            user: {
+              id: string
+              email: string
+              role: string
+              status: string
+              mustChangePassword?: boolean
+            }
           }
         | { error?: string }
 
@@ -168,7 +174,13 @@ export function LoginForm({
         | {
             accessToken: string
             refreshToken: string
-            user: { id: string; email: string; role: string; status: string }
+            user: {
+              id: string
+              email: string
+              role: string
+              status: string
+              mustChangePassword?: boolean
+            }
           }
         | { error?: string }
 
@@ -183,7 +195,17 @@ export function LoginForm({
     }
   }
 
-  function finishSession(data: { accessToken: string; refreshToken: string; user: { id: string; email: string; role: string; status: string } }) {
+  function finishSession(data: {
+    accessToken: string
+    refreshToken: string
+    user: {
+      id: string
+      email: string
+      role: string
+      status: string
+      mustChangePassword?: boolean
+    }
+  }) {
     if (!data.accessToken || !data.refreshToken || !data.user) {
       toast.error(t("errors.loginFailed"))
       return
@@ -203,12 +225,20 @@ export function LoginForm({
     setSession({
       accessToken: data.accessToken,
       refreshToken: data.refreshToken,
-      user: { ...data.user, role },
+      user: {
+        ...data.user,
+        role,
+        mustChangePassword: Boolean(data.user.mustChangePassword),
+      },
     })
     if (role === AUTH_ROLES.ADMIN || role === AUTH_ROLES.MANAGER) {
       unlock()
     }
     setRedirecting(true)
+    if (role === AUTH_ROLES.MANAGER && data.user.mustChangePassword) {
+      router.push("/first-login")
+      return
+    }
     router.push(dashboardHomeForRole(role))
   }
 

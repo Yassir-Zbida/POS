@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getBearerToken, verifyToken, type AppTokenPayload } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { databaseUnavailableResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
+import { isPasswordSetupExemptApiRoute } from "@/lib/must-change-password";
 
 export const ROLES = {
   ADMIN: "ADMIN",
@@ -50,6 +51,20 @@ export async function requireAuth(request: Request) {
       if (managerSubscription && managerSubscription.status !== "ACTIVE") {
         return { error: NextResponse.json({ error: "Manager subscription is not active" }, { status: 403 }) };
       }
+    }
+
+    const pathname = new URL(request.url).pathname;
+    if (
+      user.mustChangePassword &&
+      user.role === ROLES.MANAGER &&
+      !isPasswordSetupExemptApiRoute(request.method, pathname)
+    ) {
+      return {
+        error: NextResponse.json(
+          { error: "Password change required", code: "MUST_CHANGE_PASSWORD" },
+          { status: 403 }
+        ),
+      };
     }
 
     return { user };

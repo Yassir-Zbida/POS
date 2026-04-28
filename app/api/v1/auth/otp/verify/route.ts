@@ -140,7 +140,13 @@ export async function POST(request: Request) {
         tokenType: "Bearer",
         accessTokenExpiresIn: "15m",
         refreshTokenExpiresInDays: refreshTokenDays,
-        user: { id: user.id, email: user.email, role: user.role, status: user.status },
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          status: user.status,
+          mustChangePassword: user.mustChangePassword,
+        },
       });
     }
 

@@ -28,7 +28,8 @@
       "cashierPos": "POS",
       "pos": "POS",
       "docs": "Docs API",
-      "otp": "Connexion par code e-mail"
+      "otp": "Connexion par code e-mail",
+      "firstLogin": "Définir le mot de passe"
     }
   },
   "home": {
@@ -61,7 +62,25 @@
       "TOO_MANY_ATTEMPTS": "Trop de tentatives. Veuillez réessayer plus tard.",
       "EMAIL_SEND_FAILED": "Impossible d'envoyer l'e-mail de vérification. Réessayez."
     },
-    "otpLink": "Se connecter avec un code e-mail"
+    "otpLink": "Se connecter avec un code e-mail",
+    "firstLogin": {
+      "title": "Définir votre mot de passe",
+      "subtitle": "Un administrateur a créé votre compte avec un mot de passe temporaire. Choisissez un nouveau mot de passe pour sécuriser votre espace marchand.",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Continuer",
+      "pending": "Enregistrement…",
+      "success": "Mot de passe mis à jour. Redirection…",
+      "errors": {
+        "currentRequired": "Saisissez votre mot de passe actuel",
+        "newMin": "Au moins 8 caractères",
+        "mismatch": "Les mots de passe ne correspondent pas",
+        "sameAsOld": "Choisissez un mot de passe différent de l’ancien",
+        "invalidCurrent": "Le mot de passe actuel est incorrect",
+        "generic": "Impossible de mettre à jour le mot de passe. Réessayez."
+      }
+    }
   },
   "auth2fa": {
     "title": "Vérification en deux étapes",

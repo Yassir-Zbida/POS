@@ -28,7 +28,8 @@
       "cashierPos": "POS",
       "pos": "POS",
       "docs": "API docs",
-      "otp": "Email code sign-in"
+      "otp": "Email code sign-in",
+      "firstLogin": "Set your password"
     }
   },
   "home": {
@@ -61,7 +62,25 @@
       "TOO_MANY_ATTEMPTS": "Too many attempts. Please try again later.",
       "EMAIL_SEND_FAILED": "Could not send verification email. Please try again."
     },
-    "otpLink": "Sign in with email code"
+    "otpLink": "Sign in with email code",
+    "firstLogin": {
+      "title": "Set your password",
+      "subtitle": "Your administrator created your account with a temporary password. Choose a new password to secure your merchant dashboard.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Continue",
+      "pending": "Saving…",
+      "success": "Password updated. Redirecting…",
+      "errors": {
+        "currentRequired": "Enter your current password",
+        "newMin": "Use at least 8 characters",
+        "mismatch": "Passwords do not match",
+        "sameAsOld": "Choose a different password than before",
+        "invalidCurrent": "Current password is incorrect",
+        "generic": "Could not update password. Try again."
+      }
+    }
   },
   "auth2fa": {
     "title": "Two-factor verification",

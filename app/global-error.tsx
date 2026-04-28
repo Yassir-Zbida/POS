@@ -81,7 +81,10 @@ function InnerGlobalError({
   const [lang, setLang] = React.useState<Lang>("en");
 
   React.useEffect(() => {
-    setLang(readLang());
+    const l = readLang();
+    setLang(l);
+    document.documentElement.lang = l;
+    document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
     // eslint-disable-next-line no-console
     console.error(error);
   }, [error]);
@@ -92,7 +95,7 @@ function InnerGlobalError({
   return (
     <div
       dir={isRtl ? "rtl" : "ltr"}
-      className="relative flex min-h-svh flex-col items-center justify-center gap-6 overflow-y-auto bg-muted px-4 py-8 pb-24 sm:p-6 sm:pb-24 md:p-10"
+      className="relative flex min-h-svh flex-col items-center justify-center gap-6 overflow-y-auto bg-muted/80 px-4 py-8 pb-24 dark:bg-background/95 sm:p-6 sm:pb-24 md:p-10"
     >
       {/* Language switcher + dark mode — same placement as auth pages */}
       <div
@@ -116,7 +119,11 @@ function InnerGlobalError({
               </span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="min-w-44">
+          <DropdownMenuContent
+            align="start"
+            className="min-w-44"
+            dir={isRtl ? "rtl" : "ltr"}
+          >
             <DropdownMenuRadioGroup
               value={lang}
               onValueChange={(v) => {
@@ -136,38 +143,40 @@ function InnerGlobalError({
         <ModeToggle className="focus-visible:ring-0 focus-visible:ring-offset-0" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex w-full max-w-sm flex-col items-center gap-6 text-center">
-        <Image
-          src="/assets/server-failure_syqp.svg"
-          alt=""
-          width={260}
-          height={219}
-          priority
-          aria-hidden="true"
-          className="w-52 sm:w-64 dark:opacity-80"
-        />
+      {/* Content — card surface aligned with admin dashboard tiles */}
+      <div className="relative z-10 w-full max-w-sm rounded-xl border border-border/80 bg-card px-6 py-8 text-center shadow-sm dark:border-border/60 dark:bg-card/90">
+        <div className="flex flex-col items-center gap-6">
+          <Image
+            src="/assets/server-failure_syqp.svg"
+            alt=""
+            width={260}
+            height={219}
+            priority
+            aria-hidden="true"
+            className="w-52 sm:w-64 dark:opacity-90"
+          />
 
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">{c.title}</h1>
-          <p className="text-sm text-muted-foreground">{c.description}</p>
-          {error?.digest ? (
-            <p className="mt-1 text-xs text-muted-foreground/70">
-              {c.reference} <span className="font-mono">{error.digest}</span>
-            </p>
-          ) : null}
+          <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">{c.title}</h1>
+            <p className="text-sm text-muted-foreground">{c.description}</p>
+            {error?.digest ? (
+              <p className="mt-1 text-xs text-muted-foreground/70">
+                {c.reference} <span className="font-mono">{error.digest}</span>
+              </p>
+            ) : null}
+          </div>
+
+          <Button
+            size="lg"
+            className="w-full max-w-xs"
+            onClick={() => {
+              reset();
+              window.location.reload();
+            }}
+          >
+            {c.reload}
+          </Button>
         </div>
-
-        <Button
-          size="lg"
-          className="w-full max-w-xs"
-          onClick={() => {
-            reset();
-            window.location.reload();
-          }}
-        >
-          {c.reload}
-        </Button>
       </div>
 
     </div>
@@ -182,8 +191,8 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
-    <html suppressHydrationWarning>
-      <body>
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <body className="min-h-svh antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

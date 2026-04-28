@@ -196,6 +196,7 @@ export async function POST(request: Request) {
         passwordHash: await hashPassword(rest.password),
         role: "MANAGER",
         status: "ACTIVE",
+        mustChangePassword: true,
         subscriptions: {
           create: {
             status: rest.subscriptionStatus,

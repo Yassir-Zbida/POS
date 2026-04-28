@@ -13,4 +13,6 @@ export type AuthUser = {
   status: string;
   name?: string | null;
   ownerManagerId?: string | null;
+  /** True until merchant changes password after admin-created account */
+  mustChangePassword?: boolean;
 };

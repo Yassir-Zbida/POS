@@ -1,5 +1,10 @@
 #!/bin/sh
 set -e
+# `node_modules` is a Docker volume — regenerate client from mounted `prisma/schema.prisma`
+# so new fields (e.g. mustChangePassword) match `prisma.user.create()` at runtime.
+echo "[docker] Generating Prisma Client…"
+npx prisma generate
+
 echo "[docker] Applying Prisma migrations…"
 npx prisma migrate deploy
 

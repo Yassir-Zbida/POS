@@ -1,14 +1,7 @@
+import { firstLoginPath, loginPath } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/use-auth-store";
 
 let refreshInFlight: Promise<string | null> | null = null;
-
-/** Match next-intl `localePrefix: "as-needed"`: `fr` has no URL prefix, `en`/`ar` use /en, /ar */
-function getLoginPath(): string {
-  if (typeof window === "undefined") return "/login";
-  const path = window.location.pathname;
-  const m = path.match(/^\/(en|ar)(?:\/|$)/);
-  return m ? `/${m[1]}/login` : "/login";
-}
 
 async function refreshAccessToken(): Promise<string | null> {
   if (refreshInFlight) {
@@ -65,6 +58,17 @@ export async function fetchWithAuth(
   }
 
   const res = await fetch(input, { ...init, headers });
+  if (res.status === 403) {
+    try {
+      const data = (await res.clone().json()) as { code?: string };
+      if (data?.code === "MUST_CHANGE_PASSWORD" && typeof window !== "undefined") {
+        window.location.assign(firstLoginPath());
+      }
+    } catch {
+      /* ignore */
+    }
+    return res;
+  }
   if (res.status !== 401) {
     return res;
   }
@@ -73,7 +77,7 @@ export async function fetchWithAuth(
   if (!newToken) {
     useAuthStore.getState().clearSession();
     if (typeof window !== "undefined") {
-      window.location.assign(getLoginPath());
+      window.location.assign(loginPath());
     }
     return res;
   }

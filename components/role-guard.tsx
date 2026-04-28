@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { useAuthPersistHydrated } from "@/hooks/use-auth-persist-hydrated";
 import { useAuthStore } from "@/store/use-auth-store";
 import { dashboardHomeForRole, isAllowedDashboardPath } from "@/lib/dashboard";
+import { firstLoginPath } from "@/lib/auth-client";
 import { AUTH_ROLES } from "@/types/auth";
 import { defaultLocale } from "@/i18n/routing";
 
@@ -29,6 +30,15 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    if (
+      user.role === AUTH_ROLES.MANAGER &&
+      user.mustChangePassword &&
+      !pathname.includes("first-login")
+    ) {
+      window.location.assign(firstLoginPath());
+      return;
+    }
+
     if (!pathname.startsWith("/dashboard")) return;
 
     if (!isAllowedDashboardPath(pathname, user.role)) {
@@ -38,6 +48,14 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
 
   if (!persistReady) return null;
   if (!isAuthenticated || !user) return null;
+
+  if (
+    user.role === AUTH_ROLES.MANAGER &&
+    user.mustChangePassword &&
+    !pathname.includes("first-login")
+  ) {
+    return null;
+  }
 
   if (pathname.startsWith("/dashboard") && !isAllowedDashboardPath(pathname, user.role)) return null;
 

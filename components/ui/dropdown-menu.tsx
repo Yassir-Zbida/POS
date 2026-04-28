@@ -3,9 +3,18 @@
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
-import { useLocale } from "next-intl"
 
 import { cn } from "@/lib/utils"
+
+/** Direction for portaled content without requiring NextIntlClientProvider (e.g. global-error). */
+function resolveDropdownDirection(explicit?: "ltr" | "rtl"): "ltr" | "rtl" {
+  if (explicit) return explicit
+  if (typeof document === "undefined") return "ltr"
+  const htmlDir = document.documentElement.getAttribute("dir")
+  if (htmlDir === "rtl" || htmlDir === "ltr") return htmlDir
+  const lang = document.documentElement.lang?.toLowerCase() ?? ""
+  return lang.startsWith("ar") ? "rtl" : "ltr"
+}
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
@@ -47,8 +56,7 @@ const DropdownMenuSubContent = React.forwardRef<
     dir?: "ltr" | "rtl"
   }
 >(({ className, dir, ...props }, ref) => {
-  const locale = useLocale()
-  const contentDir: "ltr" | "rtl" = dir ?? (locale === "ar" ? "rtl" : "ltr")
+  const contentDir = React.useMemo(() => resolveDropdownDirection(dir), [dir])
 
   return (
     <DropdownMenuPrimitive.SubContent
@@ -72,8 +80,7 @@ const DropdownMenuContent = React.forwardRef<
     dir?: "ltr" | "rtl"
   }
 >(({ className, sideOffset = 4, dir, ...props }, ref) => {
-  const locale = useLocale()
-  const contentDir: "ltr" | "rtl" = dir ?? (locale === "ar" ? "rtl" : "ltr")
+  const contentDir = React.useMemo(() => resolveDropdownDirection(dir), [dir])
 
   return (
     <DropdownMenuPrimitive.Portal>
