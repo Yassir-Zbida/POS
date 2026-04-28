@@ -17,6 +17,7 @@ const updateSchema = z.object({
   stock: z.number().int().min(0).optional(),
   minStock: z.number().int().min(0).optional(),
   imageUrl: z.string().url().optional(),
+  expiryDate: z.string().datetime().nullable().optional(),
   categoryId: z.string().min(1).optional(),
   isActive: z.boolean().optional(),
   /// Replace the full set of attributes (pass empty array to remove all)
@@ -83,12 +84,13 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 422 });
     }
 
-    const { attributeIds, ...rest } = parsed.data;
+    const { attributeIds, expiryDate, ...rest } = parsed.data;
 
     const product = await prisma.product.update({
       where: { id },
       data: {
         ...rest,
+        ...(expiryDate !== undefined ? { expiryDate: expiryDate ? new Date(expiryDate) : null } : {}),
         // Replace all attribute links when attributeIds is provided
         ...(attributeIds !== undefined
           ? {

@@ -294,6 +294,8 @@ model Product {
   stock       Int                 @default(0)
   minStock    Int                 @default(0)
   imageUrl    String?
+  /** Optional expiry date for perishable products (e.g. groceries). */
+  expiryDate  DateTime?
   isActive    Boolean             @default(true)
   categoryId  String
   category    Category            @relation(fields: [categoryId], references: [id])
@@ -308,6 +310,7 @@ model Product {
   @@index([barcode])
   @@index([categoryId])
   @@index([type])
+  @@index([expiryDate])
 }
 
 model ProductVariant {

@@ -317,8 +317,12 @@
       "name": "Hssabaty POS",
       "tagline": "Personnel"
     },
-    "status": { "online": "En ligne" },
-    "navGroup": { "label": "Menu" },
+    "status": {
+      "online": "En ligne"
+    },
+    "navGroup": {
+      "label": "Menu"
+    },
     "nav": {
       "pos": "Point de vente",
       "products": "Produits & catégories",
@@ -345,9 +349,20 @@
       "searchStub": "Recherche (démo)",
       "logout": "Déconnexion"
     },
-    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "Langue" },
-    "theme": { "light": "Clair", "dark": "Sombre", "label": "Thème" },
-    "placeholders": { "static": "Démo — pas encore de serveur" },
+    "lang": {
+      "en": "EN",
+      "fr": "FR",
+      "ar": "AR",
+      "label": "Langue"
+    },
+    "theme": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "label": "Thème"
+    },
+    "placeholders": {
+      "static": "Démo — pas encore de serveur"
+    },
     "pos": {
       "searchPlaceholder": "Rechercher un produit",
       "barcodePlaceholder": "Code-barres / scanner",
@@ -1144,6 +1159,229 @@
       "statusFailed": "Impossible de mettre à jour le statut."
     }
   },
+  "managerProducts": {
+    "title": "Produits",
+    "subtitle": "Gérez votre catalogue avec des produits simples, variables et services.",
+    "back": "Retour au tableau de bord manager",
+    "add": "Ajouter un produit",
+    "cancel": "Annuler",
+    "saving": "Enregistrement...",
+    "searchPlaceholder": "Rechercher par nom, SKU ou code-barres",
+    "tabs": {
+      "overview": "Vue d'ensemble",
+      "products": "Produits"
+    },
+    "stats": {
+      "total": "Produits totaux",
+      "variable": "Produits variables",
+      "lowStock": "Stock faible"
+    },
+    "type": {
+      "SIMPLE": "Simple",
+      "VARIABLE": "Variable",
+      "SERVICE": "Service"
+    },
+    "typeHelp": {
+      "SIMPLE": "Produit classique avec un seul prix et stock.",
+      "VARIABLE": "Produit avec plusieurs versions (ex: tailles/couleurs).",
+      "SERVICE": "Service sans gestion de stock physique."
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "table": {
+      "name": "Nom",
+      "type": "Type",
+      "category": "Catégorie",
+      "price": "Prix",
+      "stock": "Stock",
+      "status": "Statut",
+      "actions": "",
+      "expiry": "Échéance"
+    },
+    "actions": {
+      "view": "Voir",
+      "edit": "Modifier",
+      "deactivate": "Désactiver"
+    },
+    "create": {
+      "title": "Créer un produit",
+      "description": "Utilisez la catégorie et le type pour structurer votre catalogue.",
+      "submit": "Créer"
+    },
+    "edit": {
+      "title": "Modifier le produit",
+      "description": "Mettez à jour les infos, le stock et le type.",
+      "submit": "Enregistrer"
+    },
+    "form": {
+      "type": "Type de produit",
+      "category": "Catégorie",
+      "categoryHint": "Choisissez une seule catégorie principale pour ce produit.",
+      "categoryPlaceholder": "Choisir une catégorie",
+      "name": "Nom produit",
+      "nameHint": "Un seul nom sera utilisé pour FR/EN/AR automatiquement.",
+      "sku": "SKU",
+      "barcode": "Code-barres",
+      "imageUrl": "URL image",
+      "price": "Prix",
+      "costPrice": "Prix d'achat",
+      "vatRate": "TVA (%)",
+      "stock": "Stock",
+      "minStock": "Alerte stock minimum",
+      "attributes": "Attributs de variantes",
+      "attributesHint": "Obligatoire pour les produits VARIABLE afin de créer les variantes.",
+      "noAttributes": "Aucun attribut trouvé. Créez d'abord les attributs.",
+      "addCategory": "Ajouter catégorie",
+      "addAttribute": "Ajouter attribut",
+      "noAttributesAction": "Cliquez sur \"Ajouter attribut\" puis sélectionnez-le ici.",
+      "expiryDate": "Date de fin",
+      "expiryDateHint": "Optionnel: utile pour les produits d'épicerie."
+    },
+    "toast": {
+      "created": "Produit créé.",
+      "updated": "Produit mis à jour.",
+      "deleted": "Produit désactivé.",
+      "categoryCreated": "Catégorie créée.",
+      "attributeCreated": "Attribut créé."
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les données produits.",
+      "required": "Renseignez tous les champs obligatoires.",
+      "variableAttributeRequired": "Un produit variable doit avoir au moins un attribut.",
+      "createFailed": "Impossible de créer le produit.",
+      "updateFailed": "Impossible de mettre à jour le produit.",
+      "deleteFailed": "Impossible de désactiver le produit.",
+      "categoryNameRequired": "Nom de catégorie requis.",
+      "categoryCreateFailed": "Impossible de créer la catégorie.",
+      "attributeNameRequired": "Nom attribut requis.",
+      "attributeCreateFailed": "Impossible de créer l'attribut."
+    },
+    "empty": "Aucun produit trouvé.",
+    "categoryDialog": {
+      "title": "Ajouter une catégorie",
+      "description": "Créez rapidement une catégorie sans quitter le formulaire produit.",
+      "name": "Nom catégorie",
+      "placeholder": "Ex: Boissons",
+      "submit": "Ajouter"
+    },
+    "attributeDialog": {
+      "title": "Ajouter un attribut",
+      "description": "Ajoutez un attribut pour vos produits variables (ex: Taille, Couleur).",
+      "name": "Nom attribut",
+      "placeholder": "Ex: Taille",
+      "submit": "Ajouter",
+      "values": "Valeurs (optionnel)",
+      "valuesPlaceholder": "Ex: 36, 38, 40",
+      "valuesHint": "Sépare les valeurs par des virgules pour créer les options directement."
+    },
+    "variants": {
+      "title": "Variantes du produit",
+      "description": "Chaque variante peut avoir son propre prix et son propre stock.",
+      "values": "Valeurs de variantes",
+      "valuesPlaceholder": "Choisir des valeurs (taille/couleur...)",
+      "sku": "SKU variante",
+      "price": "Prix variante",
+      "stock": "Stock variante",
+      "add": "Ajouter la variante",
+      "empty": "Aucune variante créée.",
+      "table": {
+        "name": "Variante",
+        "price": "Prix",
+        "stock": "Stock"
+      },
+      "errors": {
+        "valuesRequired": "Choisissez au moins une valeur de variante.",
+        "priceRequired": "Le prix de variante est requis.",
+        "createFailed": "Impossible de créer la variante.",
+        "updateFailed": "Impossible de mettre à jour la variante."
+      },
+      "toast": {
+        "created": "Variante créée."
+      }
+    }
+  },
+  "managerProductDetail": {
+    "title": "Détails du produit",
+    "subtitle": "Consultez les informations et modifiez chaque champ individuellement.",
+    "back": "Retour aux produits",
+    "notFound": "Produit introuvable.",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "empty": "—",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "expiringSoon": "Bientôt périmé",
+    "type": {
+      "SIMPLE": "Simple",
+      "VARIABLE": "Variable",
+      "SERVICE": "Service"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "sections": {
+      "general": "Informations générales",
+      "pricing": "Tarification",
+      "stock": "Stock",
+      "service": "Produit service",
+      "attributes": "Attributs",
+      "variants": "Variantes"
+    },
+    "service": {
+      "note": "Aucune gestion de stock physique.",
+      "description": "Les produits de type service représentent des prestations non-physiques (conseil, réparation, livraison, etc.). La gestion du stock ne s'applique pas."
+    },
+    "attributes": {
+      "empty": "Aucun attribut configuré pour ce produit."
+    },
+    "fields": {
+      "name": "Nom",
+      "type": "Type",
+      "category": "Catégorie",
+      "sku": "SKU",
+      "barcode": "Code-barres",
+      "price": "Prix",
+      "costPrice": "Prix d'achat",
+      "vatRate": "TVA",
+      "stock": "Stock",
+      "minStock": "Stock minimum",
+      "expiryDate": "Date d'échéance"
+    },
+    "edit": {
+      "title": "Modifier le champ",
+      "description": "Mettez à jour la valeur puis enregistrez."
+    },
+    "variants": {
+      "description": "Chaque variante peut avoir son propre prix, SKU et stock.",
+      "empty": "Aucune variante. Ajoutez des variantes depuis le formulaire d'édition.",
+      "editDescription": "Modifiez le SKU, le prix, le coût et le stock de cette variante.",
+      "inheritPrice": "Même que le prix de base",
+      "inheritedPrice": "Base ({price})",
+      "outOfStock": "Rupture",
+      "lowStock": "Faible",
+      "costOverride": "Prix d'achat (variante)",
+      "updated": "Variante mise à jour.",
+      "updateFailed": "Impossible de mettre à jour la variante.",
+      "cols": {
+        "name": "Variante",
+        "sku": "SKU",
+        "price": "Prix",
+        "stock": "Stock",
+        "status": "Statut"
+      }
+    },
+    "toast": {
+      "updated": "Produit mis à jour."
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les détails du produit.",
+      "updateFailed": "Impossible de mettre à jour le produit."
+    }
+  },
   "managerSidebar": {
     "group": {
       "main": "Vue d'ensemble",
@@ -1171,5 +1409,101 @@
     "switchAccount": "Connexion avec un autre compte",
     "deleteDigit": "Supprimer le dernier chiffre",
     "digit": "Chiffre {key}"
+  },
+  "managerDashboard": {
+    "title": "Tableau de bord manager",
+    "subtitle": "Vue globale du magasin, reporting, stock et équipe.",
+    "links": {
+      "reports": "Rapports",
+      "sales": "Ventes",
+      "inventory": "Stock",
+      "products": "Produits",
+      "categories": "Catégories",
+      "customers": "Clients"
+    },
+    "expiring": {
+      "title": "Produits proches de l'échéance (30 jours)",
+      "empty": "Aucun produit proche de l'échéance."
+    }
+  },
+  "managerProductsNew": {
+    "title": "Ajouter un produit",
+    "subtitle": "Crée un produit et, si VARIABLE, configure ses variantes avec prix et stock par variante.",
+    "back": "Retour produits",
+    "cancel": "Annuler",
+    "submit": "Créer produit",
+    "saving": "Enregistrement...",
+    "type": {
+      "SIMPLE": "Simple",
+      "VARIABLE": "Variable",
+      "SERVICE": "Service"
+    },
+    "typeHelp": {
+      "SIMPLE": "Produit classique.",
+      "VARIABLE": "Produit avec plusieurs variantes (ex: tailles/couleurs).",
+      "SERVICE": "Service sans stock physique."
+    },
+    "general": {
+      "title": "Informations produit",
+      "description": "Renseigne les informations principales du produit.",
+      "category": "Catégorie",
+      "categoryPlaceholder": "Choisir une catégorie",
+      "type": "Type",
+      "name": "Nom produit",
+      "sku": "SKU",
+      "barcode": "Code-barres",
+      "price": "Prix base",
+      "costPrice": "Prix d'achat",
+      "stock": "Stock base",
+      "minStock": "Alerte stock minimum",
+      "vatRate": "TVA (%)",
+      "expiryDate": "Date de fin"
+    },
+    "variable": {
+      "title": "Variantes (logique WooCommerce)",
+      "description": "1) Sélectionne des attributs 2) choisis les valeurs 3) génère les variantes avec prix+stock.",
+      "attributes": "Attributs",
+      "values": "Valeurs par attribut",
+      "noValues": "Aucune valeur pour cet attribut.",
+      "generateHint": "Génère les combinaisons automatiquement à partir des valeurs choisies.",
+      "generate": "Générer variantes",
+      "variants": "Variantes générées",
+      "variantSku": "SKU variante",
+      "variantPrice": "Prix variante",
+      "variantStock": "Stock variante",
+      "addAttribute": "Ajouter attribut",
+      "generateSku": "Générer SKU"
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger catégories/attributs.",
+      "required": "Remplis tous les champs obligatoires.",
+      "selectAttributeFirst": "Sélectionne au moins un attribut.",
+      "selectValuesPerAttribute": "Choisis des valeurs pour {attribute}.",
+      "generateVariantsFirst": "Génère les variantes d'abord.",
+      "variantPriceRequired": "Chaque variante doit avoir un prix.",
+      "createFailed": "Impossible de créer le produit.",
+      "variantCreateFailed": "Impossible de créer les variantes.",
+      "attributeNameRequired": "Nom attribut requis.",
+      "attributeCreateFailed": "Impossible de créer l'attribut.",
+      "attributeUpdateFailed": "Impossible de modifier l'attribut.",
+      "attributeDeleteFailed": "Impossible de supprimer l'attribut."
+    },
+    "toast": {
+      "created": "Produit créé avec succès.",
+      "attributeCreated": "Attribut créé.",
+      "attributeUpdated": "Attribut modifié.",
+      "attributeDeleted": "Attribut supprimé."
+    },
+    "attributeDialog": {
+      "createTitle": "Ajouter un attribut",
+      "editTitle": "Modifier attribut",
+      "description": "Crée ou modifie un attribut utilisé pour les variantes.",
+      "name": "Nom attribut",
+      "values": "Valeurs (optionnel)",
+      "valuesPlaceholder": "Ex: 36, 38, 40",
+      "valuesHint": "Sépare les valeurs par virgules.",
+      "submit": "Enregistrer"
+    },
+    "confirmDeleteAttribute": "Supprimer l'attribut \"{name}\" ?"
   }
 }

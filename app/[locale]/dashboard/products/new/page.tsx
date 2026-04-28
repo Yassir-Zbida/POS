@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { ManagerProductsClient } from "@/components/manager/manager-products-client";
+import { ManagerProductCreateClient } from "@/components/manager/manager-product-create-client";
 import { type Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -16,7 +16,6 @@ export async function generateMetadata({
   return { title: t("dashboardProducts") };
 }
 
-export default function ProductsPage() {
-  return <ManagerProductsClient />;
+export default function ProductCreatePage() {
+  return <ManagerProductCreateClient />;
 }
-

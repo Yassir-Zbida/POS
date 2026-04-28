@@ -317,8 +317,12 @@
       "name": "Hssabaty POS",
       "tagline": "Staff"
     },
-    "status": { "online": "Online" },
-    "navGroup": { "label": "Menu" },
+    "status": {
+      "online": "Online"
+    },
+    "navGroup": {
+      "label": "Menu"
+    },
     "nav": {
       "pos": "Point of sale",
       "products": "Products & categories",
@@ -345,8 +349,17 @@
       "searchStub": "Search (demo)",
       "logout": "Log out"
     },
-    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "Language" },
-    "theme": { "light": "Light", "dark": "Dark", "label": "Theme" },
+    "lang": {
+      "en": "EN",
+      "fr": "FR",
+      "ar": "AR",
+      "label": "Language"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "label": "Theme"
+    },
     "placeholders": {
       "static": "Demo — no server yet"
     },
@@ -1146,6 +1159,229 @@
       "statusFailed": "Could not update status."
     }
   },
+  "managerProducts": {
+    "title": "Products",
+    "subtitle": "Manage your catalog with simple, variable, and service products.",
+    "back": "Back to manager dashboard",
+    "add": "Add product",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "searchPlaceholder": "Search by name, SKU, or barcode",
+    "tabs": {
+      "overview": "Overview",
+      "products": "Products"
+    },
+    "stats": {
+      "total": "Total products",
+      "variable": "Variable products",
+      "lowStock": "Low stock"
+    },
+    "type": {
+      "SIMPLE": "Simple",
+      "VARIABLE": "Variable",
+      "SERVICE": "Service"
+    },
+    "typeHelp": {
+      "SIMPLE": "Standard product with one price and one stock.",
+      "VARIABLE": "Product with multiple variants (e.g. size/color).",
+      "SERVICE": "Service item without physical stock."
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "table": {
+      "name": "Name",
+      "type": "Type",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "actions": "",
+      "expiry": "Expiry"
+    },
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "deactivate": "Deactivate"
+    },
+    "create": {
+      "title": "Create product",
+      "description": "Use your category and product type to structure your catalog.",
+      "submit": "Create"
+    },
+    "edit": {
+      "title": "Edit product",
+      "description": "Update product details, stock, and type.",
+      "submit": "Save"
+    },
+    "form": {
+      "type": "Product type",
+      "category": "Category",
+      "categoryHint": "Choose one main category for this product.",
+      "categoryPlaceholder": "Choose a category",
+      "name": "Product name",
+      "nameHint": "One name will be reused automatically for FR/EN/AR.",
+      "sku": "SKU",
+      "barcode": "Barcode",
+      "imageUrl": "Image URL",
+      "price": "Price",
+      "costPrice": "Cost price",
+      "vatRate": "VAT rate (%)",
+      "stock": "Stock",
+      "minStock": "Min stock alert",
+      "attributes": "Variant attributes",
+      "attributesHint": "Required for VARIABLE products to build variants.",
+      "noAttributes": "No attributes found. Create attributes first.",
+      "addCategory": "Add category",
+      "addAttribute": "Add attribute",
+      "noAttributesAction": "Click \"Add attribute\" then select it here.",
+      "expiryDate": "Expiry date",
+      "expiryDateHint": "Optional: useful for grocery/perishable products."
+    },
+    "toast": {
+      "created": "Product created.",
+      "updated": "Product updated.",
+      "deleted": "Product deactivated.",
+      "categoryCreated": "Category created.",
+      "attributeCreated": "Attribute created."
+    },
+    "errors": {
+      "loadFailed": "Could not load products data.",
+      "required": "Fill all required fields.",
+      "variableAttributeRequired": "Variable product needs at least one attribute.",
+      "createFailed": "Could not create product.",
+      "updateFailed": "Could not update product.",
+      "deleteFailed": "Could not deactivate product.",
+      "categoryNameRequired": "Category name is required.",
+      "categoryCreateFailed": "Could not create category.",
+      "attributeNameRequired": "Attribute name is required.",
+      "attributeCreateFailed": "Could not create attribute."
+    },
+    "empty": "No products found.",
+    "categoryDialog": {
+      "title": "Add category",
+      "description": "Quickly create a category without leaving the product form.",
+      "name": "Category name",
+      "placeholder": "e.g. Drinks",
+      "submit": "Add"
+    },
+    "attributeDialog": {
+      "title": "Add attribute",
+      "description": "Add an attribute for variable products (e.g. Size, Color).",
+      "name": "Attribute name",
+      "placeholder": "e.g. Size",
+      "submit": "Add",
+      "values": "Values (optional)",
+      "valuesPlaceholder": "e.g. 36, 38, 40",
+      "valuesHint": "Separate values with commas to create options immediately."
+    },
+    "variants": {
+      "title": "Product variants",
+      "description": "Each variant can have its own price and stock.",
+      "values": "Variant values",
+      "valuesPlaceholder": "Choose values (size/color...)",
+      "sku": "Variant SKU",
+      "price": "Variant price",
+      "stock": "Variant stock",
+      "add": "Add variant",
+      "empty": "No variants yet.",
+      "table": {
+        "name": "Variant",
+        "price": "Price",
+        "stock": "Stock"
+      },
+      "errors": {
+        "valuesRequired": "Select at least one variant value.",
+        "priceRequired": "Variant price is required.",
+        "createFailed": "Could not create variant.",
+        "updateFailed": "Could not update variant."
+      },
+      "toast": {
+        "created": "Variant created."
+      }
+    }
+  },
+  "managerProductDetail": {
+    "title": "Product details",
+    "subtitle": "View product info and edit each field individually.",
+    "back": "Back to products",
+    "notFound": "Product not found.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "empty": "—",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "expiringSoon": "Expiring soon",
+    "type": {
+      "SIMPLE": "Simple",
+      "VARIABLE": "Variable",
+      "SERVICE": "Service"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "sections": {
+      "general": "General info",
+      "pricing": "Pricing",
+      "stock": "Stock",
+      "service": "Service product",
+      "attributes": "Attributes",
+      "variants": "Variants"
+    },
+    "service": {
+      "note": "No physical stock tracked.",
+      "description": "Service products represent non-physical items (consulting, repair, delivery, etc.). Stock management does not apply."
+    },
+    "attributes": {
+      "empty": "No attributes configured for this product."
+    },
+    "fields": {
+      "name": "Name",
+      "type": "Type",
+      "category": "Category",
+      "sku": "SKU",
+      "barcode": "Barcode",
+      "price": "Price",
+      "costPrice": "Cost price",
+      "vatRate": "VAT rate",
+      "stock": "Stock",
+      "minStock": "Min stock",
+      "expiryDate": "Expiry date"
+    },
+    "edit": {
+      "title": "Edit field",
+      "description": "Update this value and save."
+    },
+    "variants": {
+      "description": "Each variant can have its own price, SKU and stock.",
+      "empty": "No variants yet. Add variants from the product edit form.",
+      "editDescription": "Update the SKU, price, cost and stock for this variant.",
+      "inheritPrice": "Same as base price",
+      "inheritedPrice": "Base ({price})",
+      "outOfStock": "Out of stock",
+      "lowStock": "Low",
+      "costOverride": "Cost price (override)",
+      "updated": "Variant updated.",
+      "updateFailed": "Could not update variant.",
+      "cols": {
+        "name": "Variant",
+        "sku": "SKU",
+        "price": "Price",
+        "stock": "Stock",
+        "status": "Status"
+      }
+    },
+    "toast": {
+      "updated": "Product updated."
+    },
+    "errors": {
+      "loadFailed": "Could not load product details.",
+      "updateFailed": "Could not update product."
+    }
+  },
   "managerSidebar": {
     "group": {
       "main": "Overview",
@@ -1173,5 +1409,101 @@
     "switchAccount": "Sign in with another account",
     "deleteDigit": "Delete last digit",
     "digit": "Digit {key}"
+  },
+  "managerDashboard": {
+    "title": "Manager Dashboard",
+    "subtitle": "Store overview, reporting, inventory, and team management.",
+    "links": {
+      "reports": "Reports",
+      "sales": "Sales",
+      "inventory": "Inventory",
+      "products": "Products",
+      "categories": "Categories",
+      "customers": "Customers"
+    },
+    "expiring": {
+      "title": "Products near expiry (30 days)",
+      "empty": "No products close to expiry."
+    }
+  },
+  "managerProductsNew": {
+    "title": "Add product",
+    "subtitle": "Create a product and, when VARIABLE, configure variants with per-variant price and stock.",
+    "back": "Back to products",
+    "cancel": "Cancel",
+    "submit": "Create product",
+    "saving": "Saving...",
+    "type": {
+      "SIMPLE": "Simple",
+      "VARIABLE": "Variable",
+      "SERVICE": "Service"
+    },
+    "typeHelp": {
+      "SIMPLE": "Standard product.",
+      "VARIABLE": "Product with multiple variants (e.g. sizes/colors).",
+      "SERVICE": "Service without physical stock."
+    },
+    "general": {
+      "title": "Product details",
+      "description": "Fill in the main product details.",
+      "category": "Category",
+      "categoryPlaceholder": "Choose a category",
+      "type": "Type",
+      "name": "Product name",
+      "sku": "SKU",
+      "barcode": "Barcode",
+      "price": "Base price",
+      "costPrice": "Cost price",
+      "stock": "Base stock",
+      "minStock": "Low-stock alert",
+      "vatRate": "VAT (%)",
+      "expiryDate": "Expiry date"
+    },
+    "variable": {
+      "title": "Variants (WooCommerce-like flow)",
+      "description": "1) Select attributes 2) choose values 3) generate variants with price+stock.",
+      "attributes": "Attributes",
+      "values": "Values per attribute",
+      "noValues": "No values for this attribute.",
+      "generateHint": "Generate combinations automatically from selected values.",
+      "generate": "Generate variants",
+      "variants": "Generated variants",
+      "variantSku": "Variant SKU",
+      "variantPrice": "Variant price",
+      "variantStock": "Variant stock",
+      "addAttribute": "Add attribute",
+      "generateSku": "Generate SKU"
+    },
+    "errors": {
+      "loadFailed": "Could not load categories/attributes.",
+      "required": "Fill all required fields.",
+      "selectAttributeFirst": "Select at least one attribute.",
+      "selectValuesPerAttribute": "Choose values for {attribute}.",
+      "generateVariantsFirst": "Generate variants first.",
+      "variantPriceRequired": "Each variant needs a price.",
+      "createFailed": "Could not create product.",
+      "variantCreateFailed": "Could not create variants.",
+      "attributeNameRequired": "Attribute name is required.",
+      "attributeCreateFailed": "Could not create attribute.",
+      "attributeUpdateFailed": "Could not update attribute.",
+      "attributeDeleteFailed": "Could not delete attribute."
+    },
+    "toast": {
+      "created": "Product created successfully.",
+      "attributeCreated": "Attribute created.",
+      "attributeUpdated": "Attribute updated.",
+      "attributeDeleted": "Attribute deleted."
+    },
+    "attributeDialog": {
+      "createTitle": "Add attribute",
+      "editTitle": "Edit attribute",
+      "description": "Create or edit an attribute used for variants.",
+      "name": "Attribute name",
+      "values": "Values (optional)",
+      "valuesPlaceholder": "e.g. 36, 38, 40",
+      "valuesHint": "Separate values with commas.",
+      "submit": "Save"
+    },
+    "confirmDeleteAttribute": "Delete attribute \"{name}\"?"
   }
 }

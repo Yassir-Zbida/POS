@@ -317,8 +317,12 @@
       "name": "حساباتي POS",
       "tagline": "الموظفون"
     },
-    "status": { "online": "متصل" },
-    "navGroup": { "label": "القائمة" },
+    "status": {
+      "online": "متصل"
+    },
+    "navGroup": {
+      "label": "القائمة"
+    },
     "nav": {
       "pos": "نقطة البيع",
       "products": "المنتجات والتصنيفات",
@@ -345,9 +349,20 @@
       "searchStub": "بحث (تجريبي)",
       "logout": "تسجيل الخروج"
     },
-    "lang": { "en": "EN", "fr": "FR", "ar": "AR", "label": "اللغة" },
-    "theme": { "light": "فاتح", "dark": "داكن", "label": "المظهر" },
-    "placeholders": { "static": "تجريبي — لا خادم بعد" },
+    "lang": {
+      "en": "EN",
+      "fr": "FR",
+      "ar": "AR",
+      "label": "اللغة"
+    },
+    "theme": {
+      "light": "فاتح",
+      "dark": "داكن",
+      "label": "المظهر"
+    },
+    "placeholders": {
+      "static": "تجريبي — لا خادم بعد"
+    },
     "pos": {
       "searchPlaceholder": "ابحث عن المنتجات",
       "barcodePlaceholder": "الباركود / الماسح",
@@ -1144,6 +1159,229 @@
       "statusFailed": "تعذّر تحديث الحالة."
     }
   },
+  "managerProducts": {
+    "title": "المنتجات",
+    "subtitle": "إدارة الكتالوج بمنتجات بسيطة ومتغيرة وخدمات.",
+    "back": "العودة إلى لوحة المدير",
+    "add": "إضافة منتج",
+    "cancel": "إلغاء",
+    "saving": "جارٍ الحفظ...",
+    "searchPlaceholder": "ابحث بالاسم أو SKU أو الباركود",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "products": "المنتجات"
+    },
+    "stats": {
+      "total": "إجمالي المنتجات",
+      "variable": "منتجات متغيرة",
+      "lowStock": "مخزون منخفض"
+    },
+    "type": {
+      "SIMPLE": "بسيط",
+      "VARIABLE": "متغير",
+      "SERVICE": "خدمة"
+    },
+    "typeHelp": {
+      "SIMPLE": "منتج عادي بسعر ومخزون واحد.",
+      "VARIABLE": "منتج له عدة نسخ (مثل مقاسات/ألوان).",
+      "SERVICE": "خدمة بدون مخزون مادي."
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "table": {
+      "name": "الاسم",
+      "type": "النوع",
+      "category": "الفئة",
+      "price": "السعر",
+      "stock": "المخزون",
+      "status": "الحالة",
+      "actions": "",
+      "expiry": "الانتهاء"
+    },
+    "actions": {
+      "view": "عرض",
+      "edit": "تعديل",
+      "deactivate": "تعطيل"
+    },
+    "create": {
+      "title": "إنشاء منتج",
+      "description": "استخدم الفئة ونوع المنتج لتنظيم الكتالوج.",
+      "submit": "إنشاء"
+    },
+    "edit": {
+      "title": "تعديل المنتج",
+      "description": "تحديث بيانات المنتج والمخزون والنوع.",
+      "submit": "حفظ"
+    },
+    "form": {
+      "type": "نوع المنتج",
+      "category": "الفئة",
+      "categoryHint": "اختر فئة رئيسية واحدة لهذا المنتج.",
+      "categoryPlaceholder": "اختر فئة",
+      "name": "اسم المنتج",
+      "nameHint": "سيتم استخدام نفس الاسم تلقائيًا لـ FR/EN/AR.",
+      "sku": "SKU",
+      "barcode": "الباركود",
+      "imageUrl": "رابط الصورة",
+      "price": "السعر",
+      "costPrice": "سعر التكلفة",
+      "vatRate": "نسبة الضريبة (%)",
+      "stock": "المخزون",
+      "minStock": "حد التنبيه الأدنى",
+      "attributes": "خصائص المتغيرات",
+      "attributesHint": "مطلوب للمنتجات المتغيرة لبناء المتغيرات.",
+      "noAttributes": "لا توجد خصائص. أنشئ الخصائص أولًا.",
+      "addCategory": "إضافة فئة",
+      "addAttribute": "إضافة خاصية",
+      "noAttributesAction": "اضغط \"إضافة خاصية\" ثم اخترها من هنا.",
+      "expiryDate": "تاريخ الانتهاء",
+      "expiryDateHint": "اختياري: مفيد لمنتجات البقالة سريعة التلف."
+    },
+    "toast": {
+      "created": "تم إنشاء المنتج.",
+      "updated": "تم تحديث المنتج.",
+      "deleted": "تم تعطيل المنتج.",
+      "categoryCreated": "تم إنشاء الفئة.",
+      "attributeCreated": "تم إنشاء الخاصية."
+    },
+    "errors": {
+      "loadFailed": "تعذّر تحميل بيانات المنتجات.",
+      "required": "يرجى ملء الحقول المطلوبة.",
+      "variableAttributeRequired": "المنتج المتغير يحتاج خاصية واحدة على الأقل.",
+      "createFailed": "تعذّر إنشاء المنتج.",
+      "updateFailed": "تعذّر تحديث المنتج.",
+      "deleteFailed": "تعذّر تعطيل المنتج.",
+      "categoryNameRequired": "اسم الفئة مطلوب.",
+      "categoryCreateFailed": "تعذر إنشاء الفئة.",
+      "attributeNameRequired": "اسم الخاصية مطلوب.",
+      "attributeCreateFailed": "تعذر إنشاء الخاصية."
+    },
+    "empty": "لا توجد منتجات.",
+    "categoryDialog": {
+      "title": "إضافة فئة",
+      "description": "أنشئ فئة بسرعة دون مغادرة نموذج المنتج.",
+      "name": "اسم الفئة",
+      "placeholder": "مثال: مشروبات",
+      "submit": "إضافة"
+    },
+    "attributeDialog": {
+      "title": "إضافة خاصية",
+      "description": "أضف خاصية للمنتجات المتغيرة (مثل المقاس أو اللون).",
+      "name": "اسم الخاصية",
+      "placeholder": "مثال: المقاس",
+      "submit": "إضافة",
+      "values": "القيم (اختياري)",
+      "valuesPlaceholder": "مثال: 36, 38, 40",
+      "valuesHint": "افصل القيم بفواصل لإنشاء الخيارات مباشرة."
+    },
+    "variants": {
+      "title": "متغيرات المنتج",
+      "description": "كل متغير يمكن أن يملك سعرًا ومخزونًا مستقلًا.",
+      "values": "قيم المتغيرات",
+      "valuesPlaceholder": "اختر القيم (مقاس/لون...)",
+      "sku": "SKU المتغير",
+      "price": "سعر المتغير",
+      "stock": "مخزون المتغير",
+      "add": "إضافة متغير",
+      "empty": "لا توجد متغيرات بعد.",
+      "table": {
+        "name": "المتغير",
+        "price": "السعر",
+        "stock": "المخزون"
+      },
+      "errors": {
+        "valuesRequired": "اختر قيمة متغير واحدة على الأقل.",
+        "priceRequired": "سعر المتغير مطلوب.",
+        "createFailed": "تعذر إنشاء المتغير.",
+        "updateFailed": "تعذر تحديث المتغير."
+      },
+      "toast": {
+        "created": "تم إنشاء المتغير."
+      }
+    }
+  },
+  "managerProductDetail": {
+    "title": "تفاصيل المنتج",
+    "subtitle": "اعرض معلومات المنتج وعدّل كل حقل على حدة.",
+    "back": "الرجوع إلى المنتجات",
+    "notFound": "المنتج غير موجود.",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "empty": "—",
+    "activate": "تفعيل",
+    "deactivate": "تعطيل",
+    "expiringSoon": "قريب الانتهاء",
+    "type": {
+      "SIMPLE": "بسيط",
+      "VARIABLE": "متغير",
+      "SERVICE": "خدمة"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "sections": {
+      "general": "معلومات عامة",
+      "pricing": "التسعير",
+      "stock": "المخزون",
+      "service": "منتج خدمة",
+      "attributes": "الخصائص",
+      "variants": "المتغيرات"
+    },
+    "service": {
+      "note": "لا يوجد مخزون مادي لهذا المنتج.",
+      "description": "منتجات الخدمة تمثل بنوداً غير مادية (استشارة، إصلاح، توصيل، إلخ). لا تنطبق عليها إدارة المخزون."
+    },
+    "attributes": {
+      "empty": "لم يتم تهيئة أي خصائص لهذا المنتج."
+    },
+    "fields": {
+      "name": "الاسم",
+      "type": "النوع",
+      "category": "الفئة",
+      "sku": "SKU",
+      "barcode": "الباركود",
+      "price": "السعر",
+      "costPrice": "سعر التكلفة",
+      "vatRate": "الضريبة",
+      "stock": "المخزون",
+      "minStock": "الحد الأدنى",
+      "expiryDate": "تاريخ الانتهاء"
+    },
+    "edit": {
+      "title": "تعديل الحقل",
+      "description": "حدّث القيمة ثم احفظ."
+    },
+    "variants": {
+      "description": "كل متغير يمكن أن يملك سعره وSKU ومخزونه الخاصين.",
+      "empty": "لا توجد متغيرات بعد. أضف متغيرات من نموذج تعديل المنتج.",
+      "editDescription": "عدّل SKU والسعر والتكلفة والمخزون لهذا المتغير.",
+      "inheritPrice": "نفس السعر الأساسي",
+      "inheritedPrice": "أساسي ({price})",
+      "outOfStock": "نفد",
+      "lowStock": "منخفض",
+      "costOverride": "سعر التكلفة (متغير)",
+      "updated": "تم تحديث المتغير.",
+      "updateFailed": "تعذر تحديث المتغير.",
+      "cols": {
+        "name": "المتغير",
+        "sku": "SKU",
+        "price": "السعر",
+        "stock": "المخزون",
+        "status": "الحالة"
+      }
+    },
+    "toast": {
+      "updated": "تم تحديث المنتج."
+    },
+    "errors": {
+      "loadFailed": "تعذر تحميل تفاصيل المنتج.",
+      "updateFailed": "تعذر تحديث المنتج."
+    }
+  },
   "managerSidebar": {
     "group": {
       "main": "نظرة عامة",
@@ -1171,5 +1409,101 @@
     "switchAccount": "تسجيل الدخول بحساب آخر",
     "deleteDigit": "حذف الرقم الأخير",
     "digit": "الرقم {key}"
+  },
+  "managerDashboard": {
+    "title": "لوحة المدير",
+    "subtitle": "نظرة عامة على المتجر والتقارير والمخزون والفريق.",
+    "links": {
+      "reports": "التقارير",
+      "sales": "المبيعات",
+      "inventory": "المخزون",
+      "products": "المنتجات",
+      "categories": "التصنيفات",
+      "customers": "العملاء"
+    },
+    "expiring": {
+      "title": "منتجات قريبة من الانتهاء (30 يومًا)",
+      "empty": "لا توجد منتجات قريبة من الانتهاء."
+    }
+  },
+  "managerProductsNew": {
+    "title": "إضافة منتج",
+    "subtitle": "أنشئ منتجًا، وإذا كان متغيرًا جهّز المتغيرات بسعر ومخزون لكل متغير.",
+    "back": "العودة للمنتجات",
+    "cancel": "إلغاء",
+    "submit": "إنشاء المنتج",
+    "saving": "جارٍ الحفظ...",
+    "type": {
+      "SIMPLE": "بسيط",
+      "VARIABLE": "متغير",
+      "SERVICE": "خدمة"
+    },
+    "typeHelp": {
+      "SIMPLE": "منتج عادي.",
+      "VARIABLE": "منتج له عدة متغيرات (مثل مقاسات/ألوان).",
+      "SERVICE": "خدمة بدون مخزون مادي."
+    },
+    "general": {
+      "title": "بيانات المنتج",
+      "description": "أدخل المعلومات الأساسية للمنتج.",
+      "category": "الفئة",
+      "categoryPlaceholder": "اختر فئة",
+      "type": "النوع",
+      "name": "اسم المنتج",
+      "sku": "SKU",
+      "barcode": "الباركود",
+      "price": "السعر الأساسي",
+      "costPrice": "سعر التكلفة",
+      "stock": "المخزون الأساسي",
+      "minStock": "تنبيه الحد الأدنى",
+      "vatRate": "الضريبة (%)",
+      "expiryDate": "تاريخ الانتهاء"
+    },
+    "variable": {
+      "title": "المتغيرات (منطق WooCommerce)",
+      "description": "1) اختر الخصائص 2) اختر القيم 3) أنشئ المتغيرات مع السعر والمخزون.",
+      "attributes": "الخصائص",
+      "values": "القيم لكل خاصية",
+      "noValues": "لا توجد قيم لهذه الخاصية.",
+      "generateHint": "أنشئ التركيبات تلقائيًا من القيم المختارة.",
+      "generate": "إنشاء المتغيرات",
+      "variants": "المتغيرات المنشأة",
+      "variantSku": "SKU المتغير",
+      "variantPrice": "سعر المتغير",
+      "variantStock": "مخزون المتغير",
+      "addAttribute": "إضافة خاصية",
+      "generateSku": "توليد SKU"
+    },
+    "errors": {
+      "loadFailed": "تعذر تحميل الفئات/الخصائص.",
+      "required": "املأ كل الحقول المطلوبة.",
+      "selectAttributeFirst": "اختر خاصية واحدة على الأقل.",
+      "selectValuesPerAttribute": "اختر قيماً للخاصية {attribute}.",
+      "generateVariantsFirst": "أنشئ المتغيرات أولاً.",
+      "variantPriceRequired": "كل متغير يحتاج سعرًا.",
+      "createFailed": "تعذر إنشاء المنتج.",
+      "variantCreateFailed": "تعذر إنشاء المتغيرات.",
+      "attributeNameRequired": "اسم الخاصية مطلوب.",
+      "attributeCreateFailed": "تعذر إنشاء الخاصية.",
+      "attributeUpdateFailed": "تعذر تعديل الخاصية.",
+      "attributeDeleteFailed": "تعذر حذف الخاصية."
+    },
+    "toast": {
+      "created": "تم إنشاء المنتج بنجاح.",
+      "attributeCreated": "تم إنشاء الخاصية.",
+      "attributeUpdated": "تم تعديل الخاصية.",
+      "attributeDeleted": "تم حذف الخاصية."
+    },
+    "attributeDialog": {
+      "createTitle": "إضافة خاصية",
+      "editTitle": "تعديل الخاصية",
+      "description": "أنشئ أو عدّل خاصية تستخدم في المتغيرات.",
+      "name": "اسم الخاصية",
+      "values": "القيم (اختياري)",
+      "valuesPlaceholder": "مثال: 36, 38, 40",
+      "valuesHint": "افصل القيم بفواصل.",
+      "submit": "حفظ"
+    },
+    "confirmDeleteAttribute": "حذف الخاصية \"{name}\"؟"
   }
 }

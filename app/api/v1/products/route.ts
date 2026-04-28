@@ -18,6 +18,7 @@ const productSchema = z.object({
   stock: z.number().int().min(0).default(0),
   minStock: z.number().int().min(0).default(0),
   imageUrl: z.string().url().optional(),
+  expiryDate: z.string().datetime().optional(),
   categoryId: z.string().min(1),
   /// IDs of global attributes to attach (for VARIABLE products)
   attributeIds: z.array(z.string()).optional(),
@@ -36,6 +37,7 @@ export async function GET(request: Request) {
     const categoryId = searchParams.get("categoryId") ?? undefined;
     const barcode = searchParams.get("barcode") ?? undefined;
     const lowStock = searchParams.get("lowStock") === "true";
+    const expiringInDays = searchParams.get("expiringInDays");
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
     const limit = Math.min(100, parseInt(searchParams.get("limit") ?? "50", 10));
     const skip = (page - 1) * limit;
@@ -64,8 +66,19 @@ export async function GET(request: Request) {
       return NextResponse.json({ products, meta: { total: products.length, page, limit, pages: 1 } });
     }
 
+    const expiryFilter =
+      expiringInDays && Number.isFinite(Number(expiringInDays))
+        ? {
+            expiryDate: {
+              gte: new Date(),
+              lte: new Date(Date.now() + Number(expiringInDays) * 24 * 60 * 60 * 1000),
+            },
+          }
+        : {};
+
     const where = {
       isActive: true,
+      ...expiryFilter,
       ...(categoryId ? { categoryId } : {}),
       ...(search
         ? {
@@ -118,7 +131,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 422 });
     }
 
-    const { price, costPrice, vatRate, attributeIds, ...rest } = parsed.data;
+    const { price, costPrice, vatRate, attributeIds, expiryDate, ...rest } = parsed.data;
 
     const product = await prisma.product.create({
       data: {
@@ -126,6 +139,7 @@ export async function POST(request: Request) {
         price,
         costPrice: costPrice ?? null,
         vatRate,
+        expiryDate: expiryDate ? new Date(expiryDate) : null,
         attributes: attributeIds?.length
           ? { create: attributeIds.map((attributeId) => ({ attributeId })) }
           : undefined,
