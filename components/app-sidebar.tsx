@@ -25,6 +25,7 @@ import {
   Bell,
   Receipt,
   TrendingUp,
+  Boxes,
 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname, Link } from "@/i18n/navigation";
@@ -130,6 +131,79 @@ function AdminSidebarContent({
       <NavGroup labelKey="monitoringGroup" items={monitoringNav} />
       <SidebarSeparator />
       <NavGroup labelKey="supportGroup" items={supportNav} />
+    </>
+  );
+}
+
+function ManagerSidebarContent({
+  isActive,
+  isRtl: _isRtl,
+}: {
+  isActive: (href: string) => boolean;
+  isRtl: boolean;
+}) {
+  const t = useTranslations("managerSidebar");
+
+  const mainNav = [
+    { key: "home", href: "/dashboard/manager", icon: LayoutDashboard },
+    { key: "staff", href: "/dashboard/manager/staff", icon: Users },
+  ];
+
+  const storeNav = [
+    { key: "reports", href: "/dashboard/reports", icon: BarChart2 },
+    { key: "sales", href: "/dashboard/sales", icon: TrendingUp },
+    { key: "inventory", href: "/dashboard/inventory", icon: Package },
+    { key: "products", href: "/dashboard/products", icon: Boxes },
+    { key: "categories", href: "/dashboard/categories", icon: Tag },
+    { key: "customers", href: "/dashboard/customers", icon: Users },
+  ];
+
+  return (
+    <>
+      <SidebarGroup>
+        <SidebarGroupLabel>{t("group.main")}</SidebarGroupLabel>
+        <SidebarMenu>
+          {mainNav.map(({ key, href, icon: Icon }) => (
+            <SidebarMenuItem key={key}>
+              <SidebarMenuButton asChild isActive={isActive(href)} tooltip={t(`nav.${key}`)}>
+                <Link href={href}>
+                  <Icon />
+                  <span>{t(`nav.${key}`)}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroup>
+
+      <SidebarGroup>
+        <SidebarGroupLabel>{t("group.store")}</SidebarGroupLabel>
+        <SidebarMenu>
+          {storeNav.map(({ key, href, icon: Icon }) => (
+            <SidebarMenuItem key={key}>
+              <SidebarMenuButton asChild isActive={isActive(href)} tooltip={t(`nav.${key}`)}>
+                <Link href={href}>
+                  <Icon />
+                  <span>{t(`nav.${key}`)}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroup>
+
+      <SidebarGroup>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild isActive={isActive("/dashboard/settings")} tooltip={t("nav.settings")}>
+              <Link href="/dashboard/settings">
+                <Settings />
+                <span>{t("nav.settings")}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
     </>
   );
 }
@@ -280,6 +354,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const lock = useSessionStore((s) => s.lock);
 
   const isAdmin = authUser?.role === "ADMIN";
+  const isManager = authUser?.role === "MANAGER";
   const adminTitle = isRtl ? "حساباتي" : "HSSABTY ADMIN";
   const adminSubtitle = isRtl ? "الإدارة" : undefined;
 
@@ -335,13 +410,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         {isAdmin ? (
           <AdminSidebarContent isActive={isActive} isRtl={isRtl} />
+        ) : isManager ? (
+          <ManagerSidebarContent isActive={isActive} isRtl={isRtl} />
         ) : (
           <CashierSidebarContent isActive={isActive} isRtl={isRtl} />
         )}
       </SidebarContent>
 
       <SidebarFooter>
-        {!isAdmin && (
+        {authUser?.role === "CASHIER" && (
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton

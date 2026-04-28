@@ -41,6 +41,7 @@ function titleKeyForDashboardPath(pathname: string) {
   if (pathname.includes("/dashboard/admin/subscriptions")) return "adminSubscriptions" as const;
   if (pathname.includes("/dashboard/admin/system-health")) return "adminSystemHealth" as const;
   if (pathname.includes("/dashboard/admin")) return "admin" as const;
+  if (pathname.includes("/dashboard/manager/staff")) return "managerStaff" as const;
   if (pathname.includes("/dashboard/cashier/pos")) return "cashierPos" as const;
   if (pathname.includes("/dashboard/cashier")) return "cashier" as const;
   if (pathname.includes("/dashboard/sales")) return "dashboardSales" as const;

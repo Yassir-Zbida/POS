@@ -29,7 +29,9 @@
       "pos": "POS",
       "docs": "Docs API",
       "otp": "Connexion par code e-mail",
-      "firstLogin": "Définir le mot de passe"
+      "firstLogin": "Définir le mot de passe",
+      "cashierLogin": "Connexion personnel",
+      "managerStaff": "Personnel"
     }
   },
   "home": {
@@ -49,6 +51,7 @@
     "rememberMe": "Se souvenir de moi sur cet appareil",
     "forgotPassword": "Mot de passe oublié ?",
     "loginButton": "Se connecter",
+    "cashierStaffLink": "Connexion personnel (e-mail et PIN)",
     "loginPending": "Connexion…",
     "termsPrefix": "En cliquant sur Continuer, vous acceptez nos",
     "terms": "Conditions d'utilisation",
@@ -1036,6 +1039,126 @@
     "empty": {
       "title": "Aucun journal trouvé",
       "description": "Essayez d'ajuster vos filtres ou la plage de dates."
+    }
+  },
+  "cashierLogin": {
+    "fullTitle": "Connexion personnel",
+    "fullSubtitle": "Utilisez l'e-mail et le mot de passe fournis par votre gérant. Ensuite, cet appareil peut mémoriser l'e-mail : vous n'aurez plus qu'à saisir votre PIN à 4 chiffres.",
+    "pinTitle": "Saisissez votre PIN",
+    "pinSubtitle": "Connexion en tant que",
+    "pinLabel": "PIN à 4 chiffres",
+    "pinSubmit": "Continuer avec le PIN",
+    "useFullLogin": "Connexion avec e-mail et mot de passe",
+    "anotherAccount": "Utiliser un autre compte",
+    "clearedEmail": "E-mail mémorisé effacé sur cet appareil.",
+    "backToPin": "Retour au PIN",
+    "managerLoginLink": "Gérant ou admin ? Connexion standard",
+    "errors": {
+      "pinInvalid": "Saisissez un PIN à 4 chiffres.",
+      "pinFailed": "Connexion impossible. Vérifiez le PIN ou utilisez la connexion complète.",
+      "pinLocked": "PIN verrouillé — réessayez dans {seconds} s.",
+      "fullLoginRequired": "Reconnectez-vous avec l'e-mail et le mot de passe (obligatoire tous les 30 jours ou après une modification d'e-mail par votre gérant).",
+      "notCashier": "Ce compte n'est pas un compte caissier. Utilisez la page de connexion standard."
+    }
+  },
+  "managerStaff": {
+    "title": "Personnel (caissiers)",
+    "subtitle": "Créez des comptes caissiers : chaque personne a un e-mail, un mot de passe pour la première connexion, et un PIN à 4 chiffres pour les connexions rapides.",
+    "cardTitle": "Vos caissiers",
+    "cardDescription": "Modifiez l'e-mail si l'adresse change — une nouvelle connexion complète sera nécessaire sur chaque appareil.",
+    "addStaff": "Ajouter un caissier",
+    "backToDashboard": "Retour au tableau de bord",
+    "tabs": {
+      "overview": "Vue d'ensemble",
+      "cashiers": "Caissiers"
+    },
+    "overview": {
+      "statTotal": "Taille de l'équipe",
+      "statTotalHint": "Tous les comptes caissiers",
+      "statActive": "Actifs",
+      "statActiveHint": "Peuvent se connecter au PDV",
+      "statPinReady": "PIN rapide OK",
+      "statPinReadyHint": "Connexion par PIN seul autorisée (dans les 30 jours après une connexion complète)",
+      "hintTitle": "Comment le personnel se connecte",
+      "hintBody": "Les caissiers utilisent la page de connexion personnel : d'abord e-mail et mot de passe, puis l'appareil peut mémoriser l'e-mail pour le PIN seul. Après 5 minutes sans interaction sur le PDV, l'écran se verrouille et ils saisissent à nouveau leur PIN de caisse."
+    },
+    "staffTab": {
+      "heading": "Comptes caissiers",
+      "countSuffix": "caissiers"
+    },
+    "emptyTitle": "Aucun caissier",
+    "emptyDescription": "Ajoutez votre premier membre pour lui donner accès à la caisse avec e-mail, mot de passe et PIN à 4 chiffres.",
+    "editLabel": "Modifier",
+    "cancel": "Annuler",
+    "fields": {
+      "email": "E-mail",
+      "name": "Nom affiché",
+      "password": "Mot de passe initial",
+      "pin": "PIN PDV (4 chiffres)",
+      "pinHint": "Utilisé avec l'e-mail mémorisé sur la page de connexion personnel. Distinct du PIN de verrouillage après connexion."
+    },
+    "create": {
+      "title": "Nouveau caissier",
+      "description": "Communiquez le mot de passe une fois de façon sécurisée ; le PIN servira aux connexions quotidiennes après la première connexion complète.",
+      "submit": "Créer le caissier"
+    },
+    "editDialog": {
+      "title": "Modifier le caissier",
+      "description": "Modifier l'e-mail déconnecte la personne partout jusqu'à une nouvelle connexion.",
+      "submit": "Enregistrer",
+      "emailWarning": "Changer l'e-mail invalide les appareils mémorisés et exige une connexion complète avant le PIN seul."
+    },
+    "statusToggle": {
+      "suspendAction": "Suspendre",
+      "activateAction": "Réactiver",
+      "suspended": "Caissier suspendu.",
+      "activated": "Caissier réactivé."
+    },
+    "table": {
+      "member": "Membre",
+      "status": "Statut",
+      "quickPin": "PIN rapide",
+      "joined": "Inscription",
+      "actions": ""
+    },
+    "status": {
+      "ACTIVE": "Actif",
+      "BANNED": "Banni",
+      "SUSPENDED": "Suspendu"
+    },
+    "quickPin": {
+      "active": "Prêt (fenêtre 30 jours)",
+      "needsFullLogin": "Connexion complète requise",
+      "noPin": "Sans PIN"
+    },
+    "toast": {
+      "created": "Caissier créé.",
+      "updated": "Caissier mis à jour."
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger le personnel.",
+      "validation": "Vérifiez les champs (mot de passe min. 8 caractères, PIN 4 chiffres).",
+      "emailInUse": "Cet e-mail est déjà utilisé.",
+      "createFailed": "Impossible de créer le caissier.",
+      "updateFailed": "Impossible de mettre à jour le caissier.",
+      "statusFailed": "Impossible de mettre à jour le statut."
+    }
+  },
+  "managerSidebar": {
+    "group": {
+      "main": "Vue d'ensemble",
+      "store": "Magasin"
+    },
+    "nav": {
+      "home": "Tableau de bord",
+      "staff": "Personnel",
+      "reports": "Rapports",
+      "sales": "Ventes",
+      "inventory": "Stock",
+      "products": "Produits",
+      "categories": "Catégories",
+      "customers": "Clients",
+      "settings": "Paramètres"
     }
   },
   "lockScreen": {

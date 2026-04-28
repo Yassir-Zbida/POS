@@ -144,6 +144,8 @@ model User {
   creditPayments      CreditPayment[]      @relation("CashierCreditPayments")
   /** When true (e.g. admin-created merchant), block API access until first password change. */
   mustChangePassword  Boolean              @default(false)
+  /** Last email+password (or OTP) sign-in for cashiers; PIN-only login allowed for 30 days after. */
+  cashierFullAuthAt   DateTime?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
 

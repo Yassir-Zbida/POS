@@ -143,7 +143,11 @@ export async function POST(request: Request) {
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { failedLoginAttempts: 0, lockoutUntil: null },
+      data: {
+        failedLoginAttempts: 0,
+        lockoutUntil: null,
+        ...(user.role === "CASHIER" ? { cashierFullAuthAt: new Date() } : {}),
+      },
     });
 
     await writeAuditLog({

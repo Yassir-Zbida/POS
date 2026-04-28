@@ -29,7 +29,9 @@
       "pos": "POS",
       "docs": "API docs",
       "otp": "Email code sign-in",
-      "firstLogin": "Set your password"
+      "firstLogin": "Set your password",
+      "cashierLogin": "Staff sign-in",
+      "managerStaff": "Staff"
     }
   },
   "home": {
@@ -49,6 +51,7 @@
     "rememberMe": "Remember me on this device",
     "forgotPassword": "Forgot your password?",
     "loginButton": "Log in",
+    "cashierStaffLink": "Staff sign-in (email & PIN)",
     "loginPending": "Signing in…",
     "termsPrefix": "By clicking Continue, you agree to our",
     "terms": "Terms of Service",
@@ -1038,6 +1041,126 @@
     "empty": {
       "title": "No logs found",
       "description": "Try adjusting your filters or date range."
+    }
+  },
+  "cashierLogin": {
+    "fullTitle": "Staff sign-in",
+    "fullSubtitle": "Use the email and password from your manager. After that, this device can remember your email so you only enter your 4-digit PIN.",
+    "pinTitle": "Enter your PIN",
+    "pinSubtitle": "Signing in as",
+    "pinLabel": "4-digit PIN",
+    "pinSubmit": "Continue with PIN",
+    "useFullLogin": "Sign in with email and password",
+    "anotherAccount": "Use a different account",
+    "clearedEmail": "Saved email cleared for this device.",
+    "backToPin": "Back to PIN sign-in",
+    "managerLoginLink": "Manager or admin? Standard sign-in",
+    "errors": {
+      "pinInvalid": "Enter your 4-digit PIN.",
+      "pinFailed": "Could not sign in. Check your PIN or use full sign-in.",
+      "pinLocked": "PIN locked — try again in {seconds} s.",
+      "fullLoginRequired": "Please sign in with email and password again (required every 30 days or after your manager updates your email).",
+      "notCashier": "This account is not a staff cashier. Use the standard sign-in page."
+    }
+  },
+  "managerStaff": {
+    "title": "Staff (cashiers)",
+    "subtitle": "Create cashier accounts for your store: each person has an email, password for full sign-in, and a 4-digit PIN for quick daily sign-in on the staff page.",
+    "cardTitle": "Your cashiers",
+    "cardDescription": "Edit email when someone changes their address — staff will need to sign in with password again on each device.",
+    "addStaff": "Add cashier",
+    "backToDashboard": "Back to dashboard",
+    "tabs": {
+      "overview": "Overview",
+      "cashiers": "Cashiers"
+    },
+    "overview": {
+      "statTotal": "Team size",
+      "statTotalHint": "All cashier accounts",
+      "statActive": "Active",
+      "statActiveHint": "Can sign in and use the POS",
+      "statPinReady": "Quick PIN OK",
+      "statPinReadyHint": "PIN-only sign-in allowed (within 30 days of full login)",
+      "hintTitle": "How staff sign in",
+      "hintBody": "Cashiers use the staff sign-in page: full login with email and password first, then this device can remember the email for PIN-only login. After 5 minutes without touching the POS, the screen locks and they enter their checkout PIN again."
+    },
+    "staffTab": {
+      "heading": "Cashier accounts",
+      "countSuffix": "cashiers"
+    },
+    "emptyTitle": "No cashiers yet",
+    "emptyDescription": "Add your first team member to give them access to checkout with email, password, and a 4-digit PIN.",
+    "editLabel": "Edit",
+    "cancel": "Cancel",
+    "fields": {
+      "email": "Email",
+      "name": "Display name",
+      "password": "Initial password",
+      "pin": "POS PIN (4 digits)",
+      "pinHint": "Used with remembered email on the staff sign-in page. Separate from the lock-screen PIN after login."
+    },
+    "create": {
+      "title": "New cashier",
+      "description": "Share the password securely once; staff can use PIN for daily sign-in after the first full login.",
+      "submit": "Create cashier"
+    },
+    "editDialog": {
+      "title": "Edit cashier",
+      "description": "Updating the email signs them out everywhere until they sign in again.",
+      "submit": "Save changes",
+      "emailWarning": "Changing the email invalidates remembered devices and requires a full password sign-in before PIN-only works again."
+    },
+    "statusToggle": {
+      "suspendAction": "Suspend",
+      "activateAction": "Activate",
+      "suspended": "Cashier suspended.",
+      "activated": "Cashier activated."
+    },
+    "table": {
+      "member": "Member",
+      "status": "Status",
+      "quickPin": "Quick PIN",
+      "joined": "Joined",
+      "actions": ""
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "BANNED": "Banned",
+      "SUSPENDED": "Suspended"
+    },
+    "quickPin": {
+      "active": "Ready (within 30-day window)",
+      "needsFullLogin": "Needs full sign-in",
+      "noPin": "No PIN"
+    },
+    "toast": {
+      "created": "Cashier created.",
+      "updated": "Cashier updated."
+    },
+    "errors": {
+      "loadFailed": "Could not load staff.",
+      "validation": "Check all fields (password min. 8 characters, PIN exactly 4 digits).",
+      "emailInUse": "That email is already used.",
+      "createFailed": "Could not create cashier.",
+      "updateFailed": "Could not update cashier.",
+      "statusFailed": "Could not update status."
+    }
+  },
+  "managerSidebar": {
+    "group": {
+      "main": "Overview",
+      "store": "Store"
+    },
+    "nav": {
+      "home": "Dashboard",
+      "staff": "Staff",
+      "reports": "Reports",
+      "sales": "Sales",
+      "inventory": "Inventory",
+      "products": "Products",
+      "categories": "Categories",
+      "customers": "Customers",
+      "settings": "Settings"
     }
   },
   "lockScreen": {

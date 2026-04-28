@@ -3,7 +3,8 @@
 import { useEffect, useRef } from "react";
 import { useSessionStore } from "@/store/sessionStore";
 
-export function useInactivityLock(timeoutMinutes = 15) {
+/** Default 5 minutes — cashier POS locks after no mouse/keyboard/touch activity. */
+export function useInactivityLock(timeoutMinutes = 5) {
   const lock = useSessionStore((s) => s.lock);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 

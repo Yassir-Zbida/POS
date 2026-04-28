@@ -431,6 +431,14 @@ export function LoginForm({
         </Card>
 
         {!otpRequired && (
+          <div className="text-center text-sm text-muted-foreground">
+            <Link href="/cashier-login" className="font-medium text-primary underline-offset-4 hover:underline">
+              {t("cashierStaffLink")}
+            </Link>
+          </div>
+        )}
+
+        {!otpRequired && (
           <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary">
             {t("termsPrefix")} <a href="#">{t("terms")}</a> {t("and")}{" "}
             <a href="#">{t("privacy")}</a>.
