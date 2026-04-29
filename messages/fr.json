@@ -1447,17 +1447,18 @@
       "title": "Informations produit",
       "description": "Renseigne les informations principales du produit.",
       "category": "Catégorie",
+      "addCategory": "Ajouter catégorie",
       "categoryPlaceholder": "Choisir une catégorie",
       "type": "Type",
       "name": "Nom produit",
-      "sku": "SKU",
       "barcode": "Code-barres",
       "price": "Prix base",
       "costPrice": "Prix d'achat",
       "stock": "Stock base",
       "minStock": "Alerte stock minimum",
       "vatRate": "TVA (%)",
-      "expiryDate": "Date de fin"
+      "expiryDate": "Date de fin",
+      "variableInfo": "Pour les produits VARIABLE, prix/coût/stock se définissent par variante ci-dessous."
     },
     "variable": {
       "title": "Variantes (logique WooCommerce)",
@@ -1472,11 +1473,17 @@
       "variantPrice": "Prix variante",
       "variantStock": "Stock variante",
       "addAttribute": "Ajouter attribut",
-      "generateSku": "Générer SKU"
+      "generateSku": "Générer SKU",
+      "variantCost": "Coût variante",
+      "variantMinStock": "Stock min variante",
+      "variantBarcode": "Code-barres variante",
+      "openDetails": "Clique pour ouvrir les détails"
     },
     "errors": {
       "loadFailed": "Impossible de charger catégories/attributs.",
       "required": "Remplis tous les champs obligatoires.",
+      "categoryNameRequired": "Nom de catégorie requis.",
+      "categoryCreateFailed": "Impossible de créer la catégorie.",
       "selectAttributeFirst": "Sélectionne au moins un attribut.",
       "selectValuesPerAttribute": "Choisis des valeurs pour {attribute}.",
       "generateVariantsFirst": "Génère les variantes d'abord.",
@@ -1486,13 +1493,24 @@
       "attributeNameRequired": "Nom attribut requis.",
       "attributeCreateFailed": "Impossible de créer l'attribut.",
       "attributeUpdateFailed": "Impossible de modifier l'attribut.",
-      "attributeDeleteFailed": "Impossible de supprimer l'attribut."
+      "attributeDeleteFailed": "Impossible de supprimer l'attribut.",
+      "attributeValueCreateFailed": "Impossible de créer la valeur d'attribut.",
+      "attributeValueUpdateFailed": "Impossible de modifier la valeur d'attribut.",
+      "attributeValueDeleteFailed": "Impossible de supprimer la valeur d'attribut."
     },
     "toast": {
       "created": "Produit créé avec succès.",
+      "categoryCreated": "Catégorie créée.",
       "attributeCreated": "Attribut créé.",
       "attributeUpdated": "Attribut modifié.",
       "attributeDeleted": "Attribut supprimé."
+    },
+    "categoryDialog": {
+      "title": "Ajouter une catégorie",
+      "description": "Crée rapidement une catégorie sans quitter cette page.",
+      "name": "Nom catégorie",
+      "placeholder": "Ex: Boissons",
+      "submit": "Ajouter"
     },
     "attributeDialog": {
       "createTitle": "Ajouter un attribut",
@@ -1502,7 +1520,8 @@
       "values": "Valeurs (optionnel)",
       "valuesPlaceholder": "Ex: 36, 38, 40",
       "valuesHint": "Sépare les valeurs par virgules.",
-      "submit": "Enregistrer"
+      "submit": "Enregistrer",
+      "valuesHintEdit": "Modifie les valeurs séparées par des virgules. Les ajouts/suppressions seront synchronisés."
     },
     "confirmDeleteAttribute": "Supprimer l'attribut \"{name}\" ?"
   }

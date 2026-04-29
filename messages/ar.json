@@ -1447,17 +1447,18 @@
       "title": "بيانات المنتج",
       "description": "أدخل المعلومات الأساسية للمنتج.",
       "category": "الفئة",
+      "addCategory": "إضافة فئة",
       "categoryPlaceholder": "اختر فئة",
       "type": "النوع",
       "name": "اسم المنتج",
-      "sku": "SKU",
       "barcode": "الباركود",
       "price": "السعر الأساسي",
       "costPrice": "سعر التكلفة",
       "stock": "المخزون الأساسي",
       "minStock": "تنبيه الحد الأدنى",
       "vatRate": "الضريبة (%)",
-      "expiryDate": "تاريخ الانتهاء"
+      "expiryDate": "تاريخ الانتهاء",
+      "variableInfo": "للمنتجات المتغيرة، يتم تحديد السعر/التكلفة/المخزون لكل متغير بالأسفل."
     },
     "variable": {
       "title": "المتغيرات (منطق WooCommerce)",
@@ -1472,11 +1473,17 @@
       "variantPrice": "سعر المتغير",
       "variantStock": "مخزون المتغير",
       "addAttribute": "إضافة خاصية",
-      "generateSku": "توليد SKU"
+      "generateSku": "توليد SKU",
+      "variantCost": "تكلفة المتغير",
+      "variantMinStock": "الحد الأدنى لمخزون المتغير",
+      "variantBarcode": "باركود المتغير",
+      "openDetails": "اضغط لعرض التفاصيل"
     },
     "errors": {
       "loadFailed": "تعذر تحميل الفئات/الخصائص.",
       "required": "املأ كل الحقول المطلوبة.",
+      "categoryNameRequired": "اسم الفئة مطلوب.",
+      "categoryCreateFailed": "تعذر إنشاء الفئة.",
       "selectAttributeFirst": "اختر خاصية واحدة على الأقل.",
       "selectValuesPerAttribute": "اختر قيماً للخاصية {attribute}.",
       "generateVariantsFirst": "أنشئ المتغيرات أولاً.",
@@ -1486,13 +1493,24 @@
       "attributeNameRequired": "اسم الخاصية مطلوب.",
       "attributeCreateFailed": "تعذر إنشاء الخاصية.",
       "attributeUpdateFailed": "تعذر تعديل الخاصية.",
-      "attributeDeleteFailed": "تعذر حذف الخاصية."
+      "attributeDeleteFailed": "تعذر حذف الخاصية.",
+      "attributeValueCreateFailed": "تعذر إنشاء قيمة الخاصية.",
+      "attributeValueUpdateFailed": "تعذر تعديل قيمة الخاصية.",
+      "attributeValueDeleteFailed": "تعذر حذف قيمة الخاصية."
     },
     "toast": {
       "created": "تم إنشاء المنتج بنجاح.",
+      "categoryCreated": "تم إنشاء الفئة.",
       "attributeCreated": "تم إنشاء الخاصية.",
       "attributeUpdated": "تم تعديل الخاصية.",
       "attributeDeleted": "تم حذف الخاصية."
+    },
+    "categoryDialog": {
+      "title": "إضافة فئة",
+      "description": "أنشئ فئة بسرعة دون مغادرة هذه الصفحة.",
+      "name": "اسم الفئة",
+      "placeholder": "مثال: مشروبات",
+      "submit": "إضافة"
     },
     "attributeDialog": {
       "createTitle": "إضافة خاصية",
@@ -1502,7 +1520,8 @@
       "values": "القيم (اختياري)",
       "valuesPlaceholder": "مثال: 36, 38, 40",
       "valuesHint": "افصل القيم بفواصل.",
-      "submit": "حفظ"
+      "submit": "حفظ",
+      "valuesHintEdit": "عدّل القيم مفصولة بفواصل. سيتم مزامنة القيم المضافة أو المحذوفة."
     },
     "confirmDeleteAttribute": "حذف الخاصية \"{name}\"؟"
   }

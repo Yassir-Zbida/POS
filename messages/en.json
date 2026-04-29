@@ -1447,17 +1447,18 @@
       "title": "Product details",
       "description": "Fill in the main product details.",
       "category": "Category",
+      "addCategory": "Add category",
       "categoryPlaceholder": "Choose a category",
       "type": "Type",
       "name": "Product name",
-      "sku": "SKU",
       "barcode": "Barcode",
       "price": "Base price",
       "costPrice": "Cost price",
       "stock": "Base stock",
       "minStock": "Low-stock alert",
       "vatRate": "VAT (%)",
-      "expiryDate": "Expiry date"
+      "expiryDate": "Expiry date",
+      "variableInfo": "For VARIABLE products, price/cost/stock are set per variant below."
     },
     "variable": {
       "title": "Variants (WooCommerce-like flow)",
@@ -1472,11 +1473,17 @@
       "variantPrice": "Variant price",
       "variantStock": "Variant stock",
       "addAttribute": "Add attribute",
-      "generateSku": "Generate SKU"
+      "generateSku": "Generate SKU",
+      "variantCost": "Variant cost",
+      "variantMinStock": "Variant min stock",
+      "variantBarcode": "Variant barcode",
+      "openDetails": "Click to expand details"
     },
     "errors": {
       "loadFailed": "Could not load categories/attributes.",
       "required": "Fill all required fields.",
+      "categoryNameRequired": "Category name is required.",
+      "categoryCreateFailed": "Could not create category.",
       "selectAttributeFirst": "Select at least one attribute.",
       "selectValuesPerAttribute": "Choose values for {attribute}.",
       "generateVariantsFirst": "Generate variants first.",
@@ -1486,13 +1493,24 @@
       "attributeNameRequired": "Attribute name is required.",
       "attributeCreateFailed": "Could not create attribute.",
       "attributeUpdateFailed": "Could not update attribute.",
-      "attributeDeleteFailed": "Could not delete attribute."
+      "attributeDeleteFailed": "Could not delete attribute.",
+      "attributeValueCreateFailed": "Could not create attribute value.",
+      "attributeValueUpdateFailed": "Could not update attribute value.",
+      "attributeValueDeleteFailed": "Could not delete attribute value."
     },
     "toast": {
       "created": "Product created successfully.",
+      "categoryCreated": "Category created.",
       "attributeCreated": "Attribute created.",
       "attributeUpdated": "Attribute updated.",
       "attributeDeleted": "Attribute deleted."
+    },
+    "categoryDialog": {
+      "title": "Add category",
+      "description": "Quickly create a category without leaving this page.",
+      "name": "Category name",
+      "placeholder": "e.g. Drinks",
+      "submit": "Add"
     },
     "attributeDialog": {
       "createTitle": "Add attribute",
@@ -1502,7 +1520,8 @@
       "values": "Values (optional)",
       "valuesPlaceholder": "e.g. 36, 38, 40",
       "valuesHint": "Separate values with commas.",
-      "submit": "Save"
+      "submit": "Save",
+      "valuesHintEdit": "Edit values as comma-separated list. Added/removed values will be synced."
     },
     "confirmDeleteAttribute": "Delete attribute \"{name}\"?"
   }

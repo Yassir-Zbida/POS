@@ -41,8 +41,11 @@ type VariantDraft = {
   label: string;
   attributeValueIds: string[];
   sku: string;
+  barcode: string;
   price: string;
+  cost: string;
   stock: string;
+  minStock: string;
 };
 
 function flattenCategories(nodes: CategoryNode[]): Array<{ id: string; label: string }> {
@@ -65,6 +68,17 @@ function cartesian<T>(arr: T[][]): T[][] {
   }, [[]]);
 }
 
+function fallbackSku(input: string): string {
+  const normalized = input
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 24);
+  if (normalized) return normalized;
+  return `PRD-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+}
+
 export function ManagerProductCreateClient() {
   const t = useTranslations("managerProductsNew");
   const router = useRouter();
@@ -76,7 +90,6 @@ export function ManagerProductCreateClient() {
 
   const [type, setType] = React.useState<ProductType>("SIMPLE");
   const [name, setName] = React.useState("");
-  const [sku, setSku] = React.useState("");
   const [barcode, setBarcode] = React.useState("");
   const [categoryId, setCategoryId] = React.useState("");
   const [price, setPrice] = React.useState("");
@@ -90,6 +103,8 @@ export function ManagerProductCreateClient() {
   const [selectedValueIdsByAttr, setSelectedValueIdsByAttr] = React.useState<Record<string, string[]>>({});
   const [variants, setVariants] = React.useState<VariantDraft[]>([]);
   const [attributeDialogOpen, setAttributeDialogOpen] = React.useState(false);
+  const [categoryDialogOpen, setCategoryDialogOpen] = React.useState(false);
+  const [categoryNameInput, setCategoryNameInput] = React.useState("");
   const [attributeDialogMode, setAttributeDialogMode] = React.useState<"create" | "edit">("create");
   const [attributeSaving, setAttributeSaving] = React.useState(false);
   const [editingAttribute, setEditingAttribute] = React.useState<AttributeRow | null>(null);
@@ -169,8 +184,11 @@ export function ManagerProductCreateClient() {
       label: combo.map((c) => `${c.attr}: ${c.value}`).join(" / "),
       attributeValueIds: combo.map((c) => c.id),
       sku: "",
+      barcode: "",
       price: "",
+      cost: "",
       stock: "0",
+      minStock: "0",
     }));
     setVariants(next);
   }
@@ -180,7 +198,7 @@ export function ManagerProductCreateClient() {
   }
 
   function generateVariantSku(key: string) {
-    const prefix = (sku || name || "VAR")
+    const prefix = (barcode || name || "VAR")
       .trim()
       .toUpperCase()
       .replace(/[^A-Z0-9]+/g, "-")
@@ -195,6 +213,44 @@ export function ManagerProductCreateClient() {
     if (!aRes.ok) return;
     const aData = (await aRes.json()) as { attributes?: AttributeRow[] };
     setAttributes(aData.attributes ?? []);
+  }
+
+  async function createCategoryQuick() {
+    const categoryName = categoryNameInput.trim();
+    if (!categoryName) {
+      toast.error(t("errors.categoryNameRequired"));
+      return;
+    }
+    setAttributeSaving(true);
+    try {
+      const res = await fetchWithAuth("/api/v1/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nameFr: categoryName,
+          nameEn: categoryName,
+          nameAr: categoryName,
+        }),
+      });
+      if (!res.ok) {
+        toast.error(t("errors.categoryCreateFailed"));
+        return;
+      }
+      const data = (await res.json()) as { category?: { id: string; nameFr: string } };
+      toast.success(t("toast.categoryCreated"));
+      if (data.category?.id) {
+        setCategoryId(data.category.id);
+      }
+      setCategories((prev) =>
+        data.category?.id
+          ? [...prev, { id: data.category.id, label: data.category.nameFr ?? categoryName }]
+          : prev,
+      );
+      setCategoryDialogOpen(false);
+      setCategoryNameInput("");
+    } finally {
+      setAttributeSaving(false);
+    }
   }
 
   function openCreateAttributeDialog() {
@@ -248,6 +304,51 @@ export function ManagerProductCreateClient() {
           toast.error(t("errors.attributeUpdateFailed"));
           return;
         }
+        const desiredValues = attributeValuesInput
+          .split(",")
+          .map((v) => v.trim())
+          .filter(Boolean);
+        const existingValues = editingAttribute.values ?? [];
+        const maxLen = Math.max(existingValues.length, desiredValues.length);
+        for (let idx = 0; idx < maxLen; idx++) {
+          const existing = existingValues[idx];
+          const desired = desiredValues[idx];
+          if (existing && desired) {
+            if (existing.value !== desired) {
+              const updateRes = await fetchWithAuth(
+                `/api/v1/attributes/${editingAttribute.id}/values/${existing.id}`,
+                {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ value: desired, sortOrder: idx }),
+                },
+              );
+              if (!updateRes.ok) {
+                toast.error(t("errors.attributeValueUpdateFailed"));
+                return;
+              }
+            }
+          } else if (!existing && desired) {
+            const createRes = await fetchWithAuth(`/api/v1/attributes/${editingAttribute.id}/values`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ value: desired, sortOrder: idx }),
+            });
+            if (!createRes.ok) {
+              toast.error(t("errors.attributeValueCreateFailed"));
+              return;
+            }
+          } else if (existing && !desired) {
+            const deleteRes = await fetchWithAuth(
+              `/api/v1/attributes/${editingAttribute.id}/values/${existing.id}`,
+              { method: "DELETE" },
+            );
+            if (!deleteRes.ok) {
+              toast.error(t("errors.attributeValueDeleteFailed"));
+              return;
+            }
+          }
+        }
         toast.success(t("toast.attributeUpdated"));
       }
       setAttributeDialogOpen(false);
@@ -276,7 +377,7 @@ export function ManagerProductCreateClient() {
   }
 
   async function submit() {
-    if (!name.trim() || !sku.trim() || !categoryId || !price.trim()) {
+    if (!name.trim() || !categoryId || (type !== "VARIABLE" && (!barcode.trim() || !price.trim()))) {
       toast.error(t("errors.required"));
       return;
     }
@@ -305,15 +406,20 @@ export function ManagerProductCreateClient() {
           nameFr: name.trim(),
           nameEn: name.trim(),
           nameAr: name.trim(),
-          sku: sku.trim(),
-          barcode: barcode.trim() || undefined,
+          sku: fallbackSku(type === "VARIABLE" ? name : barcode),
+          barcode: type === "VARIABLE" ? undefined : barcode.trim() || undefined,
           categoryId,
-          price: Number(price),
-          costPrice: costPrice.trim() ? Number(costPrice) : undefined,
+          price: type === "VARIABLE" ? 0.01 : Number(price),
+          costPrice: type === "VARIABLE" ? undefined : costPrice.trim() ? Number(costPrice) : undefined,
           vatRate: Number(vatRate || "20"),
-          stock: Number(stock || "0"),
-          minStock: Number(minStock || "0"),
-          expiryDate: expiryDate ? new Date(`${expiryDate}T00:00:00.000Z`).toISOString() : undefined,
+          stock: type === "VARIABLE" ? 0 : Number(stock || "0"),
+          minStock: type === "VARIABLE" ? 0 : Number(minStock || "0"),
+          expiryDate:
+            type === "VARIABLE"
+              ? undefined
+              : expiryDate
+                ? new Date(`${expiryDate}T00:00:00.000Z`).toISOString()
+                : undefined,
           attributeIds: type === "VARIABLE" ? selectedAttributeIds : [],
         }),
       });
@@ -336,8 +442,11 @@ export function ManagerProductCreateClient() {
             body: JSON.stringify({
               attributeValueIds: v.attributeValueIds,
               sku: v.sku.trim() || undefined,
+              barcode: v.barcode.trim() || undefined,
               priceOverride: Number(v.price),
+              costOverride: v.cost.trim() ? Number(v.cost) : undefined,
               stock: Number(v.stock || "0"),
+              minStock: Number(v.minStock || "0"),
             }),
           });
           if (!res.ok) {
@@ -380,7 +489,19 @@ export function ManagerProductCreateClient() {
         <CardContent className="grid gap-4">
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label>{t("general.category")}</Label>
+              <div className="flex items-center justify-between gap-2">
+                <Label>{t("general.category")}</Label>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 gap-1 px-2 text-xs"
+                  onClick={() => setCategoryDialogOpen(true)}
+                >
+                  <Plus className="size-3.5" />
+                  {t("general.addCategory")}
+                </Button>
+              </div>
               <Select value={categoryId} onValueChange={setCategoryId}>
                 <SelectTrigger>
                   <SelectValue placeholder={t("general.categoryPlaceholder")} />
@@ -415,45 +536,51 @@ export function ManagerProductCreateClient() {
             <Input value={name} onChange={(e) => setName(e.target.value)} />
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label>{t("general.sku")}</Label>
-              <Input value={sku} onChange={(e) => setSku(e.target.value)} />
-            </div>
+          {type !== "VARIABLE" ? (
             <div className="space-y-2">
               <Label>{t("general.barcode")}</Label>
               <Input value={barcode} onChange={(e) => setBarcode(e.target.value)} />
             </div>
-          </div>
+          ) : null}
 
-          <div className="grid gap-3 sm:grid-cols-4">
-            <div className="space-y-2">
-              <Label>{t("general.price")}</Label>
-              <Input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} />
+          {type === "VARIABLE" ? (
+            <div className="rounded-md border border-dashed bg-muted/20 p-3 text-xs text-muted-foreground">
+              {t("general.variableInfo")}
             </div>
-            <div className="space-y-2">
-              <Label>{t("general.costPrice")}</Label>
-              <Input type="number" min="0" step="0.01" value={costPrice} onChange={(e) => setCostPrice(e.target.value)} />
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-4">
+              <div className="space-y-2">
+                <Label>{t("general.price")}</Label>
+                <Input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("general.costPrice")}</Label>
+                <Input type="number" min="0" step="0.01" value={costPrice} onChange={(e) => setCostPrice(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("general.stock")}</Label>
+                <Input type="number" min="0" step="1" value={stock} onChange={(e) => setStock(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("general.minStock")}</Label>
+                <Input type="number" min="0" step="1" value={minStock} onChange={(e) => setMinStock(e.target.value)} />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label>{t("general.stock")}</Label>
-              <Input type="number" min="0" step="1" value={stock} onChange={(e) => setStock(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label>{t("general.minStock")}</Label>
-              <Input type="number" min="0" step="1" value={minStock} onChange={(e) => setMinStock(e.target.value)} />
-            </div>
-          </div>
+          )}
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label>{t("general.vatRate")}</Label>
-              <Input type="number" min="0" max="100" step="0.01" value={vatRate} onChange={(e) => setVatRate(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label>{t("general.expiryDate")}</Label>
-              <Input type="date" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
-            </div>
+          <div className={type === "VARIABLE" ? "grid gap-3 sm:grid-cols-1" : "grid gap-3 sm:grid-cols-2"}>
+            {type !== "VARIABLE" ? (
+              <div className="space-y-2">
+                <Label>{t("general.vatRate")}</Label>
+                <Input type="number" min="0" max="100" step="0.01" value={vatRate} onChange={(e) => setVatRate(e.target.value)} />
+              </div>
+            ) : null}
+            {type !== "VARIABLE" ? (
+              <div className="space-y-2">
+                <Label>{t("general.expiryDate")}</Label>
+                <Input type="date" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
+              </div>
+            ) : null}
           </div>
         </CardContent>
       </Card>
@@ -538,14 +665,18 @@ export function ManagerProductCreateClient() {
                 <Label>{t("variable.variants")}</Label>
                 <div className="space-y-2">
                   {variants.map((v) => (
-                    <Card key={v.key}>
-                      <CardContent className="grid gap-2 p-3 sm:grid-cols-12">
-                        <div className="sm:col-span-5">
+                    <details key={v.key} className="rounded-md border bg-card" open>
+                      <summary className="cursor-pointer list-none px-3 py-2">
+                        <div className="flex items-center justify-between gap-2">
                           <Badge variant="secondary" className="h-auto py-1 text-xs">
                             {v.label}
                           </Badge>
+                          <span className="text-xs text-muted-foreground">{t("variable.openDetails")}</span>
                         </div>
-                        <div className="sm:col-span-2">
+                      </summary>
+                      <div className="grid gap-2 border-t p-3 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="space-y-1">
+                          <Label className="text-xs">{t("variable.variantSku")}</Label>
                           <div className="flex items-center gap-1">
                             <Input
                               placeholder={t("variable.variantSku")}
@@ -565,7 +696,16 @@ export function ManagerProductCreateClient() {
                             </Button>
                           </div>
                         </div>
-                        <div className="sm:col-span-2">
+                        <div className="space-y-1">
+                          <Label className="text-xs">{t("variable.variantBarcode")}</Label>
+                          <Input
+                            placeholder={t("variable.variantBarcode")}
+                            value={v.barcode}
+                            onChange={(e) => updateVariant(v.key, { barcode: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">{t("variable.variantPrice")}</Label>
                           <Input
                             type="number"
                             min="0"
@@ -575,7 +715,19 @@ export function ManagerProductCreateClient() {
                             onChange={(e) => updateVariant(v.key, { price: e.target.value })}
                           />
                         </div>
-                        <div className="sm:col-span-2">
+                        <div className="space-y-1">
+                          <Label className="text-xs">{t("variable.variantCost")}</Label>
+                          <Input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder={t("variable.variantCost")}
+                            value={v.cost}
+                            onChange={(e) => updateVariant(v.key, { cost: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">{t("variable.variantStock")}</Label>
                           <Input
                             type="number"
                             min="0"
@@ -585,8 +737,19 @@ export function ManagerProductCreateClient() {
                             onChange={(e) => updateVariant(v.key, { stock: e.target.value })}
                           />
                         </div>
-                      </CardContent>
-                    </Card>
+                        <div className="space-y-1">
+                          <Label className="text-xs">{t("variable.variantMinStock")}</Label>
+                          <Input
+                            type="number"
+                            min="0"
+                            step="1"
+                            placeholder={t("variable.variantMinStock")}
+                            value={v.minStock}
+                            onChange={(e) => updateVariant(v.key, { minStock: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                    </details>
                   ))}
                 </div>
               </div>
@@ -627,7 +790,17 @@ export function ManagerProductCreateClient() {
                 />
                 <p className="text-xs text-muted-foreground">{t("attributeDialog.valuesHint")}</p>
               </div>
-            ) : null}
+            ) : (
+              <div className="space-y-1">
+                <Label>{t("attributeDialog.values")}</Label>
+                <Input
+                  value={attributeValuesInput}
+                  onChange={(e) => setAttributeValuesInput(e.target.value)}
+                  placeholder={t("attributeDialog.valuesPlaceholder")}
+                />
+                <p className="text-xs text-muted-foreground">{t("attributeDialog.valuesHintEdit")}</p>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setAttributeDialogOpen(false)}>
@@ -635,6 +808,31 @@ export function ManagerProductCreateClient() {
             </Button>
             <Button type="button" onClick={() => void saveAttributeDialog()} disabled={attributeSaving}>
               {attributeSaving ? t("saving") : t("attributeDialog.submit")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={categoryDialogOpen} onOpenChange={setCategoryDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("categoryDialog.title")}</DialogTitle>
+            <DialogDescription>{t("categoryDialog.description")}</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-1">
+            <Label>{t("categoryDialog.name")}</Label>
+            <Input
+              value={categoryNameInput}
+              onChange={(e) => setCategoryNameInput(e.target.value)}
+              placeholder={t("categoryDialog.placeholder")}
+            />
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setCategoryDialogOpen(false)}>
+              {t("cancel")}
+            </Button>
+            <Button type="button" onClick={() => void createCategoryQuick()} disabled={attributeSaving}>
+              {attributeSaving ? t("saving") : t("categoryDialog.submit")}
             </Button>
           </DialogFooter>
         </DialogContent>
