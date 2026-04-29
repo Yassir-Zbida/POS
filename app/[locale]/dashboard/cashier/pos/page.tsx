@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { type Locale } from "@/i18n/routing";
+import { PosClient } from "@/components/cashier/pos-client";
 
 export async function generateMetadata({
   params,
@@ -15,10 +16,13 @@ export async function generateMetadata({
   return { title: `${t("dashboard")} | ${t("cashierPos")}` };
 }
 
-export default function StaffPosPage() {
-  return (
-    <div className="flex h-full min-h-[60vh] items-center justify-center rounded-xl border bg-card p-4 text-sm text-muted-foreground sm:p-6">
-      POS page (empty)
-    </div>
-  );
+export default async function StaffPosPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  setRequestLocale(rawLocale as Locale);
+
+  return <PosClient />;
 }

@@ -43,12 +43,28 @@ export async function GET(request: Request) {
     const skip = (page - 1) * limit;
 
     if (barcode) {
-      const product = await prisma.product.findUnique({
-        where: { barcode },
+      const trimmed = barcode.trim();
+      let product = await prisma.product.findUnique({
+        where: { barcode: trimmed },
         include: { category: true, variants: true },
       });
-      if (!product) return NextResponse.json({ error: "Product not found" }, { status: 404 });
-      return NextResponse.json({ product });
+      let matchedVariantId: string | null = null;
+
+      if (!product) {
+        const variantHit = await prisma.productVariant.findFirst({
+          where: { barcode: trimmed, isActive: true },
+          include: {
+            product: { include: { category: true, variants: true } },
+          },
+        });
+        if (!variantHit?.product?.isActive) {
+          return NextResponse.json({ error: "Product not found" }, { status: 404 });
+        }
+        product = variantHit.product;
+        matchedVariantId = variantHit.id;
+      }
+
+      return NextResponse.json({ product, matchedVariantId });
     }
 
     // lowStock uses raw SQL because Prisma cannot compare two columns (stock <= minStock)
@@ -104,7 +120,34 @@ export async function GET(request: Request) {
       prisma.product.count({ where }),
     ]);
 
-    return NextResponse.json({ products, meta: { total, page, limit, pages: Math.ceil(total / limit) } });
+    let matchedVariantId: string | null = null;
+    let outProducts = products;
+    let outTotal = total;
+
+    // If nothing matched on the parent product (name/SKU/parent barcode), try exact variant barcode.
+    if (search.trim() && products.length === 0 && page === 1) {
+      const variantHit = await prisma.productVariant.findFirst({
+        where: {
+          barcode: search.trim(),
+          isActive: true,
+          product: { isActive: true },
+        },
+        include: {
+          product: { include: { category: true, variants: true } },
+        },
+      });
+      if (variantHit?.product) {
+        outProducts = [variantHit.product];
+        outTotal = 1;
+        matchedVariantId = variantHit.id;
+      }
+    }
+
+    return NextResponse.json({
+      products: outProducts,
+      meta: { total: outTotal, page, limit, pages: Math.ceil(outTotal / limit) },
+      ...(matchedVariantId ? { matchedVariantId } : {}),
+    });
   } catch (e) {
     if (isDatabaseConnectionError(e)) return databaseUnavailableResponse();
     return internalErrorResponse(e, "GET /api/v1/products");

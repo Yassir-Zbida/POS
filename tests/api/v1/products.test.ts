@@ -54,11 +54,46 @@ describe("GET /api/v1/products", () => {
 
   it("returns 404 when barcode not found", async () => {
     vi.mocked(prisma.product.findUnique).mockResolvedValue(null);
+    vi.mocked(prisma.productVariant.findFirst).mockResolvedValue(null);
 
     const req = makeRequest("GET", "/api/v1/products?barcode=NOTEXIST");
     const res = await GET(req);
 
     expect(res.status).toBe(404);
+  });
+
+  it("returns parent product and matchedVariantId when barcode matches a variant", async () => {
+    vi.mocked(prisma.product.findUnique).mockResolvedValue(null);
+    const parentWithVariants = {
+      ...MOCK_PRODUCT,
+      type: "VARIABLE",
+      variants: [
+        {
+          id: "var-1",
+          name: "Red / L",
+          sku: "SKU-V1",
+          barcode: "VAR-BC-1",
+          priceOverride: 99,
+          stock: 5,
+          minStock: 1,
+          isActive: true,
+        },
+      ],
+    };
+    vi.mocked(prisma.productVariant.findFirst).mockResolvedValue({
+      id: "var-1",
+      barcode: "VAR-BC-1",
+      isActive: true,
+      product: parentWithVariants,
+    } as never);
+
+    const req = makeRequest("GET", "/api/v1/products?barcode=VAR-BC-1");
+    const res = await GET(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.product.id).toBe("prod-1");
+    expect(json.matchedVariantId).toBe("var-1");
   });
 
   it("returns 401 when no token", async () => {
