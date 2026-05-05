@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/rbac";
+import { requireAuth, ROLES } from "@/lib/rbac";
+import { assertManagerAdminOrCashierPermission, getCashierIdsForManager } from "@/lib/cashier-permissions";
 import { writeAuditLog } from "@/lib/audit";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
@@ -27,8 +28,17 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       return NextResponse.json({ error: "Session is already closed" }, { status: 409 });
     }
 
-    if (auth.user.role === "CASHIER" && session.cashierId !== auth.user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (auth.user.role === ROLES.CASHIER) {
+      if (session.cashierId !== auth.user.id) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "sessionsManage");
+      if (denied) return denied;
+    } else if (auth.user.role === ROLES.MANAGER) {
+      const teamIds = await getCashierIdsForManager(auth.user.id);
+      if (!session.cashierId || !teamIds.includes(session.cashierId)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
     }
 
     let body: unknown;

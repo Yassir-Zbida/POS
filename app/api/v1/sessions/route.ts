@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/rbac";
+import { requireAuth, ROLES } from "@/lib/rbac";
 import { writeAuditLog } from "@/lib/audit";
+import { assertManagerAdminOrCashierPermission, getCashierIdsForManager } from "@/lib/cashier-permissions";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const openSessionSchema = z.object({
@@ -24,11 +26,22 @@ export async function GET(request: Request) {
     const limit = Math.min(50, parseInt(searchParams.get("limit") ?? "20", 10));
     const skip = (page - 1) * limit;
 
-    const where = {
-      cashierId: auth.user.role === "CASHIER" ? auth.user.id : undefined,
+    let where: Prisma.CashRegisterSessionWhereInput = {
       ...(status ? { status } : {}),
       ...(locationId ? { locationId } : {}),
     };
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "sessionsManage");
+      if (denied) return denied;
+      where = { ...where, cashierId: auth.user.id };
+    } else if (auth.user.role === ROLES.MANAGER) {
+      const teamIds = await getCashierIdsForManager(auth.user.id);
+      where =
+        teamIds.length > 0
+          ? { ...where, cashierId: { in: teamIds } }
+          : { ...where, id: "___manager_no_sessions___" };
+    }
 
     const [sessions, total] = await Promise.all([
       prisma.cashRegisterSession.findMany({
@@ -57,6 +70,11 @@ export async function POST(request: Request) {
   try {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "sessionsManage");
+      if (denied) return denied;
+    }
 
     // Block if cashier already has an open session
     const existing = await prisma.cashRegisterSession.findFirst({

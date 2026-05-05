@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 
 import { fetchWithAuth } from "@/lib/fetch-with-auth";
+import { useAuthStore } from "@/store/use-auth-store";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -181,6 +182,15 @@ export function PosClient() {
   const t = useTranslations("cashierPos");
   const locale = useLocale();
   const dir = locale === "ar" ? "rtl" : "ltr";
+  const authUser = useAuthStore((s) => s.user);
+  const canPos =
+    !authUser || authUser.role !== "CASHIER" || authUser.cashierPermissions?.posCheckout !== false;
+  const canSearchCustomers =
+    !authUser || authUser.role !== "CASHIER" || authUser.cashierPermissions?.customersView !== false;
+  const canCreateCustomers =
+    !authUser || authUser.role !== "CASHIER" || authUser.cashierPermissions?.customersEdit !== false;
+  const canUseCredit =
+    !authUser || authUser.role !== "CASHIER" || authUser.cashierPermissions?.creditCollect !== false;
 
   // Catalog state
   const [categories, setCategories] = React.useState<Array<{ id: string; label: string }>>([]);
@@ -213,6 +223,17 @@ export function PosClient() {
   const [amountTendered, setAmountTendered] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
 
+  const [customerId, setCustomerId] = React.useState<string | undefined>();
+  const [customerLabel, setCustomerLabel] = React.useState("");
+  const [customerQuery, setCustomerQuery] = React.useState("");
+  const [customerHits, setCustomerHits] = React.useState<Array<{ id: string; name: string; phone?: string | null }>>(
+    [],
+  );
+  const [customerLoading, setCustomerLoading] = React.useState(false);
+  const [creatingCustomer, setCreatingCustomer] = React.useState(false);
+  const [newCustomerName, setNewCustomerName] = React.useState("");
+  const [newCustomerPhone, setNewCustomerPhone] = React.useState("");
+
   // Receipt
   const [receiptOpen, setReceiptOpen] = React.useState(false);
   const [completedSale, setCompletedSale] = React.useState<CompletedSale | null>(null);
@@ -240,7 +261,7 @@ export function PosClient() {
 
   async function loadCategories() {
     try {
-      const res = await fetchWithAuth("/api/v1/categories");
+      const res = await fetchWithAuth("/api/v1/categories?forPos=true");
       if (!res.ok) return;
       const data = (await res.json()) as {
         categories?: Array<{ id: string; nameFr: string; nameEn?: string | null; nameAr?: string | null }>;
@@ -454,6 +475,85 @@ export function PosClient() {
   const change = paymentMethod === "CASH" && tendered >= total ? tendered - total : 0;
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0);
 
+  const paymentOptions = React.useMemo((): PaymentMethod[] => {
+    return canUseCredit ? ["CASH", "CARD", "TRANSFER", "CREDIT"] : ["CASH", "CARD", "TRANSFER"];
+  }, [canUseCredit]);
+
+  React.useEffect(() => {
+    if (!canUseCredit && paymentMethod === "CREDIT") setPaymentMethod("CASH");
+  }, [canUseCredit, paymentMethod]);
+
+  React.useEffect(() => {
+    if (!checkoutOpen) {
+      setCustomerId(undefined);
+      setCustomerLabel("");
+      setCustomerQuery("");
+      setCustomerHits([]);
+      setNewCustomerName("");
+      setNewCustomerPhone("");
+    }
+  }, [checkoutOpen]);
+
+  React.useEffect(() => {
+    if (!checkoutOpen || !canSearchCustomers || customerQuery.trim().length < 2) {
+      setCustomerHits([]);
+      return;
+    }
+    const handle = setTimeout(() => {
+      void (async () => {
+        setCustomerLoading(true);
+        try {
+          const res = await fetchWithAuth(
+            `/api/v1/customers?search=${encodeURIComponent(customerQuery.trim())}&limit=8`,
+          );
+          if (!res.ok) return;
+          const data = (await res.json()) as {
+            customers?: Array<{ id: string; name: string; phone?: string | null }>;
+          };
+          setCustomerHits(data.customers ?? []);
+        } finally {
+          setCustomerLoading(false);
+        }
+      })();
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [customerQuery, checkoutOpen, canSearchCustomers]);
+
+  async function createCustomerFromCheckout() {
+    if (!canCreateCustomers) return;
+    const name = newCustomerName.trim();
+    const phone = newCustomerPhone.trim();
+    if (!name) {
+      toast.error(t("errors.customerNameRequired"));
+      return;
+    }
+    setCreatingCustomer(true);
+    try {
+      const res = await fetchWithAuth("/api/v1/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone: phone || undefined }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        customer?: { id: string; name: string; phone?: string | null };
+      };
+      if (!res.ok || !data.customer) {
+        toast.error(data.error ?? t("errors.customerCreateFailed"));
+        return;
+      }
+      setCustomerId(data.customer.id);
+      setCustomerLabel(data.customer.phone ? `${data.customer.name} · ${data.customer.phone}` : data.customer.name);
+      setCustomerQuery("");
+      setCustomerHits([]);
+      setNewCustomerName("");
+      setNewCustomerPhone("");
+      toast.success(t("toast.customerCreated"));
+    } finally {
+      setCreatingCustomer(false);
+    }
+  }
+
   // ── Coupon ────────────────────────────────────────────────────────────────
 
   async function validateCoupon() {
@@ -491,6 +591,10 @@ export function PosClient() {
       toast.error(t("errors.emptyCart"));
       return;
     }
+    if (paymentMethod === "CREDIT" && !customerId) {
+      toast.error(t("errors.creditNeedsCustomer"));
+      return;
+    }
     if (paymentMethod === "CASH" && amountTendered && tendered < total) {
       toast.error(t("errors.insufficientTender"));
       return;
@@ -514,6 +618,7 @@ export function PosClient() {
             paymentMethod === "CASH" && amountTendered ? tendered : undefined,
           couponId: couponResult?.valid ? couponResult.coupon?.id : undefined,
           discountAmt: couponDiscount,
+          ...(customerId ? { customerId } : {}),
         }),
       });
 
@@ -577,6 +682,17 @@ export function PosClient() {
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
+
+  if (!canPos) {
+    return (
+      <div
+        className="flex min-h-[calc(100svh-8rem)] items-center justify-center rounded-xl border bg-muted/20 p-8 text-center"
+        dir={dir}
+      >
+        <p className="max-w-sm text-sm text-muted-foreground">{t("posDisabled")}</p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -916,7 +1032,7 @@ export function PosClient() {
 
       {/* ══ Checkout dialog ════════════════════════════════════════════════ */}
       <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>{t("checkoutTitle")}</DialogTitle>
             <DialogDescription>{t("checkoutSubtitle")}</DialogDescription>
@@ -957,11 +1073,97 @@ export function PosClient() {
             </div>
           </div>
 
+          {canSearchCustomers || (paymentMethod === "CREDIT" && canCreateCustomers) ? (
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">{t("customerTitle")}</Label>
+              {customerId ? (
+                <div className="flex items-center justify-between gap-2 rounded-lg border bg-muted/30 px-3 py-2 text-sm">
+                  <span className="min-w-0 truncate font-medium">{customerLabel}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 shrink-0 text-xs"
+                    onClick={() => {
+                      setCustomerId(undefined);
+                      setCustomerLabel("");
+                    }}
+                  >
+                    {t("customerClear")}
+                  </Button>
+                </div>
+              ) : canSearchCustomers ? (
+                <>
+                  <Input
+                    placeholder={t("customerSearch")}
+                    value={customerQuery}
+                    onChange={(e) => setCustomerQuery(e.target.value)}
+                    autoComplete="off"
+                  />
+                  <p className="text-xs text-muted-foreground">{t("customerHint")}</p>
+                  {customerLoading ? (
+                    <p className="text-xs text-muted-foreground">…</p>
+                  ) : customerHits.length > 0 ? (
+                    <div className="max-h-32 space-y-1 overflow-y-auto rounded-md border bg-background p-1">
+                      {customerHits.map((c) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          className="flex w-full flex-col items-start rounded-sm px-2 py-1.5 text-start text-sm hover:bg-accent"
+                          onClick={() => {
+                            setCustomerId(c.id);
+                            setCustomerLabel(c.phone ? `${c.name} · ${c.phone}` : c.name);
+                            setCustomerQuery("");
+                            setCustomerHits([]);
+                          }}
+                        >
+                          <span className="font-medium">{c.name}</span>
+                          {c.phone ? <span className="text-xs text-muted-foreground">{c.phone}</span> : null}
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                </>
+              ) : null}
+              {paymentMethod === "CREDIT" && canCreateCustomers && !customerId ? (
+                <div className="space-y-2 rounded-lg border border-dashed p-2.5">
+                  <p className="text-xs text-muted-foreground">{t("customerCreateHint")}</p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <Input
+                      placeholder={t("customerCreateName")}
+                      value={newCustomerName}
+                      onChange={(e) => setNewCustomerName(e.target.value)}
+                    />
+                    <Input
+                      placeholder={t("customerCreatePhone")}
+                      value={newCustomerPhone}
+                      onChange={(e) => setNewCustomerPhone(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                    onClick={() => void createCustomerFromCheckout()}
+                    disabled={creatingCustomer}
+                  >
+                    {creatingCustomer ? "..." : t("customerCreate")}
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+
           {/* Payment method */}
           <div className="space-y-2">
             <Label className="text-sm font-medium">{t("paymentMethod")}</Label>
-            <div className="grid grid-cols-4 gap-2">
-              {(["CASH", "CARD", "TRANSFER", "CREDIT"] as PaymentMethod[]).map((m) => (
+            <div
+              className={cn(
+                "grid gap-2",
+                paymentOptions.length >= 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3",
+              )}
+            >
+              {paymentOptions.map((m) => (
                 <button
                   key={m}
                   className={cn(
@@ -1027,7 +1229,8 @@ export function PosClient() {
               onClick={() => void submitSale()}
               disabled={
                 submitting ||
-                (paymentMethod === "CASH" && !!amountTendered && tendered < total)
+                (paymentMethod === "CASH" && !!amountTendered && tendered < total) ||
+                (paymentMethod === "CREDIT" && !customerId)
               }
             >
               {submitting ? t("processing") : t("confirmSale")}

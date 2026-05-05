@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/rbac";
+import { requireAuth, ROLES } from "@/lib/rbac";
+import { cashierCanViewSaleById, getCashierIdsForManager } from "@/lib/cashier-permissions";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -27,8 +28,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     if (!sale) return NextResponse.json({ error: "Sale not found" }, { status: 404 });
 
-    if (auth.user.role === "CASHIER" && sale.cashierId !== auth.user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (auth.user.role === ROLES.CASHIER) {
+      const ok = await cashierCanViewSaleById(auth.user, sale.cashierId ?? null);
+      if (!ok) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    } else if (auth.user.role === ROLES.MANAGER) {
+      const teamIds = await getCashierIdsForManager(auth.user.id);
+      const cid = sale.cashierId;
+      if (!cid || !teamIds.includes(cid)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
     }
 
     return NextResponse.json({ sale });

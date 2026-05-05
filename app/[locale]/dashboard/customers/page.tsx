@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { CustomersCrudClient } from "@/components/customers/customers-crud-client";
 import { type Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -16,6 +17,10 @@ export async function generateMetadata({
 }
 
 export default function CustomersPage() {
-  return <h1 className="text-xl font-semibold sm:text-2xl">Customers</h1>;
+  return (
+    <div className="p-4 md:p-6">
+      <CustomersCrudClient />
+    </div>
+  );
 }
 

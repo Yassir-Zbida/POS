@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/rbac";
+import { getCashierPermissions } from "@/lib/cashier-permissions-model";
 
 export async function GET(request: Request) {
   const auth = await requireAuth(request);
@@ -14,5 +15,6 @@ export async function GET(request: Request) {
     status: user.status,
     ownerManagerId: user.ownerManagerId,
     mustChangePassword: user.mustChangePassword,
+    ...(user.role === "CASHIER" ? { cashierPermissions: getCashierPermissions(user) } : {}),
   });
 }

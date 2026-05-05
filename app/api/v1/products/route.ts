@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
+import { assertManagerAdminOrCashierPermission, assertStaffCatalogView } from "@/lib/cashier-permissions";
 import { writeAuditLog } from "@/lib/audit";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
@@ -31,8 +32,23 @@ export async function GET(request: Request) {
   try {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
-
     const { searchParams } = new URL(request.url);
+    const forPos = searchParams.get("forPos") === "true";
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const canCatalog = !assertStaffCatalogView(auth.user);
+      const canProductManage =
+        !assertManagerAdminOrCashierPermission(auth.user, "productAdd") ||
+        !assertManagerAdminOrCashierPermission(auth.user, "productEdit") ||
+        !assertManagerAdminOrCashierPermission(auth.user, "productDelete") ||
+        !assertManagerAdminOrCashierPermission(auth.user, "categoriesManage");
+      const canPosCheckout = !assertManagerAdminOrCashierPermission(auth.user, "posCheckout");
+      if (!(canCatalog || canProductManage || (forPos && canPosCheckout))) {
+        const denied = assertStaffCatalogView(auth.user);
+        if (denied) return denied;
+      }
+    }
+
     const search = searchParams.get("search") ?? "";
     const categoryId = searchParams.get("categoryId") ?? undefined;
     const barcode = searchParams.get("barcode") ?? undefined;
@@ -160,7 +176,10 @@ export async function POST(request: Request) {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
-    if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "productAdd");
+      if (denied) return denied;
+    } else if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

@@ -1,16 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CustomersCrudClient } from "@/components/customers/customers-crud-client";
 
 export default function StaffCustomersPage() {
   return (
-    <div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Customers (static)</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          Customer profiles and lookup during sale (frontend only placeholder).
-        </CardContent>
-      </Card>
+    <div className="p-4 md:p-6">
+      <CustomersCrudClient />
     </div>
   );
 }

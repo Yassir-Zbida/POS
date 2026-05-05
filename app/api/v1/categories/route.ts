@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
+import { assertManagerAdminOrCashierPermission } from "@/lib/cashier-permissions";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const categorySchema = z.object({
@@ -18,6 +19,17 @@ export async function GET(request: Request) {
   try {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
+    const { searchParams } = new URL(request.url);
+    const forPos = searchParams.get("forPos") === "true";
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const canCatalog = !assertManagerAdminOrCashierPermission(auth.user, "catalogView");
+      const canPosCheckout = !assertManagerAdminOrCashierPermission(auth.user, "posCheckout");
+      if (!(canCatalog || (forPos && canPosCheckout))) {
+        const denied = assertManagerAdminOrCashierPermission(auth.user, "catalogView");
+        if (denied) return denied;
+      }
+    }
 
     const categories = await prisma.category.findMany({
       include: {
@@ -41,7 +53,10 @@ export async function POST(request: Request) {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
-    if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "categoriesManage");
+      if (denied) return denied;
+    } else if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

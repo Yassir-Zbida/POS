@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/rbac";
+import { requireAuth, ROLES } from "@/lib/rbac";
 import { writeAuditLog } from "@/lib/audit";
+import {
+  assertManagerAdminOrCashierPermission,
+  getCashierIdsForManager,
+} from "@/lib/cashier-permissions";
 import { loadBusinessSettings, getLoyaltyRedeemMadPerPoint } from "@/lib/business-settings";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
@@ -38,23 +43,40 @@ export async function GET(request: Request) {
     const sessionId = searchParams.get("sessionId") ?? undefined;
     const locationId = searchParams.get("locationId") ?? undefined;
     const customerId = searchParams.get("customerId") ?? undefined;
+    const cashierId = searchParams.get("cashierId") ?? undefined;
     const from = searchParams.get("from");
     const to = searchParams.get("to");
+    const includeCredit = searchParams.get("includeCredit");
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
     const limit = Math.min(100, parseInt(searchParams.get("limit") ?? "50", 10));
     const skip = (page - 1) * limit;
 
-    const where = {
+    let where: Prisma.SaleWhereInput = {
       ...(sessionId ? { sessionId } : {}),
       ...(locationId ? { locationId } : {}),
       ...(customerId ? { customerId } : {}),
-      ...(auth.user.role === "CASHIER" ? { cashierId: auth.user.id } : {}),
+      ...(includeCredit === "false" ? { paymentMethod: { not: "CREDIT" } } : {}),
       ...((from || to)
         ? { createdAt: { ...(from ? { gte: new Date(from) } : {}), ...(to ? { lte: new Date(to) } : {}) } }
         : {}),
     };
 
-    const [sales, total] = await Promise.all([
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "salesView");
+      if (denied) return denied;
+      where = { ...where, cashierId: auth.user.id };
+    } else if (auth.user.role === ROLES.MANAGER) {
+      const teamIds = await getCashierIdsForManager(auth.user.id);
+      const targetCashierId = cashierId && teamIds.includes(cashierId) ? cashierId : undefined;
+      where =
+        teamIds.length > 0
+          ? targetCashierId
+            ? { ...where, cashierId: targetCashierId }
+            : { ...where, cashierId: { in: teamIds } }
+          : { ...where, id: "___manager_no_cashiers___" };
+    }
+
+    const [sales, total, totals] = await Promise.all([
       prisma.sale.findMany({
         where,
         include: {
@@ -68,9 +90,17 @@ export async function GET(request: Request) {
         take: limit,
       }),
       prisma.sale.count({ where }),
+      prisma.sale.aggregate({
+        where,
+        _sum: { totalAmount: true },
+      }),
     ]);
 
-    return NextResponse.json({ sales, meta: { total, page, limit, pages: Math.ceil(total / limit) } });
+    return NextResponse.json({
+      sales,
+      meta: { total, page, limit, pages: Math.ceil(total / limit) },
+      summary: { totalAmount: Number(totals._sum.totalAmount ?? 0) },
+    });
   } catch (e) {
     if (isDatabaseConnectionError(e)) return databaseUnavailableResponse();
     return internalErrorResponse(e, "GET /api/v1/sales");
@@ -95,6 +125,24 @@ export async function POST(request: Request) {
 
     const { items, sessionId, locationId, customerId, couponId, paymentMethod, amountTendered, discountAmt, loyaltyPointsToRedeem, notes } =
       parsed.data;
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "posCheckout");
+      if (denied) return denied;
+    }
+
+    if (paymentMethod === "CREDIT") {
+      if (!customerId) {
+        return NextResponse.json(
+          { error: "customerId is required when payment method is CREDIT" },
+          { status: 400 },
+        );
+      }
+      if (auth.user.role === ROLES.CASHIER) {
+        const denied = assertManagerAdminOrCashierPermission(auth.user, "creditCollect");
+        if (denied) return denied;
+      }
+    }
 
     // Validate products + build item data
     const productIds = items.map((i) => i.productId);

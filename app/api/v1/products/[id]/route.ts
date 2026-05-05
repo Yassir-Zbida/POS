@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
+import { assertManagerAdminOrCashierPermission, assertStaffCatalogView } from "@/lib/cashier-permissions";
 import { writeAuditLog } from "@/lib/audit";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
@@ -29,6 +30,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   try {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertStaffCatalogView(auth.user);
+      if (denied) return denied;
+    }
 
     const { id } = await params;
     const product = await prisma.product.findUnique({
@@ -66,7 +72,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
-    if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "productEdit");
+      if (denied) return denied;
+    } else if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -139,7 +148,10 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
-    if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "productDelete");
+      if (denied) return denied;
+    } else if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/rbac";
+import { requireAuth, ROLES } from "@/lib/rbac";
+import { getCashierIdsForManager } from "@/lib/cashier-permissions";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -25,9 +26,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     if (!session) return NextResponse.json({ error: "Session not found" }, { status: 404 });
 
-    // Ownership check for cashiers
-    if (auth.user.role === "CASHIER" && session.cashierId !== auth.user.id) {
+    if (auth.user.role === ROLES.CASHIER && session.cashierId !== auth.user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    if (auth.user.role === ROLES.MANAGER) {
+      const teamIds = await getCashierIdsForManager(auth.user.id);
+      if (!session.cashierId || !teamIds.includes(session.cashierId)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
     }
 
     return NextResponse.json({ session });

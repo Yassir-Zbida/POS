@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/rbac";
+import { requireAuth, ROLES } from "@/lib/rbac";
+import { assertManagerAdminOrCashierPermission } from "@/lib/cashier-permissions";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const customerSchema = z.object({
@@ -19,21 +20,30 @@ export async function GET(request: Request) {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "customersView");
+      if (denied) return denied;
+    }
+
     const { searchParams } = new URL(request.url);
     const search = searchParams.get("search") ?? "";
+    const hasCredit = searchParams.get("hasCredit") === "true";
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
     const limit = Math.min(100, parseInt(searchParams.get("limit") ?? "50", 10));
     const skip = (page - 1) * limit;
 
-    const where = search
-      ? {
-          OR: [
-            { name: { contains: search } },
-            { phone: { contains: search } },
-            { email: { contains: search } },
-          ],
-        }
-      : {};
+    const where = {
+      ...(hasCredit ? { creditBalance: { gt: 0 } } : {}),
+      ...(search
+        ? {
+            OR: [
+              { name: { contains: search } },
+              { phone: { contains: search } },
+              { email: { contains: search } },
+            ],
+          }
+        : {}),
+    };
 
     const [customers, total] = await Promise.all([
       prisma.customer.findMany({
@@ -63,6 +73,11 @@ export async function POST(request: Request) {
   try {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "customersEdit");
+      if (denied) return denied;
+    }
 
     let body: unknown;
     try { body = await request.json(); } catch {

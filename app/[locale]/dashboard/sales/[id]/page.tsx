@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { ManagerSalesClient } from "@/components/manager/manager-sales-client";
+import { ManagerSaleDetailClient } from "@/components/manager/manager-sale-detail-client";
 import { type Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -13,14 +13,16 @@ export async function generateMetadata({
   const locale = rawLocale as Locale;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "meta.titles" });
-  return { title: t("dashboardSales") };
+  return { title: t("dashboardSaleDetail") };
 }
 
-export default function SalesPage() {
+export default async function SaleDetailPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
+  const { locale: rawLocale, id } = await params;
+  setRequestLocale(rawLocale as Locale);
+
   return (
     <div className="p-4 md:p-6">
-      <ManagerSalesClient />
+      <ManagerSaleDetailClient saleId={id} />
     </div>
   );
 }
-

@@ -15,9 +15,11 @@ import {
   Pencil,
   UserPlus,
   ShieldCheck,
+  SlidersHorizontal,
   Timer,
 } from "lucide-react";
 
+import type { CashierPermissions } from "@/lib/cashier-permissions-model";
 import { fetchWithAuth } from "@/lib/fetch-with-auth";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
@@ -59,6 +61,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Switch } from "@/components/ui/switch";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type CashierRow = {
   id: string;
@@ -68,6 +72,7 @@ type CashierRow = {
   createdAt: string;
   hasPin: boolean;
   pinQuickLoginActive: boolean;
+  cashierPermissions: CashierPermissions;
 };
 
 const USER_STATUS_VARIANT: Record<CashierRow["status"], "default" | "secondary" | "destructive" | "outline"> = {
@@ -99,6 +104,20 @@ function formatCashierDate(iso: string, locale: string) {
   }
 }
 
+function enforcePermissionHierarchy(p: CashierPermissions): CashierPermissions {
+  const next = { ...p };
+  if (next.productAdd || next.productEdit || next.productDelete || next.categoriesManage) {
+    next.catalogView = true;
+  }
+  if (next.customersEdit || next.creditCollect) {
+    next.customersView = true;
+  }
+  if (next.saleLookupById) {
+    next.salesView = true;
+  }
+  return next;
+}
+
 export function ManagerStaffClient() {
   const t = useTranslations("managerStaff");
   const params = useParams() as { locale?: string | string[] };
@@ -126,6 +145,11 @@ export function ManagerStaffClient() {
   const [editing, setEditing] = React.useState<CashierRow | null>(null);
   const [saving, setSaving] = React.useState(false);
   const [statusSavingId, setStatusSavingId] = React.useState<string | null>(null);
+
+  const [permOpen, setPermOpen] = React.useState(false);
+  const [permSubject, setPermSubject] = React.useState<CashierRow | null>(null);
+  const [permDraft, setPermDraft] = React.useState<CashierPermissions | null>(null);
+  const [permSaving, setPermSaving] = React.useState(false);
 
   const [cEmail, setCEmail] = React.useState("");
   const [cName, setCName] = React.useState("");
@@ -159,6 +183,36 @@ export function ManagerStaffClient() {
     setEEmail(row.email);
     setEName(row.name ?? "");
     setEditOpen(true);
+  }
+
+  function openPermissions(row: CashierRow) {
+    setPermSubject(row);
+    setPermDraft(enforcePermissionHierarchy({ ...row.cashierPermissions }));
+    setPermOpen(true);
+  }
+
+  async function savePermissions(e: React.FormEvent) {
+    e.preventDefault();
+    if (!permSubject || !permDraft) return;
+    setPermSaving(true);
+    try {
+      const res = await fetchWithAuth(`/api/manager/cashiers/${permSubject.id}/permissions`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(enforcePermissionHierarchy(permDraft)),
+      });
+      if (!res.ok) {
+        toast.error(t("errors.permFailed"));
+        return;
+      }
+      toast.success(t("toast.permSaved"));
+      setPermOpen(false);
+      setPermSubject(null);
+      setPermDraft(null);
+      await load();
+    } finally {
+      setPermSaving(false);
+    }
   }
 
   async function handleStatusToggle(row: CashierRow) {
@@ -255,6 +309,9 @@ export function ManagerStaffClient() {
 
   const activeCount = cashiers.filter((c) => c.status === "ACTIVE").length;
   const pinReadyCount = cashiers.filter((c) => c.pinQuickLoginActive).length;
+  const canManageProducts = Boolean(
+    permDraft?.productAdd || permDraft?.productEdit || permDraft?.productDelete || permDraft?.categoriesManage,
+  );
 
   const createDialog = (
     <Dialog open={createOpen} onOpenChange={setCreateOpen}>
@@ -529,10 +586,14 @@ export function ManagerStaffClient() {
                                 <MoreHorizontal className="size-4" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-44">
+                            <DropdownMenuContent align="end" className="w-52">
                               <DropdownMenuItem onClick={() => openEdit(row)}>
                                 <Pencil className="size-4 shrink-0" />
                                 {t("editLabel")}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => openPermissions(row)}>
+                                <SlidersHorizontal className="size-4 shrink-0" />
+                                {t("permissions.menu")}
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
@@ -563,6 +624,134 @@ export function ManagerStaffClient() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <Dialog open={permOpen} onOpenChange={setPermOpen}>
+        <DialogContent className="flex max-h-[90vh] max-w-lg flex-col gap-0 p-0 sm:max-w-lg">
+          <form onSubmit={savePermissions} className="flex max-h-[inherit] flex-col">
+            <DialogHeader className="border-b px-6 py-4 text-start">
+              <DialogTitle>{t("permissions.title")}</DialogTitle>
+              <DialogDescription>
+                {permSubject ? t("permissions.subtitle", { name: permSubject.name ?? permSubject.email }) : null}
+              </DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="max-h-[55vh] px-6 py-4">
+              <div className="space-y-4 pe-2">
+                {permDraft ? (
+                  <>
+                    <div className="rounded-lg border border-border/60 bg-muted/20 p-3">
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <p className="text-sm font-medium">{t("permissions.groups.products")}</p>
+                        <Switch
+                          id="perm-products-master"
+                          checked={canManageProducts}
+                          onCheckedChange={(checked) => {
+                            setPermDraft((d) =>
+                              d
+                                ? enforcePermissionHierarchy({
+                                    ...d,
+                                    productAdd: Boolean(checked),
+                                    productEdit: Boolean(checked),
+                                    productDelete: Boolean(checked),
+                                    categoriesManage: Boolean(checked),
+                                  })
+                                : d,
+                            );
+                          }}
+                        />
+                      </div>
+                      {canManageProducts ? (
+                        <div className="space-y-2 border-t pt-3">
+                          {(["productAdd", "productEdit", "productDelete", "categoriesManage"] as const).map((key) => (
+                            <div key={key} className="flex items-center justify-between gap-3">
+                              <Label htmlFor={`perm-${key}`} className="cursor-pointer text-sm">
+                                {(t as (k: string) => string)(`permKeys.${key}`)}
+                              </Label>
+                              <Switch
+                                id={`perm-${key}`}
+                                checked={permDraft[key]}
+                                onCheckedChange={(checked) =>
+                                  setPermDraft((d) => (d ? enforcePermissionHierarchy({ ...d, [key]: Boolean(checked) }) : d))
+                                }
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <div className="rounded-lg border border-border/60 bg-muted/20 p-3">
+                      <p className="mb-3 text-sm font-medium">{t("permissions.groups.sales")}</p>
+                      <div className="space-y-2">
+                        {(["posCheckout", "salesView", "saleLookupById", "sessionsManage"] as const).map((key) => (
+                          <div key={key} className="flex items-center justify-between gap-3">
+                            <Label htmlFor={`perm-${key}`} className="cursor-pointer text-sm">
+                              {(t as (k: string) => string)(`permKeys.${key}`)}
+                            </Label>
+                            <Switch
+                              id={`perm-${key}`}
+                              checked={permDraft[key]}
+                              onCheckedChange={(checked) =>
+                                setPermDraft((d) => (d ? enforcePermissionHierarchy({ ...d, [key]: Boolean(checked) }) : d))
+                              }
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border border-border/60 bg-muted/20 p-3">
+                      <p className="mb-3 text-sm font-medium">{t("permissions.groups.customers")}</p>
+                      <div className="space-y-2">
+                        {(["customersView", "customersEdit", "creditCollect"] as const).map((key) => (
+                          <div key={key} className="flex items-center justify-between gap-3">
+                            <Label htmlFor={`perm-${key}`} className="cursor-pointer text-sm">
+                              {(t as (k: string) => string)(`permKeys.${key}`)}
+                            </Label>
+                            <Switch
+                              id={`perm-${key}`}
+                              checked={permDraft[key]}
+                              onCheckedChange={(checked) =>
+                                setPermDraft((d) => (d ? enforcePermissionHierarchy({ ...d, [key]: Boolean(checked) }) : d))
+                              }
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border border-border/60 bg-muted/20 p-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <Label htmlFor="perm-catalogView" className="cursor-pointer text-sm font-medium">
+                          {(t as (k: string) => string)("permKeys.catalogView")}
+                        </Label>
+                        <Switch
+                          id="perm-catalogView"
+                          checked={permDraft.catalogView}
+                          disabled={canManageProducts}
+                          onCheckedChange={(checked) =>
+                            setPermDraft((d) => (d ? enforcePermissionHierarchy({ ...d, catalogView: Boolean(checked) }) : d))
+                          }
+                        />
+                      </div>
+                      {canManageProducts ? (
+                        <p className="mt-2 text-xs text-muted-foreground">{t("permissions.catalogForced")}</p>
+                      ) : null}
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            </ScrollArea>
+            <DialogFooter className="border-t px-6 py-4">
+              <Button type="button" variant="outline" onClick={() => setPermOpen(false)}>
+                {t("cancel")}
+              </Button>
+              <Button type="submit" disabled={permSaving}>
+                {permSaving ? <Loader2 className="size-4 animate-spin" /> : t("permissions.save")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="sm:max-w-md">

@@ -19,6 +19,7 @@ import {
 import { Link } from "@/i18n/navigation";
 import { fetchWithAuth } from "@/lib/fetch-with-auth";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/store/use-auth-store";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -178,6 +179,7 @@ function localizedCategoryName(
 export function ManagerProductsClient() {
   const t = useTranslations("managerProducts");
   const locale = useLocale();
+  const authUser = useAuthStore((s) => s.user);
   const params = useParams() as { locale?: string | string[] };
   const paramLocale =
     typeof params?.locale === "string"
@@ -187,6 +189,15 @@ export function ManagerProductsClient() {
         : null;
   const isRtl = (paramLocale ?? locale).startsWith("ar");
   const pageDir: "ltr" | "rtl" = isRtl ? "rtl" : "ltr";
+  const isCashier = authUser?.role === "CASHIER";
+  const perms = authUser?.cashierPermissions;
+  const canCatalogView = !isCashier || perms?.catalogView !== false;
+  const canProductAdd = !isCashier || perms?.productAdd !== false;
+  const canProductEdit = !isCashier || perms?.productEdit !== false;
+  const canProductDelete = !isCashier || perms?.productDelete !== false;
+  const canCategoriesManage = !isCashier || perms?.categoriesManage !== false;
+  const canAccessProductsPage =
+    canCatalogView || canProductAdd || canProductEdit || canProductDelete || canCategoriesManage;
 
   const [products, setProducts] = React.useState<ProductRow[]>([]);
   const [categories, setCategories] = React.useState<Array<{ id: string; label: string }>>([]);
@@ -230,6 +241,13 @@ export function ManagerProductsClient() {
   }, [products]);
 
   const loadAll = React.useCallback(async () => {
+    if (!canAccessProductsPage) {
+      setProducts([]);
+      setCategories([]);
+      setAttributes([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const [pRes, cRes, aRes] = await Promise.all([
@@ -253,7 +271,7 @@ export function ManagerProductsClient() {
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [canAccessProductsPage, t]);
 
   React.useEffect(() => {
     void loadAll();
@@ -514,10 +532,12 @@ export function ManagerProductsClient() {
         <div className="space-y-2">
           <div className="flex items-center justify-between gap-2">
             <Label>{t("form.category")}</Label>
-            <Button type="button" variant="ghost" size="sm" className="h-7 gap-1 px-2 text-xs" onClick={() => setOpenCategoryCreate(true)}>
-              <Plus className="size-3.5" />
-              {t("form.addCategory")}
-            </Button>
+            {canCategoriesManage ? (
+              <Button type="button" variant="ghost" size="sm" className="h-7 gap-1 px-2 text-xs" onClick={() => setOpenCategoryCreate(true)}>
+                <Plus className="size-3.5" />
+                {t("form.addCategory")}
+              </Button>
+            ) : null}
           </div>
           <Select value={form.categoryId} onValueChange={(v) => updateField("categoryId", v)}>
             <SelectTrigger>
@@ -601,10 +621,12 @@ export function ManagerProductsClient() {
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between gap-2">
               <CardTitle className="text-sm">{t("form.attributes")}</CardTitle>
-              <Button type="button" variant="ghost" size="sm" className="h-7 gap-1 px-2 text-xs" onClick={() => setOpenAttributeCreate(true)}>
-                <Plus className="size-3.5" />
-                {t("form.addAttribute")}
-              </Button>
+              {canProductEdit ? (
+                <Button type="button" variant="ghost" size="sm" className="h-7 gap-1 px-2 text-xs" onClick={() => setOpenAttributeCreate(true)}>
+                  <Plus className="size-3.5" />
+                  {t("form.addAttribute")}
+                </Button>
+              ) : null}
             </div>
             <CardDescription>{t("form.attributesHint")}</CardDescription>
           </CardHeader>
@@ -777,6 +799,17 @@ export function ManagerProductsClient() {
     </div>
   );
 
+  if (!canAccessProductsPage) {
+    return (
+      <Card className="border-dashed">
+        <CardHeader>
+          <CardTitle>{t("errors.loadFailed")}</CardTitle>
+          <CardDescription>Access to products has been disabled for this cashier account.</CardDescription>
+        </CardHeader>
+      </Card>
+    );
+  }
+
   return (
     <div className="w-full max-w-full space-y-6 text-start" dir={pageDir}>
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -790,12 +823,14 @@ export function ManagerProductsClient() {
               <ArrowLeft className="size-4" />
             </Link>
           </Button>
-          <Button asChild className="gap-2">
-            <Link href="/dashboard/products/new">
-              <PackagePlus className="size-4" />
-              {t("add")}
-            </Link>
-          </Button>
+          {canProductAdd ? (
+            <Button asChild className="gap-2">
+              <Link href="/dashboard/products/new">
+                <PackagePlus className="size-4" />
+                {t("add")}
+              </Link>
+            </Button>
+          ) : null}
         </div>
       </div>
 
@@ -847,12 +882,14 @@ export function ManagerProductsClient() {
               placeholder={t("searchPlaceholder")}
               className="max-w-md"
             />
-            <Button asChild className="gap-2">
-              <Link href="/dashboard/products/new">
-                <PackagePlus className="size-4" />
-                {t("add")}
-              </Link>
-            </Button>
+            {canProductAdd ? (
+              <Button asChild className="gap-2">
+                <Link href="/dashboard/products/new">
+                  <PackagePlus className="size-4" />
+                  {t("add")}
+                </Link>
+              </Button>
+            ) : null}
           </div>
 
           <Card className="overflow-hidden">
@@ -918,15 +955,19 @@ export function ManagerProductsClient() {
                                   {t("actions.view")}
                                 </Link>
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => openEditDialog(row)}>
-                                <Pencil className="size-4" />
-                                {t("actions.edit")}
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => void softDelete(row)}>
-                                <Trash2 className="size-4" />
-                                {t("actions.deactivate")}
-                              </DropdownMenuItem>
+                              {canProductEdit ? (
+                                <DropdownMenuItem onClick={() => openEditDialog(row)}>
+                                  <Pencil className="size-4" />
+                                  {t("actions.edit")}
+                                </DropdownMenuItem>
+                              ) : null}
+                              {canProductDelete ? <DropdownMenuSeparator /> : null}
+                              {canProductDelete ? (
+                                <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => void softDelete(row)}>
+                                  <Trash2 className="size-4" />
+                                  {t("actions.deactivate")}
+                                </DropdownMenuItem>
+                              ) : null}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>

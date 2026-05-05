@@ -31,7 +31,10 @@
       "otp": "Email code sign-in",
       "firstLogin": "Set your password",
       "cashierLogin": "Staff sign-in",
-      "managerStaff": "Staff"
+      "managerStaff": "Staff",
+      "managerAudit": "Activity log",
+      "managerCredits": "Customer credit",
+      "dashboardSaleDetail": "Sale receipt"
     }
   },
   "home": {
@@ -1146,9 +1149,36 @@
       "needsFullLogin": "Needs full sign-in",
       "noPin": "No PIN"
     },
+    "permissions": {
+      "menu": "Access & permissions",
+      "title": "Cashier access",
+      "subtitle": "Choose what {name} can do in the POS, catalog, and customers area.",
+      "save": "Save access",
+      "catalogForced": "Catalog visibility is automatically enabled when product management is enabled.",
+      "groups": {
+        "products": "Product management",
+        "sales": "Sales & POS",
+        "customers": "Customers & credit"
+      }
+    },
+    "permKeys": {
+      "posCheckout": "POS checkout",
+      "salesView": "View sales list",
+      "saleLookupById": "Open team sales by receipt ID",
+      "catalogView": "Browse products & categories",
+      "productAdd": "Create products",
+      "productEdit": "Edit products",
+      "productDelete": "Deactivate products",
+      "categoriesManage": "Manage categories",
+      "customersView": "View customers",
+      "customersEdit": "Create & edit customers",
+      "creditCollect": "Credit sales & record payments",
+      "sessionsManage": "Cash register sessions"
+    },
     "toast": {
       "created": "Cashier created.",
-      "updated": "Cashier updated."
+      "updated": "Cashier updated.",
+      "permSaved": "Access rights saved."
     },
     "errors": {
       "loadFailed": "Could not load staff.",
@@ -1156,7 +1186,8 @@
       "emailInUse": "That email is already used.",
       "createFailed": "Could not create cashier.",
       "updateFailed": "Could not update cashier.",
-      "statusFailed": "Could not update status."
+      "statusFailed": "Could not update status.",
+      "permFailed": "Could not save access rights."
     }
   },
   "managerProducts": {
@@ -1390,7 +1421,9 @@
     "nav": {
       "home": "Dashboard",
       "staff": "Staff",
+      "audit": "Activity log",
       "reports": "Reports",
+      "credits": "Credit",
       "sales": "Sales",
       "inventory": "Inventory",
       "products": "Products",
@@ -1460,12 +1493,25 @@
       "insufficientTender": "Amount received is less than total",
       "couponError": "Could not validate coupon",
       "invalidCoupon": "Invalid or expired coupon",
-      "saleFailed": "Sale failed. Please try again."
+      "saleFailed": "Sale failed. Please try again.",
+      "creditNeedsCustomer": "Select a customer before selling on credit.",
+      "customerCreateFailed": "Could not create customer.",
+      "customerNameRequired": "Customer name is required."
     },
+    "posDisabled": "Your manager has disabled checkout for your account. Contact them if this is a mistake.",
+    "customerTitle": "Customer (optional)",
+    "customerSearch": "Search name or phone…",
+    "customerHint": "Link a client to the sale — required for credit.",
+    "customerClear": "Remove",
+    "customerCreateHint": "No customer found? Create a new one and attach it to this credit sale.",
+    "customerCreateName": "New customer name",
+    "customerCreatePhone": "Phone (optional)",
+    "customerCreate": "Create customer",
     "toast": {
       "added": "{name} added to cart",
       "couponApplied": "Coupon applied: -{discount} off",
-      "saleCompleted": "Sale completed successfully"
+      "saleCompleted": "Sale completed successfully",
+      "customerCreated": "Customer created and selected."
     }
   },
   "managerDashboard": {
@@ -1582,5 +1628,201 @@
       "valuesHintEdit": "Edit values as comma-separated list. Added/removed values will be synced."
     },
     "confirmDeleteAttribute": "Delete attribute \"{name}\"?"
+  },
+  "managerAudit": {
+    "title": "Activity log",
+    "subtitle": "Actions performed by you and your cashiers (sales, catalog changes, sign-ins, and more).",
+    "backStaff": "Back to staff",
+    "filtersTitle": "Filter",
+    "filtersHint": "Narrow the list to one cashier or include everyone.",
+    "actorFilter": "Person",
+    "allActors": "Everyone",
+    "filterSelf": "You (manager)",
+    "loadError": "Could not load activity.",
+    "empty": "No entries yet.",
+    "col": {
+      "when": "When",
+      "who": "Who",
+      "action": "Action",
+      "target": "Target",
+      "detail": "Detail"
+    },
+    "pageOf": "Page {page} of {pages} · {total} entries",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "managerSales": {
+    "title": "Sales",
+    "subtitleManager": "All sales rung up by your cashiers.",
+    "subtitleCashier": "Your recent sales.",
+    "back": "Dashboard",
+    "listTitle": "Sales list",
+    "listHint": "Open a receipt for line items and payment details.",
+    "allCashiers": "All cashiers",
+    "creditIncluded": "Credit included",
+    "creditExcluded": "Credit excluded",
+    "todayTotal": "Today",
+    "filteredTotal": "Total sales (filtered)",
+    "searchPlaceholder": "Search by ticket ID (full id or #suffix)…",
+    "searchById": "Search ID",
+    "clearSearch": "Clear",
+    "loadError": "Could not load sales.",
+    "printError": "Could not reprint this ticket.",
+    "idNotFound": "Ticket not found.",
+    "empty": "No sales yet.",
+    "col": {
+      "id": "Receipt",
+      "date": "Date",
+      "cashier": "Cashier",
+      "customer": "Customer",
+      "total": "Total",
+      "payment": "Payment",
+      "actions": ""
+    },
+    "view": "View",
+    "reprint": "Reprint",
+    "pageOf": "Page {page} of {pages} · {total} sales",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "managerSaleDetail": {
+    "title": "Sale receipt",
+    "summary": "Summary",
+    "lines": "Items",
+    "date": "Date",
+    "cashier": "Cashier",
+    "customer": "Customer",
+    "payment": "Payment",
+    "status": "Status",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "vat": "VAT",
+    "total": "Total",
+    "loadError": "Could not load sale.",
+    "notFound": "Sale not found or not allowed.",
+    "backList": "All sales"
+  },
+  "managerCredits": {
+    "title": "Customer credit",
+    "subtitle": "Clients with an outstanding balance — record a payment to reduce their debt.",
+    "back": "Dashboard",
+    "listTitle": "Outstanding balances",
+    "listHint": "Use “Record payment” when the customer pays toward their tab.",
+    "loadError": "Could not load customers.",
+    "empty": "No outstanding credit.",
+    "col": {
+      "customer": "Customer",
+      "phone": "Phone",
+      "balance": "Balance",
+      "actions": ""
+    },
+    "recordPayment": "Record payment",
+    "payTitle": "Record payment",
+    "payHint": "Reduce balance for {name}.",
+    "amountLabel": "Amount received",
+    "noteLabel": "Note (optional)",
+    "cancel": "Cancel",
+    "submitPay": "Save",
+    "invalidAmount": "Enter a valid positive amount.",
+    "payError": "Could not record payment.",
+    "paySuccess": "Payment recorded."
+  },
+  "cashierCustomers": {
+    "title": "Customers",
+    "subtitle": "Search clients and record payments toward their credit balance.",
+    "searchPlaceholder": "Search by name or phone…",
+    "loadError": "Could not load customers.",
+    "empty": "No customers match.",
+    "col": {
+      "name": "Name",
+      "phone": "Phone",
+      "credit": "Credit balance",
+      "actions": ""
+    },
+    "pay": "Pay",
+    "payTitle": "Record payment",
+    "payHint": "Payment for {name}.",
+    "amountLabel": "Amount",
+    "noteLabel": "Note (optional)",
+    "cancel": "Cancel",
+    "submitPay": "Save",
+    "invalidAmount": "Enter a valid amount.",
+    "payError": "Could not save payment.",
+    "paySuccess": "Payment saved.",
+    "deniedTitle": "No access",
+    "deniedBody": "Your manager has not enabled customer directory access for your account."
+  },
+  "customersCrud": {
+    "title": "Customers",
+    "subtitle": "Create, update, search, and manage credit for your customer base.",
+    "add": "Add customer",
+    "search": "Search by name, phone, or email...",
+    "empty": "No customers found.",
+    "noAccessTitle": "No access",
+    "noAccessBody": "Your manager has not granted access to customer records.",
+    "columns": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "credit": "Credit",
+      "loyalty": "Loyalty",
+      "actions": "Actions"
+    },
+    "createTitle": "Create customer",
+    "editTitle": "Edit customer",
+    "formHint": "Use clear contact details to make customer lookup faster at checkout.",
+    "fields": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "city": "City",
+      "amount": "Amount",
+      "note": "Note (optional)"
+    },
+    "payTitle": "Record credit payment",
+    "payHint": "Apply payment for {name}.",
+    "pagination": "Page {page} of {pages} ({total} customers)",
+    "prev": "Previous",
+    "next": "Next",
+    "edit": "Edit",
+    "delete": "Delete",
+    "details": "Details",
+    "pay": "Pay",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "creditDetailsTitle": "Credit details",
+    "creditDetailsHint": "Credit history for {name}.",
+    "summary": {
+      "creditSales": "Credit purchases",
+      "totalPaid": "Payments",
+      "remaining": "Remaining"
+    },
+    "ledger": {
+      "when": "When",
+      "type": "Type",
+      "cashier": "Cashier",
+      "amount": "Amount",
+      "balanceAfter": "Balance after",
+      "saleCredit": "Credit sale",
+      "payment": "Payment",
+      "empty": "No credit movement yet."
+    },
+    "confirmDelete": "Delete customer \"{name}\"?",
+    "toast": {
+      "created": "Customer created.",
+      "updated": "Customer updated.",
+      "deleted": "Customer deleted.",
+      "payment": "Credit payment recorded."
+    },
+    "errors": {
+      "load": "Could not load customers.",
+      "save": "Could not save customer.",
+      "delete": "Could not delete customer.",
+      "payment": "Could not record payment.",
+      "creditDetails": "Could not load credit details.",
+      "nameRequired": "Customer name is required.",
+      "invalidAmount": "Enter a valid amount."
+    }
   }
 }

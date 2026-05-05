@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/rbac";
+import { requireAuth, ROLES } from "@/lib/rbac";
+import { assertManagerAdminOrCashierPermission } from "@/lib/cashier-permissions";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const creditPaymentSchema = z.object({
@@ -15,14 +16,88 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "customersView");
+      if (denied) return denied;
+    }
+
     const { id } = await params;
     const customer = await prisma.customer.findUnique({
       where: { id },
-      select: { id: true, name: true, creditBalance: true, creditPayments: { orderBy: { createdAt: "desc" } } },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        creditBalance: true,
+        creditPayments: {
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            amount: true,
+            note: true,
+            createdAt: true,
+            cashier: { select: { id: true, name: true, email: true } },
+          },
+        },
+        sales: {
+          where: { paymentMethod: "CREDIT" },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            totalAmount: true,
+            createdAt: true,
+            status: true,
+            cashier: { select: { id: true, name: true, email: true } },
+          },
+        },
+      },
     });
 
     if (!customer) return NextResponse.json({ error: "Customer not found" }, { status: 404 });
-    return NextResponse.json({ customer });
+    let runningBalance = 0;
+    const ledger = [
+      ...customer.sales.map((s) => ({
+        kind: "SALE_CREDIT" as const,
+        id: s.id,
+        amount: Number(s.totalAmount),
+        createdAt: s.createdAt,
+        status: s.status,
+        cashier: s.cashier,
+      })),
+      ...customer.creditPayments.map((p) => ({
+        kind: "PAYMENT" as const,
+        id: p.id,
+        amount: Number(p.amount),
+        createdAt: p.createdAt,
+        note: p.note,
+        cashier: p.cashier,
+      })),
+    ]
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+      .map((entry) => {
+        if (entry.kind === "SALE_CREDIT") runningBalance += entry.amount;
+        else runningBalance = Math.max(0, runningBalance - entry.amount);
+        return { ...entry, balanceAfter: runningBalance };
+      })
+      .reverse();
+
+    const totalCreditSales = customer.sales.reduce((sum, s) => sum + Number(s.totalAmount), 0);
+    const totalPaid = customer.creditPayments.reduce((sum, p) => sum + Number(p.amount), 0);
+
+    return NextResponse.json({
+      customer: {
+        id: customer.id,
+        name: customer.name,
+        phone: customer.phone,
+        creditBalance: customer.creditBalance,
+      },
+      summary: {
+        totalCreditSales,
+        totalPaid,
+        remainingBalance: Number(customer.creditBalance),
+      },
+      ledger,
+    });
   } catch (e) {
     if (isDatabaseConnectionError(e)) return databaseUnavailableResponse();
     return internalErrorResponse(e, "GET /api/v1/customers/[id]/credit");
@@ -34,6 +109,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   try {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "creditCollect");
+      if (denied) return denied;
+    }
 
     const { id } = await params;
     const customer = await prisma.customer.findUnique({ where: { id } });

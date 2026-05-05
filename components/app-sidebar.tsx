@@ -26,6 +26,7 @@ import {
   Receipt,
   TrendingUp,
   Boxes,
+  Wallet,
 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname, Link } from "@/i18n/navigation";
@@ -147,10 +148,12 @@ function ManagerSidebarContent({
   const mainNav = [
     { key: "home", href: "/dashboard/manager", icon: LayoutDashboard },
     { key: "staff", href: "/dashboard/manager/staff", icon: Users },
+    { key: "audit", href: "/dashboard/manager/audit", icon: ScrollText },
   ];
 
   const storeNav = [
     { key: "reports", href: "/dashboard/reports", icon: BarChart2 },
+    { key: "credits", href: "/dashboard/manager/credits", icon: Wallet },
     { key: "sales", href: "/dashboard/sales", icon: TrendingUp },
     { key: "inventory", href: "/dashboard/inventory", icon: Package },
     { key: "products", href: "/dashboard/products", icon: Boxes },
@@ -216,19 +219,25 @@ function CashierSidebarContent({
   isRtl: boolean;
 }) {
   const t = useTranslations("sidebar");
+  const cashierPerms = useAuthStore((s) => s.user?.cashierPermissions);
 
   const mainNav = [
-    { key: "pos", href: "/dashboard/cashier/pos", icon: ShoppingCart },
-    { key: "cashRegister", href: "/dashboard/cashier/cash-register", icon: Landmark },
-    { key: "customers", href: "/dashboard/cashier/customers", icon: Users },
-    { key: "sales", href: "/dashboard/cashier/sales", icon: BarChart2 },
-  ];
+    { key: "pos", href: "/dashboard/cashier/pos", icon: ShoppingCart, show: cashierPerms?.posCheckout !== false },
+    {
+      key: "cashRegister",
+      href: "/dashboard/cashier/cash-register",
+      icon: Landmark,
+      show: cashierPerms?.sessionsManage !== false,
+    },
+    { key: "customers", href: "/dashboard/customers", icon: Users, show: cashierPerms?.customersView !== false },
+    { key: "sales", href: "/dashboard/sales", icon: BarChart2, show: cashierPerms?.salesView !== false },
+  ].filter((item) => item.show);
 
   const inventoryNav = [
-    { key: "products", href: "/dashboard/cashier/products", icon: Package },
-    { key: "categories", href: "/dashboard/cashier/categories", icon: Tag },
-    { key: "inventory", href: "/dashboard/cashier/inventory", icon: Layers },
-  ];
+    { key: "products", href: "/dashboard/products", icon: Package, show: cashierPerms?.catalogView !== false },
+    { key: "categories", href: "/dashboard/categories", icon: Tag, show: cashierPerms?.catalogView !== false },
+    { key: "inventory", href: "/dashboard/inventory", icon: Layers, show: cashierPerms?.catalogView !== false },
+  ].filter((item) => item.show);
 
   const settingsNav = [
     { label: t("settings.store"), href: "/dashboard/cashier/settings/store" },
@@ -281,22 +290,24 @@ function CashierSidebarContent({
         </SidebarMenu>
       </SidebarGroup>
 
-      <SidebarGroup>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={isActive("/dashboard/cashier/reports")}
-              tooltip={t("nav.reports")}
-            >
-              <Link href="/dashboard/cashier/reports">
-                <FileText />
-                <span>{t("nav.reports")}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarGroup>
+      {cashierPerms?.salesView !== false ? (
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                isActive={isActive("/dashboard/reports")}
+                tooltip={t("nav.reports")}
+              >
+                <Link href="/dashboard/reports">
+                  <FileText />
+                  <span>{t("nav.reports")}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+      ) : null}
 
       <SidebarSeparator />
 

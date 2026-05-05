@@ -1,16 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ManagerSalesClient } from "@/components/manager/manager-sales-client";
 
 export default function StaffSalesPage() {
   return (
-    <div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Sales (static)</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          Sales history, items breakdown, and linkage to customer + cashier (frontend only placeholder).
-        </CardContent>
-      </Card>
+    <div className="p-4 md:p-6">
+      <ManagerSalesClient />
     </div>
   );
 }

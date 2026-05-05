@@ -6,6 +6,9 @@ export async function GET(request: Request) {
   const q = url.searchParams.get("q") ?? url.searchParams.get("search") ?? "";
   const inner = new URL("http://internal/api/v1/products");
   inner.searchParams.set("search", q);
+  // POS search context: cashier may access catalog for checkout even when
+  // explicit catalog page access is disabled.
+  inner.searchParams.set("forPos", "true");
   for (const key of ["categoryId", "barcode", "lowStock", "page", "limit"]) {
     const v = url.searchParams.get(key);
     if (v != null) inner.searchParams.set(key, v);

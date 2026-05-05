@@ -5,6 +5,7 @@ import { signAccessToken, signRefreshToken, verifyPassword, hashPassword } from 
 import { writeAuditLog } from "@/lib/audit";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
+import { getCashierPermissions } from "@/lib/cashier-permissions-model";
 import { generateOtpDigits, hashOtpCode, OTP_TTL_MS } from "@/lib/otp-challenge";
 import { sendEmail } from "@/lib/mailer";
 import { buildOtpEmail } from "@/lib/email-templates/otp-email";
@@ -168,9 +169,12 @@ export async function POST(request: Request) {
       user: {
         id: user.id,
         email: user.email,
+        name: user.name,
         role: user.role,
         status: user.status,
+        ownerManagerId: user.ownerManagerId,
         mustChangePassword: user.mustChangePassword,
+        ...(user.role === "CASHIER" ? { cashierPermissions: getCashierPermissions(user) } : {}),
       },
     });
   } catch (e) {

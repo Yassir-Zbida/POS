@@ -27,27 +27,27 @@ export const DASHBOARD_ROUTE_RULES: readonly RouteRule[] = [
   // Manager pages
   {
     prefix: "/dashboard/reports",
-    roles: [AUTH_ROLES.MANAGER],
+    roles: [AUTH_ROLES.MANAGER, AUTH_ROLES.CASHIER],
   },
   {
     prefix: "/dashboard/sales",
-    roles: [AUTH_ROLES.MANAGER],
+    roles: [AUTH_ROLES.MANAGER, AUTH_ROLES.CASHIER],
   },
   {
     prefix: "/dashboard/inventory",
-    roles: [AUTH_ROLES.MANAGER],
+    roles: [AUTH_ROLES.MANAGER, AUTH_ROLES.CASHIER],
   },
   {
     prefix: "/dashboard/products",
-    roles: [AUTH_ROLES.MANAGER],
+    roles: [AUTH_ROLES.MANAGER, AUTH_ROLES.CASHIER],
   },
   {
     prefix: "/dashboard/categories",
-    roles: [AUTH_ROLES.MANAGER],
+    roles: [AUTH_ROLES.MANAGER, AUTH_ROLES.CASHIER],
   },
   {
     prefix: "/dashboard/customers",
-    roles: [AUTH_ROLES.MANAGER],
+    roles: [AUTH_ROLES.MANAGER, AUTH_ROLES.CASHIER],
   },
 
   // Cashier pages (staff)

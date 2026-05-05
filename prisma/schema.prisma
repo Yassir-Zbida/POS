@@ -146,6 +146,8 @@ model User {
   mustChangePassword  Boolean              @default(false)
   /** Last email+password (or OTP) sign-in for cashiers; PIN-only login allowed for 30 days after. */
   cashierFullAuthAt   DateTime?
+  /// Per-cashier feature flags (JSON). Null = all permissions granted (backward compatible).
+  cashierPermissions  Json?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
 

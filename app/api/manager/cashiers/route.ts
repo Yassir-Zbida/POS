@@ -5,6 +5,7 @@ import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
+import { getCashierPermissions } from "@/lib/cashier-permissions-model";
 
 const createCashierSchema = z.object({
   email: z.string().email(),
@@ -32,12 +33,14 @@ export async function GET(request: Request) {
       createdAt: true,
       pinHash: true,
       cashierFullAuthAt: true,
+      cashierPermissions: true,
     },
     orderBy: { createdAt: "desc" },
   });
 
-  const payload = cashiers.map(({ pinHash, cashierFullAuthAt, ...rest }) => ({
+  const payload = cashiers.map(({ pinHash, cashierFullAuthAt, cashierPermissions, ...rest }) => ({
     ...rest,
+    cashierPermissions: getCashierPermissions({ role: ROLES.CASHIER, cashierPermissions }),
     hasPin: Boolean(pinHash),
     pinQuickLoginActive:
       Boolean(pinHash) &&

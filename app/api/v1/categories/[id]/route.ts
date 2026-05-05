@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, ROLES } from "@/lib/rbac";
+import { assertManagerAdminOrCashierPermission } from "@/lib/cashier-permissions";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 
 const updateSchema = z.object({
@@ -17,6 +18,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   try {
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
+
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "catalogView");
+      if (denied) return denied;
+    }
 
     const { id } = await params;
     const category = await prisma.category.findUnique({
@@ -37,7 +43,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
-    if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "categoriesManage");
+      if (denied) return denied;
+    } else if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -68,7 +77,10 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     const auth = await requireAuth(request);
     if ("error" in auth) return auth.error;
 
-    if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
+    if (auth.user.role === ROLES.CASHIER) {
+      const denied = assertManagerAdminOrCashierPermission(auth.user, "categoriesManage");
+      if (denied) return denied;
+    } else if (!requireRole(auth.user.role, [ROLES.ADMIN, ROLES.MANAGER])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

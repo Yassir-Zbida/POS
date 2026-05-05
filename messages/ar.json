@@ -31,7 +31,10 @@
       "otp": "تسجيل الدخول برمز البريد",
       "firstLogin": "تعيين كلمة المرور",
       "cashierLogin": "دخول الموظفين",
-      "managerStaff": "الموظفون"
+      "managerStaff": "الموظفون",
+      "managerAudit": "سجل النشاط",
+      "managerCredits": "رصيد العملاء",
+      "dashboardSaleDetail": "إيصال البيع"
     }
   },
   "home": {
@@ -1146,9 +1149,36 @@
       "needsFullLogin": "يتطلّب تسجيل دخول كاملًا",
       "noPin": "بدون رمز"
     },
+    "permissions": {
+      "menu": "الصلاحيات",
+      "title": "صلاحيات الصرّاف",
+      "subtitle": "اختر ما يمكن لـ {name} فعله في نقطة البيع والكتالوج والعملاء.",
+      "save": "حفظ",
+      "catalogForced": "عرض الكتالوج يُفعَّل تلقائيًا عند تفعيل إدارة المنتجات.",
+      "groups": {
+        "products": "إدارة المنتجات",
+        "sales": "المبيعات ونقطة البيع",
+        "customers": "العملاء والآجل"
+      }
+    },
+    "permKeys": {
+      "posCheckout": "البيع في نقطة البيع",
+      "salesView": "عرض قائمة المبيعات",
+      "saleLookupById": "فتح مبيعات الفريق بالرقم",
+      "catalogView": "تصفح المنتجات والتصنيفات",
+      "productAdd": "إنشاء منتجات",
+      "productEdit": "تعديل منتجات",
+      "productDelete": "إلغاء تفعيل منتجات",
+      "categoriesManage": "إدارة التصنيفات",
+      "customersView": "عرض العملاء",
+      "customersEdit": "إنشاء وتعديل العملاء",
+      "creditCollect": "بيع بالآجل وتسجيل المدفوعات",
+      "sessionsManage": "جلسات الصندوق"
+    },
     "toast": {
       "created": "تم إنشاء الصرّاف.",
-      "updated": "تم تحديث الصرّاف."
+      "updated": "تم تحديث الصرّاف.",
+      "permSaved": "تم حفظ الصلاحيات."
     },
     "errors": {
       "loadFailed": "تعذّر تحميل الموظفين.",
@@ -1156,7 +1186,8 @@
       "emailInUse": "هذا البريد مستخدم بالفعل.",
       "createFailed": "تعذّر إنشاء الصرّاف.",
       "updateFailed": "تعذّر تحديث الصرّاف.",
-      "statusFailed": "تعذّر تحديث الحالة."
+      "statusFailed": "تعذّر تحديث الحالة.",
+      "permFailed": "تعذّر حفظ الصلاحيات."
     }
   },
   "managerProducts": {
@@ -1390,7 +1421,9 @@
     "nav": {
       "home": "لوحة التحكم",
       "staff": "الموظفون",
+      "audit": "سجل النشاط",
       "reports": "التقارير",
+      "credits": "الائتمان",
       "sales": "المبيعات",
       "inventory": "المخزون",
       "products": "المنتجات",
@@ -1460,12 +1493,25 @@
       "insufficientTender": "المبلغ المستلم أقل من الإجمالي",
       "couponError": "تعذر التحقق من الكوبون",
       "invalidCoupon": "كوبون غير صالح أو منتهي الصلاحية",
-      "saleFailed": "فشلت عملية البيع. حاول مجدداً."
+      "saleFailed": "فشلت عملية البيع. حاول مجدداً.",
+      "creditNeedsCustomer": "اختر عميلاً للبيع بالآجل.",
+      "customerCreateFailed": "تعذر إنشاء العميل.",
+      "customerNameRequired": "اسم العميل مطلوب."
     },
+    "posDisabled": "عطّل المدير نقطة البيع لهذا الحساب.",
+    "customerTitle": "العميل (اختياري)",
+    "customerSearch": "ابحث بالاسم أو الهاتف…",
+    "customerHint": "اربط العميل بالبيع — مطلوب للائتمان.",
+    "customerClear": "إزالة",
+    "customerCreateHint": "العميل غير موجود؟ أنشئ عميلاً جديدًا بسرعة لهذه العملية الآجلة.",
+    "customerCreateName": "اسم العميل الجديد",
+    "customerCreatePhone": "الهاتف (اختياري)",
+    "customerCreate": "إنشاء عميل",
     "toast": {
       "added": "تمت إضافة {name} إلى السلة",
       "couponApplied": "تم تطبيق الكوبون: -{discount} خصم",
-      "saleCompleted": "تمت عملية البيع بنجاح"
+      "saleCompleted": "تمت عملية البيع بنجاح",
+      "customerCreated": "تم إنشاء العميل واختياره."
     }
   },
   "managerDashboard": {
@@ -1582,5 +1628,201 @@
       "valuesHintEdit": "عدّل القيم مفصولة بفواصل. سيتم مزامنة القيم المضافة أو المحذوفة."
     },
     "confirmDeleteAttribute": "حذف الخاصية \"{name}\"؟"
+  },
+  "managerAudit": {
+    "title": "سجل النشاط",
+    "subtitle": "إجراءاتك وصرّافيك.",
+    "backStaff": "العودة للموظفين",
+    "filtersTitle": "تصفية",
+    "filtersHint": "حدّد الشخص.",
+    "actorFilter": "الشخص",
+    "allActors": "الجميع",
+    "filterSelf": "أنت (المدير)",
+    "loadError": "تعذّر التحميل.",
+    "empty": "لا سجلات.",
+    "col": {
+      "when": "متى",
+      "who": "من",
+      "action": "الإجراء",
+      "target": "الهدف",
+      "detail": "التفاصيل"
+    },
+    "pageOf": "صفحة {page} من {pages} · {total}",
+    "prev": "السابق",
+    "next": "التالي"
+  },
+  "managerSales": {
+    "title": "المبيعات",
+    "subtitleManager": "جميع مبيعات الفريق.",
+    "subtitleCashier": "مبيعاتك الأخيرة.",
+    "back": "لوحة التحكم",
+    "listTitle": "قائمة المبيعات",
+    "listHint": "افتح الإيصال للتفاصيل.",
+    "allCashiers": "كل الكاشير",
+    "creditIncluded": "يشمل الآجل",
+    "creditExcluded": "بدون الآجل",
+    "todayTotal": "اليوم",
+    "filteredTotal": "إجمالي المبيعات (حسب الفلتر)",
+    "searchPlaceholder": "ابحث برقم الإيصال (المعرّف الكامل أو #النهاية)…",
+    "searchById": "بحث بالمعرّف",
+    "clearSearch": "مسح",
+    "loadError": "تعذّر التحميل.",
+    "printError": "تعذّرت إعادة طباعة الإيصال.",
+    "idNotFound": "الإيصال غير موجود.",
+    "empty": "لا مبيعات.",
+    "col": {
+      "id": "الإيصال",
+      "date": "التاريخ",
+      "cashier": "الصرّاف",
+      "customer": "العميل",
+      "total": "الإجمالي",
+      "payment": "الدفع",
+      "actions": ""
+    },
+    "view": "عرض",
+    "reprint": "إعادة طباعة",
+    "pageOf": "صفحة {page} من {pages} · {total}",
+    "prev": "السابق",
+    "next": "التالي"
+  },
+  "managerSaleDetail": {
+    "title": "إيصال البيع",
+    "summary": "الملخص",
+    "lines": "الأسطر",
+    "date": "التاريخ",
+    "cashier": "الصرّاف",
+    "customer": "العميل",
+    "payment": "الدفع",
+    "status": "الحالة",
+    "subtotal": "المجموع الفرعي",
+    "discount": "الخصم",
+    "vat": "الضريبة",
+    "total": "الإجمالي",
+    "loadError": "تعذّر التحميل.",
+    "notFound": "غير موجود أو غير مسموح.",
+    "backList": "كل المبيعات"
+  },
+  "managerCredits": {
+    "title": "رصيد العملاء",
+    "subtitle": "الأرصدة المفتوحة — سجّل دفعة لتخفيض الدين.",
+    "back": "لوحة التحكم",
+    "listTitle": "الأرصدة المفتوحة",
+    "listHint": "سجّل دفعة عند السداد.",
+    "loadError": "تعذّر التحميل.",
+    "empty": "لا أرصدة.",
+    "col": {
+      "customer": "العميل",
+      "phone": "الهاتف",
+      "balance": "الرصيد",
+      "actions": ""
+    },
+    "recordPayment": "تسجيل دفعة",
+    "payTitle": "تسجيل دفعة",
+    "payHint": "دفعة لـ {name}.",
+    "amountLabel": "المبلغ",
+    "noteLabel": "ملاحظة",
+    "cancel": "إلغاء",
+    "submitPay": "حفظ",
+    "invalidAmount": "مبلغ غير صالح.",
+    "payError": "فشل الحفظ.",
+    "paySuccess": "تم التسجيل."
+  },
+  "cashierCustomers": {
+    "title": "العملاء",
+    "subtitle": "بحث وتسجيل مدفوعات الآجل.",
+    "searchPlaceholder": "اسم أو هاتف…",
+    "loadError": "تعذّر التحميل.",
+    "empty": "لا نتائج.",
+    "col": {
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "credit": "رصيد الآجل",
+      "actions": ""
+    },
+    "pay": "دفع",
+    "payTitle": "دفعة",
+    "payHint": "دفعة لـ {name}.",
+    "amountLabel": "المبلغ",
+    "noteLabel": "ملاحظة",
+    "cancel": "إلغاء",
+    "submitPay": "حفظ",
+    "invalidAmount": "مبلغ غير صالح.",
+    "payError": "فشل.",
+    "paySuccess": "تم.",
+    "deniedTitle": "لا صلاحية",
+    "deniedBody": "لم يفعّل المدير الوصول لدليل العملاء."
+  },
+  "customersCrud": {
+    "title": "العملاء",
+    "subtitle": "إنشاء وتعديل وبحث العملاء وإدارة رصيد الآجل.",
+    "add": "إضافة عميل",
+    "search": "ابحث بالاسم أو الهاتف أو البريد...",
+    "empty": "لا يوجد عملاء.",
+    "noAccessTitle": "لا صلاحية",
+    "noAccessBody": "المدير لم يمنح صلاحية الوصول إلى العملاء.",
+    "columns": {
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "email": "البريد",
+      "credit": "الآجل",
+      "loyalty": "الولاء",
+      "actions": "الإجراءات"
+    },
+    "createTitle": "إضافة عميل",
+    "editTitle": "تعديل عميل",
+    "formHint": "أدخل بيانات واضحة لسهولة البحث عند الدفع.",
+    "fields": {
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "email": "البريد",
+      "city": "المدينة",
+      "amount": "المبلغ",
+      "note": "ملاحظة (اختياري)"
+    },
+    "payTitle": "تسجيل دفعة آجل",
+    "payHint": "تسجيل دفعة للعميل {name}.",
+    "pagination": "صفحة {page} من {pages} ({total} عميل)",
+    "prev": "السابق",
+    "next": "التالي",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "details": "التفاصيل",
+    "pay": "دفع",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "close": "إغلاق",
+    "creditDetailsTitle": "تفاصيل الرصيد",
+    "creditDetailsHint": "سجل الرصيد للعميل {name}.",
+    "summary": {
+      "creditSales": "مشتريات الآجل",
+      "totalPaid": "المدفوع",
+      "remaining": "المتبقي"
+    },
+    "ledger": {
+      "when": "التاريخ",
+      "type": "النوع",
+      "cashier": "الكاشير",
+      "amount": "المبلغ",
+      "balanceAfter": "الرصيد بعد العملية",
+      "saleCredit": "بيع آجل",
+      "payment": "دفعة",
+      "empty": "لا توجد حركات رصيد بعد."
+    },
+    "confirmDelete": "حذف العميل \"{name}\"؟",
+    "toast": {
+      "created": "تم إنشاء العميل.",
+      "updated": "تم تحديث العميل.",
+      "deleted": "تم حذف العميل.",
+      "payment": "تم تسجيل الدفعة."
+    },
+    "errors": {
+      "load": "تعذر تحميل العملاء.",
+      "save": "تعذر حفظ العميل.",
+      "delete": "تعذر حذف العميل.",
+      "payment": "تعذر تسجيل الدفعة.",
+      "creditDetails": "تعذر تحميل تفاصيل الرصيد.",
+      "nameRequired": "اسم العميل مطلوب.",
+      "invalidAmount": "أدخل مبلغًا صحيحًا."
+    }
   }
 }

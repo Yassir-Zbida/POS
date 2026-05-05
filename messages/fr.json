@@ -31,7 +31,10 @@
       "otp": "Connexion par code e-mail",
       "firstLogin": "Définir le mot de passe",
       "cashierLogin": "Connexion personnel",
-      "managerStaff": "Personnel"
+      "managerStaff": "Personnel",
+      "managerAudit": "Journal d'activité",
+      "managerCredits": "Crédit client",
+      "dashboardSaleDetail": "Ticket de vente"
     }
   },
   "home": {
@@ -1146,9 +1149,36 @@
       "needsFullLogin": "Connexion complète requise",
       "noPin": "Sans PIN"
     },
+    "permissions": {
+      "menu": "Droits d'accès",
+      "title": "Accès caissier",
+      "subtitle": "Choisissez ce que {name} peut faire (POS, catalogue, clients).",
+      "save": "Enregistrer",
+      "catalogForced": "L'accès catalogue est activé automatiquement si la gestion produits est activée.",
+      "groups": {
+        "products": "Gestion produits",
+        "sales": "Ventes & POS",
+        "customers": "Clients & crédit"
+      }
+    },
+    "permKeys": {
+      "posCheckout": "Encaissement POS",
+      "salesView": "Voir la liste des ventes",
+      "saleLookupById": "Ouvrir les tickets de l'équipe",
+      "catalogView": "Parcourir produits & catégories",
+      "productAdd": "Créer des produits",
+      "productEdit": "Modifier des produits",
+      "productDelete": "Désactiver des produits",
+      "categoriesManage": "Gérer les catégories",
+      "customersView": "Voir les clients",
+      "customersEdit": "Créer & modifier clients",
+      "creditCollect": "Ventes à crédit & encaissements",
+      "sessionsManage": "Sessions de caisse"
+    },
     "toast": {
       "created": "Caissier créé.",
-      "updated": "Caissier mis à jour."
+      "updated": "Caissier mis à jour.",
+      "permSaved": "Droits enregistrés."
     },
     "errors": {
       "loadFailed": "Impossible de charger le personnel.",
@@ -1156,7 +1186,8 @@
       "emailInUse": "Cet e-mail est déjà utilisé.",
       "createFailed": "Impossible de créer le caissier.",
       "updateFailed": "Impossible de mettre à jour le caissier.",
-      "statusFailed": "Impossible de mettre à jour le statut."
+      "statusFailed": "Impossible de mettre à jour le statut.",
+      "permFailed": "Impossible d'enregistrer les droits."
     }
   },
   "managerProducts": {
@@ -1390,7 +1421,9 @@
     "nav": {
       "home": "Tableau de bord",
       "staff": "Personnel",
+      "audit": "Journal",
       "reports": "Rapports",
+      "credits": "Crédit",
       "sales": "Ventes",
       "inventory": "Stock",
       "products": "Produits",
@@ -1460,12 +1493,25 @@
       "insufficientTender": "Le montant reçu est inférieur au total",
       "couponError": "Impossible de valider le coupon",
       "invalidCoupon": "Coupon invalide ou expiré",
-      "saleFailed": "Vente échouée. Veuillez réessayer."
+      "saleFailed": "Vente échouée. Veuillez réessayer.",
+      "creditNeedsCustomer": "Sélectionnez un client pour une vente à crédit.",
+      "customerCreateFailed": "Impossible de créer le client.",
+      "customerNameRequired": "Le nom du client est requis."
     },
+    "posDisabled": "Votre responsable a désactivé l'encaissement pour ce compte.",
+    "customerTitle": "Client (optionnel)",
+    "customerSearch": "Rechercher nom ou téléphone…",
+    "customerHint": "Liez un client à la vente — obligatoire pour le crédit.",
+    "customerClear": "Retirer",
+    "customerCreateHint": "Client introuvable ? Créez-en un rapidement pour cette vente à crédit.",
+    "customerCreateName": "Nom du nouveau client",
+    "customerCreatePhone": "Téléphone (optionnel)",
+    "customerCreate": "Créer le client",
     "toast": {
       "added": "{name} ajouté au panier",
       "couponApplied": "Coupon appliqué : -{discount} de réduction",
-      "saleCompleted": "Vente enregistrée avec succès"
+      "saleCompleted": "Vente enregistrée avec succès",
+      "customerCreated": "Client créé et sélectionné."
     }
   },
   "managerDashboard": {
@@ -1582,5 +1628,201 @@
       "valuesHintEdit": "Modifie les valeurs séparées par des virgules. Les ajouts/suppressions seront synchronisés."
     },
     "confirmDeleteAttribute": "Supprimer l'attribut \"{name}\" ?"
+  },
+  "managerAudit": {
+    "title": "Journal d'activité",
+    "subtitle": "Actions de vous et de vos caissiers.",
+    "backStaff": "Retour au personnel",
+    "filtersTitle": "Filtre",
+    "filtersHint": "Affinez par personne.",
+    "actorFilter": "Personne",
+    "allActors": "Tout le monde",
+    "filterSelf": "Vous (manager)",
+    "loadError": "Impossible de charger le journal.",
+    "empty": "Aucune entrée.",
+    "col": {
+      "when": "Quand",
+      "who": "Qui",
+      "action": "Action",
+      "target": "Cible",
+      "detail": "Détail"
+    },
+    "pageOf": "Page {page} sur {pages} · {total} entrées",
+    "prev": "Précédent",
+    "next": "Suivant"
+  },
+  "managerSales": {
+    "title": "Ventes",
+    "subtitleManager": "Toutes les ventes de votre équipe.",
+    "subtitleCashier": "Vos ventes récentes.",
+    "back": "Tableau de bord",
+    "listTitle": "Liste des ventes",
+    "listHint": "Ouvrez un ticket pour le détail.",
+    "allCashiers": "Tous les caissiers",
+    "creditIncluded": "Crédit inclus",
+    "creditExcluded": "Crédit exclu",
+    "todayTotal": "Aujourd'hui",
+    "filteredTotal": "Total des ventes (filtré)",
+    "searchPlaceholder": "Rechercher par ID ticket (id complet ou #suffixe)…",
+    "searchById": "Rechercher ID",
+    "clearSearch": "Effacer",
+    "loadError": "Impossible de charger les ventes.",
+    "printError": "Impossible de réimprimer ce ticket.",
+    "idNotFound": "Ticket introuvable.",
+    "empty": "Aucune vente.",
+    "col": {
+      "id": "Ticket",
+      "date": "Date",
+      "cashier": "Caissier",
+      "customer": "Client",
+      "total": "Total",
+      "payment": "Paiement",
+      "actions": ""
+    },
+    "view": "Voir",
+    "reprint": "Réimprimer",
+    "pageOf": "Page {page} sur {pages} · {total} ventes",
+    "prev": "Précédent",
+    "next": "Suivant"
+  },
+  "managerSaleDetail": {
+    "title": "Ticket de vente",
+    "summary": "Résumé",
+    "lines": "Lignes",
+    "date": "Date",
+    "cashier": "Caissier",
+    "customer": "Client",
+    "payment": "Paiement",
+    "status": "Statut",
+    "subtotal": "Sous-total",
+    "discount": "Remise",
+    "vat": "TVA",
+    "total": "Total",
+    "loadError": "Impossible de charger la vente.",
+    "notFound": "Vente introuvable ou interdite.",
+    "backList": "Toutes les ventes"
+  },
+  "managerCredits": {
+    "title": "Crédit client",
+    "subtitle": "Soldes ouverts — enregistrez un paiement pour réduire la dette.",
+    "back": "Tableau de bord",
+    "listTitle": "Soldes ouverts",
+    "listHint": "Enregistrez un paiement quand le client règle.",
+    "loadError": "Impossible de charger les clients.",
+    "empty": "Aucun crédit en cours.",
+    "col": {
+      "customer": "Client",
+      "phone": "Téléphone",
+      "balance": "Solde",
+      "actions": ""
+    },
+    "recordPayment": "Enregistrer paiement",
+    "payTitle": "Enregistrer un paiement",
+    "payHint": "Réduction de solde pour {name}.",
+    "amountLabel": "Montant reçu",
+    "noteLabel": "Note (optionnel)",
+    "cancel": "Annuler",
+    "submitPay": "Enregistrer",
+    "invalidAmount": "Montant invalide.",
+    "payError": "Échec de l'enregistrement.",
+    "paySuccess": "Paiement enregistré."
+  },
+  "cashierCustomers": {
+    "title": "Clients",
+    "subtitle": "Recherche et encaissements sur le crédit.",
+    "searchPlaceholder": "Nom ou téléphone…",
+    "loadError": "Impossible de charger.",
+    "empty": "Aucun résultat.",
+    "col": {
+      "name": "Nom",
+      "phone": "Téléphone",
+      "credit": "Solde crédit",
+      "actions": ""
+    },
+    "pay": "Payer",
+    "payTitle": "Paiement",
+    "payHint": "Paiement pour {name}.",
+    "amountLabel": "Montant",
+    "noteLabel": "Note",
+    "cancel": "Annuler",
+    "submitPay": "Enregistrer",
+    "invalidAmount": "Montant invalide.",
+    "payError": "Échec.",
+    "paySuccess": "OK.",
+    "deniedTitle": "Accès refusé",
+    "deniedBody": "Votre responsable n'a pas activé l'annuaire clients."
+  },
+  "customersCrud": {
+    "title": "Clients",
+    "subtitle": "Créer, modifier, rechercher et gérer le crédit client.",
+    "add": "Ajouter un client",
+    "search": "Rechercher par nom, téléphone ou e-mail...",
+    "empty": "Aucun client trouvé.",
+    "noAccessTitle": "Accès refusé",
+    "noAccessBody": "Votre responsable n'a pas autorisé l'accès aux clients.",
+    "columns": {
+      "name": "Nom",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "credit": "Crédit",
+      "loyalty": "Fidélité",
+      "actions": "Actions"
+    },
+    "createTitle": "Créer un client",
+    "editTitle": "Modifier le client",
+    "formHint": "Utilisez des informations claires pour retrouver vite le client à l'encaissement.",
+    "fields": {
+      "name": "Nom",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "city": "Ville",
+      "amount": "Montant",
+      "note": "Note (optionnel)"
+    },
+    "payTitle": "Enregistrer un paiement crédit",
+    "payHint": "Appliquer le paiement pour {name}.",
+    "pagination": "Page {page} sur {pages} ({total} clients)",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "details": "Détails",
+    "pay": "Payer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "close": "Fermer",
+    "creditDetailsTitle": "Détails du crédit",
+    "creditDetailsHint": "Historique de crédit pour {name}.",
+    "summary": {
+      "creditSales": "Achats à crédit",
+      "totalPaid": "Paiements",
+      "remaining": "Reste"
+    },
+    "ledger": {
+      "when": "Date",
+      "type": "Type",
+      "cashier": "Caissier",
+      "amount": "Montant",
+      "balanceAfter": "Solde après",
+      "saleCredit": "Vente à crédit",
+      "payment": "Paiement",
+      "empty": "Aucun mouvement de crédit."
+    },
+    "confirmDelete": "Supprimer le client \"{name}\" ?",
+    "toast": {
+      "created": "Client créé.",
+      "updated": "Client mis à jour.",
+      "deleted": "Client supprimé.",
+      "payment": "Paiement crédit enregistré."
+    },
+    "errors": {
+      "load": "Impossible de charger les clients.",
+      "save": "Impossible d'enregistrer le client.",
+      "delete": "Impossible de supprimer le client.",
+      "payment": "Impossible d'enregistrer le paiement.",
+      "creditDetails": "Impossible de charger le détail du crédit.",
+      "nameRequired": "Le nom du client est requis.",
+      "invalidAmount": "Entrez un montant valide."
+    }
   }
 }

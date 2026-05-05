@@ -7,6 +7,7 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { USER_STATUS, ROLES } from "@/lib/rbac";
 import { databaseUnavailableResponse, internalErrorResponse, isDatabaseConnectionError } from "@/lib/api-route-errors";
 import { isCashierPinLoginAllowed } from "@/lib/cashier-login-policy";
+import { getCashierPermissions } from "@/lib/cashier-permissions-model";
 
 const bodySchema = z.object({
   email: z.string().email(),
@@ -48,6 +49,7 @@ export async function POST(request: Request) {
       select: {
         id: true,
         email: true,
+        name: true,
         role: true,
         status: true,
         mustChangePassword: true,
@@ -56,6 +58,7 @@ export async function POST(request: Request) {
         pinLockedUntil: true,
         ownerManagerId: true,
         cashierFullAuthAt: true,
+        cashierPermissions: true,
       },
     });
 
@@ -163,9 +166,12 @@ export async function POST(request: Request) {
       user: {
         id: user.id,
         email: user.email,
+        name: user.name,
         role: user.role,
         status: user.status,
+        ownerManagerId: user.ownerManagerId,
         mustChangePassword: user.mustChangePassword,
+        cashierPermissions: getCashierPermissions(user),
       },
     });
   } catch (e) {
