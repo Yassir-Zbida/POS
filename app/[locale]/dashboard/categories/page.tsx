@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { type Locale } from "@/i18n/routing";
+import { ManagerCategoriesClient } from "@/components/manager/manager-categories-client";
 
 export async function generateMetadata({
   params,
@@ -16,6 +17,10 @@ export async function generateMetadata({
 }
 
 export default function CategoriesPage() {
-  return <h1 className="text-xl font-semibold sm:text-2xl">Categories</h1>;
+  return (
+    <div className="p-4 md:p-6">
+      <ManagerCategoriesClient />
+    </div>
+  );
 }
 

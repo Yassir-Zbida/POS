@@ -1413,6 +1413,71 @@
       "updateFailed": "Could not update product."
     }
   },
+  "managerCategories": {
+    "title": "Categories",
+    "subtitle": "Manage category tree, CRUD, and sales analytics.",
+    "add": "Add category",
+    "search": "Search by category name...",
+    "empty": "No categories found.",
+    "noAccessTitle": "No access",
+    "noAccessBody": "Your manager has not granted catalog visibility.",
+    "columns": {
+      "name": "Name",
+      "parent": "Parent",
+      "products": "Products",
+      "vat": "VAT",
+      "actions": "Actions"
+    },
+    "stats": {
+      "totalCategories": "Total categories",
+      "totalProducts": "Products in categories",
+      "withProducts": "Categories with products"
+    },
+    "createTitle": "Create category",
+    "editTitle": "Edit category",
+    "formHint": "Use clear names and hierarchy to keep catalog navigation simple.",
+    "fields": {
+      "nameFr": "Name (FR)",
+      "nameEn": "Name (EN)",
+      "nameAr": "Name (AR)",
+      "vatRate": "VAT rate (%)",
+      "color": "Color",
+      "parent": "Parent category",
+      "noParent": "No parent"
+    },
+    "details": "Details",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "detailsTitle": "Category analytics",
+    "detailsHint": "Category details and performance.",
+    "analytics": {
+      "totalProducts": "Total products",
+      "totalSales": "Total sales",
+      "thisMonthSales": "This month sales",
+      "totalUnits": "Units sold",
+      "monthlyTitle": "Sales per month",
+      "month": "Month",
+      "salesAmount": "Sales amount",
+      "units": "Units",
+      "empty": "No sales data for this category."
+    },
+    "confirmDelete": "Delete category \"{name}\"?",
+    "toast": {
+      "created": "Category created.",
+      "updated": "Category updated.",
+      "deleted": "Category deleted."
+    },
+    "errors": {
+      "load": "Could not load categories.",
+      "save": "Could not save category.",
+      "delete": "Could not delete category.",
+      "details": "Could not load category details.",
+      "nameRequired": "Category name (FR) is required."
+    }
+  },
   "managerSidebar": {
     "group": {
       "main": "Overview",

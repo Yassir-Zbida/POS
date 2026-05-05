@@ -1413,6 +1413,71 @@
       "updateFailed": "تعذر تحديث المنتج."
     }
   },
+  "managerCategories": {
+    "title": "التصنيفات",
+    "subtitle": "إدارة شجرة التصنيفات وعمليات CRUD وتحليلات المبيعات.",
+    "add": "إضافة تصنيف",
+    "search": "ابحث باسم التصنيف...",
+    "empty": "لا توجد تصنيفات.",
+    "noAccessTitle": "لا صلاحية",
+    "noAccessBody": "لم يمنحك المدير صلاحية عرض الكتالوج.",
+    "columns": {
+      "name": "الاسم",
+      "parent": "الأب",
+      "products": "المنتجات",
+      "vat": "الضريبة",
+      "actions": "الإجراءات"
+    },
+    "stats": {
+      "totalCategories": "إجمالي التصنيفات",
+      "totalProducts": "منتجات ضمن التصنيفات",
+      "withProducts": "تصنيفات بها منتجات"
+    },
+    "createTitle": "إنشاء تصنيف",
+    "editTitle": "تعديل التصنيف",
+    "formHint": "استخدم أسماء واضحة وهيكلًا جيدًا لتسهيل التصفح.",
+    "fields": {
+      "nameFr": "الاسم (FR)",
+      "nameEn": "الاسم (EN)",
+      "nameAr": "الاسم (AR)",
+      "vatRate": "نسبة الضريبة (%)",
+      "color": "اللون",
+      "parent": "التصنيف الأب",
+      "noParent": "بدون أب"
+    },
+    "details": "التفاصيل",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "close": "إغلاق",
+    "detailsTitle": "تحليلات التصنيف",
+    "detailsHint": "تفاصيل وأداء التصنيف.",
+    "analytics": {
+      "totalProducts": "إجمالي المنتجات",
+      "totalSales": "إجمالي المبيعات",
+      "thisMonthSales": "مبيعات هذا الشهر",
+      "totalUnits": "الوحدات المباعة",
+      "monthlyTitle": "المبيعات حسب الشهر",
+      "month": "الشهر",
+      "salesAmount": "قيمة المبيعات",
+      "units": "الوحدات",
+      "empty": "لا توجد بيانات مبيعات لهذا التصنيف."
+    },
+    "confirmDelete": "حذف التصنيف \"{name}\"؟",
+    "toast": {
+      "created": "تم إنشاء التصنيف.",
+      "updated": "تم تحديث التصنيف.",
+      "deleted": "تم حذف التصنيف."
+    },
+    "errors": {
+      "load": "تعذر تحميل التصنيفات.",
+      "save": "تعذر حفظ التصنيف.",
+      "delete": "تعذر حذف التصنيف.",
+      "details": "تعذر تحميل تفاصيل التصنيف.",
+      "nameRequired": "اسم التصنيف (FR) مطلوب."
+    }
+  },
   "managerSidebar": {
     "group": {
       "main": "نظرة عامة",

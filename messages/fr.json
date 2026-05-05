@@ -1413,6 +1413,71 @@
       "updateFailed": "Impossible de mettre à jour le produit."
     }
   },
+  "managerCategories": {
+    "title": "Catégories",
+    "subtitle": "Gérez l'arborescence, le CRUD et les analyses de ventes.",
+    "add": "Ajouter catégorie",
+    "search": "Rechercher par nom de catégorie...",
+    "empty": "Aucune catégorie trouvée.",
+    "noAccessTitle": "Accès refusé",
+    "noAccessBody": "Votre responsable n'a pas autorisé la visibilité du catalogue.",
+    "columns": {
+      "name": "Nom",
+      "parent": "Parent",
+      "products": "Produits",
+      "vat": "TVA",
+      "actions": "Actions"
+    },
+    "stats": {
+      "totalCategories": "Total catégories",
+      "totalProducts": "Produits dans les catégories",
+      "withProducts": "Catégories avec produits"
+    },
+    "createTitle": "Créer une catégorie",
+    "editTitle": "Modifier la catégorie",
+    "formHint": "Utilisez des noms clairs et une bonne hiérarchie pour faciliter la navigation.",
+    "fields": {
+      "nameFr": "Nom (FR)",
+      "nameEn": "Nom (EN)",
+      "nameAr": "Nom (AR)",
+      "vatRate": "TVA (%)",
+      "color": "Couleur",
+      "parent": "Catégorie parente",
+      "noParent": "Aucun parent"
+    },
+    "details": "Détails",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "close": "Fermer",
+    "detailsTitle": "Analytique catégorie",
+    "detailsHint": "Détails et performance de la catégorie.",
+    "analytics": {
+      "totalProducts": "Total produits",
+      "totalSales": "Ventes totales",
+      "thisMonthSales": "Ventes du mois",
+      "totalUnits": "Unités vendues",
+      "monthlyTitle": "Ventes par mois",
+      "month": "Mois",
+      "salesAmount": "Montant des ventes",
+      "units": "Unités",
+      "empty": "Aucune donnée de vente pour cette catégorie."
+    },
+    "confirmDelete": "Supprimer la catégorie \"{name}\" ?",
+    "toast": {
+      "created": "Catégorie créée.",
+      "updated": "Catégorie mise à jour.",
+      "deleted": "Catégorie supprimée."
+    },
+    "errors": {
+      "load": "Impossible de charger les catégories.",
+      "save": "Impossible d'enregistrer la catégorie.",
+      "delete": "Impossible de supprimer la catégorie.",
+      "details": "Impossible de charger les détails de la catégorie.",
+      "nameRequired": "Le nom de catégorie (FR) est requis."
+    }
+  },
   "managerSidebar": {
     "group": {
       "main": "Vue d'ensemble",
