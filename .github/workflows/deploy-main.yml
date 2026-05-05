@@ -57,7 +57,7 @@ jobs:
             git pull --ff-only origin main
 
             echo "== Install/build/migrate =="
-            npm ci
+            npm install
             npx prisma generate
             npx prisma migrate deploy
             npm run build
