@@ -100,6 +100,29 @@ For real deployments, point `DATABASE_URL` at a managed MySQL instance, set `APP
 
 ---
 
+## Auto-deploy on merge to `main` (GitHub Actions)
+
+This repo includes `.github/workflows/deploy-main.yml` to run on every push to `main`:
+
+1. CI check on GitHub runner (`npm ci`, `npm run lint`, `npm run build`)
+2. SSH deploy to your host (pull latest code, install, migrate, build, restart)
+
+Configure these repository secrets in GitHub:
+
+- `DEPLOY_HOST`: server IP or domain
+- `DEPLOY_USER`: SSH user
+- `DEPLOY_SSH_KEY`: private SSH key (PEM/OpenSSH)
+- `DEPLOY_PORT`: optional SSH port (default `22`)
+- `DEPLOY_APP_DIR`: absolute path of your app on host
+- `DEPLOY_RESTART_CMD`: restart command on host
+
+Example restart commands:
+
+- PM2: `pm2 restart hssabaty-pos || pm2 start npm --name hssabaty-pos -- start`
+- Docker Compose prod: `docker compose -f docker-compose.prod.yml up -d --build`
+
+---
+
 ## Local development without Docker (optional)
 
 1. Start only MySQL:
